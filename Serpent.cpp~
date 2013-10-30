@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <iostream>
+#include <bitset>
+
+
+class Serpent
+{
+  public:                    // begin public section
+    Serpent();
+  void linearTransform(unsigned char x0[32], unsigned char x1, unsigned char x2, unsigned char x3);
+
+  void shiftRight(unsigned char *ar, int size, int shift);
+
+  void shiftLeft(unsigned char *array);
+
+  void rotate(std::bitset<32> *b);
+};
+
+//class Serpent {
+
+Serpent::Serpent() { }
+
+void Serpent::linearTransform(unsigned char x0[32], unsigned char x1, unsigned char x2, unsigned char x3) {
+    std::cout << x0[1] << std::endl;
+    std::cout << x1 << std::endl;
+    std::cout << x2 << std::endl;
+    std::cout << x3 << std::endl;
+    std::bitset<32> b (std::string("11000000000000000000000000000110"));
+    std::cout << b << std::endl;
+    b <<= 4;
+
+    std::cout << b << std::endl;
+    unsigned char thirteen = 13;
+    //int myTestInt = (9 << 13);
+    //shiftRight(x0, 32, 13);
+    shiftLeft(x0);
+    //std::cout << myTestInt << std::endl;
+    std::cout << x0 << std::endl;
+  }
+
+void Serpent::rotate(std::bitset<32> *b) {
+
+}
+
+
+/** Shift an array right.
+ * @param ar The array to shift.
+ * @param size The number of array elements.
+ * @param shift The number of bits to shift.
+ */
+void Serpent::shiftRight(unsigned char *ar, int size, int shift)
+{
+    int carry = 0;                              // Clear the initial carry bit.
+    while (shift--) {                           // For each bit to shift ...
+        for (int i = size - 1; i >= 0; --i) {   // For each element of the array from high to low ...
+            int next = (ar[i] & 1) ? 0x80 : 0;  // ... if the low bit is set, set the carry bit.
+            ar[i] = carry | (ar[i] >> 1);       // Shift the element one bit left and addthe old carry.
+            carry = next;                       // Remember the old carry for next time.
+        }   
+    }
+} 
+
+void Serpent::shiftLeft(unsigned char *array)
+{
+
+  unsigned char bits1 = 0, bits2 = 0;
+  for(int i = 31; i >= 0; --i) {
+    bits2 = array[i] & 0x07;
+    //array[i] >>= 3;
+    //array[i] |= bits1 << 5;
+    array[i] >>= 1;
+    bits1 = bits2;
+  }
+
+
+}
+
+//}
+int main( )
+{
+  Serpent::Serpent serpent; 
+  unsigned char char1 = '1';
+  unsigned char char2 = '0';
+  unsigned char char3 = '1';
+  unsigned char char4 = '0';
+  unsigned char charTest[4] = {'1','1','1','1'};
+  unsigned char test[32] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','1','1','0'};
+  
+  serpent.linearTransform(test,char2,char3,char4); 
+  return 0;
+}
+
+
+
