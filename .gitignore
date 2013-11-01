@@ -1,0 +1,7 @@
+# COMPILE SOURCE #
+#################
+*.cpp~
+*.h~
+*.exe
+*.out
+*.o
