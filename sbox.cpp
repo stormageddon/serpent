@@ -123,7 +123,7 @@ string * SBitsliceInverse(int box, string words[][32]){
         return bitSliceInverseResult;
 }
 
-int main(){
+int hgfdmain(){
 	Setup();
-
+	return 0;
 }
