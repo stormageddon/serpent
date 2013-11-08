@@ -11,8 +11,6 @@ class KeySchedule{
   unsigned long long int k2;
   unsigned long long int k3;
   unsigned long int words[140];
-  unsigned long long int subKeysUpper[33];
-  unsigned long long int subKeysLower[33];
   std::string subKeys[33];
   static const long int phi = 2654435769;
 
@@ -36,8 +34,6 @@ public:
        20, 52, 84, 116, 21, 53, 85, 117, 22, 54, 86, 118, 23, 55, 87, 119,
        24, 56, 88, 120, 25, 57, 89, 121, 26, 58, 90, 122, 27, 59, 91, 123,
        28, 60, 92, 124, 29, 61, 93, 125, 30, 62, 94, 126, 31, 63, 95, 127};
-
-    tip[127] = 127;
     
     std::copy(tip, tip+128, ip);  
     /*for (int i = 0; i < 127; i++ ){
@@ -176,6 +172,9 @@ public:
 
       std::cout << "Subkey " << i << ": " << subKeys[i] << std::endl;
     }
+   
+   
+   
   }  
   
   /**
@@ -326,12 +325,12 @@ int main(){
   
     
   KeySchedule *ks = new KeySchedule();
-  ks->Setup();
+  
   
   ks->setKeySize(sizeof(testKey)/sizeof(*testKey));
   ks->setKey(testKey);
   ks->generateSubKeys();
-  
+  std::cout << "Something from testkey : " << testKey[5] << std::endl;
   return 0;
 };
 
