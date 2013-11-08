@@ -415,12 +415,12 @@ int main(int argc, char** argv)
     n = std::stof(argv[1]);
   } else {
     std::cerr << "Not enough arguments\n";
-    //return 1;
+    return 1;
   }
 
   char buff[100];
-//  sprintf(buff,"The program was run with the following command: %d",n);
- // std::cout << buff << std::endl;
+  sprintf(buff,"The program was run with the following command: %d",n);
+  std::cout << buff << std::endl;
 
   
 
