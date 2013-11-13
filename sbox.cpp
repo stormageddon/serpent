@@ -125,5 +125,5 @@ string * SBitsliceInverse(int box, string words[][32]){
 
 int main(){
 	Setup();
-
+	return 0;
 }

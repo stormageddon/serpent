@@ -1,0 +1,14 @@
+What was done:
+
+The problem did occur in std::copy. Now sure why.
+
+Changed array initialization to a for loop. Works great - except:
+    -The for loop didn't initialize the last element
+    -That caused the code to want something at position -834r234234 or something
+    -SEGFAULT!
+    
+I mamanged to get std::copy to work if I expressed everything in terms of memory pointers on sBoxDecimalKey
+I think it doesn't like 2D arrays.
+
+Also, I re-named the main functions in KeySchedule and sbox so I could test some code, and I disabled the
+part where it checks for the number of parameters. I changed those back before pushing, however.

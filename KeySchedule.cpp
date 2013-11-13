@@ -37,10 +37,10 @@ public:
     
     tip[127] = 127;
     std::copy(tip, tip+128, ip);  
-    /*for (int i = 0; i < 127; i++ ){
-      ip[i] = (32*i) % 127;
-    }
-    */
+    /*for (int i = 0; i < 128; i++ ){
+      ip[i] = (32*i) % 128;
+    }*/
+    
 
   
     k3 = 0; 
@@ -61,7 +61,7 @@ public:
       { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
     };
 
-    std::copy( t, t+8, sBoxDecimalTable);
+	std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
     //   for( int i = 0; i< 8; i++){
     //  for( int j = 0; j<16; j++ ){
     //	std::cout << sBoxDecimalTable[i][j] << ", " ;

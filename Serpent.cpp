@@ -1,4 +1,5 @@
-#include <stdio.h>
+#include <algorithm>
+#include <cstdio>
 #include <iostream>
 #include <bitset>
 #include <map>
@@ -81,8 +82,11 @@ Serpent::Serpent() {
        20, 52, 84, 116, 21, 53, 85, 117, 22, 54, 86, 118, 23, 55, 87, 119,
        24, 56, 88, 120, 25, 57, 89, 121, 26, 58, 90, 122, 27, 59, 91, 123,
        28, 60, 92, 124, 29, 61, 93, 125, 30, 62, 94, 126, 31, 63, 95, 127};
-    
+
     std::copy(tip, tip+128, ip);  
+	/*for( int i = 0; i < 128; i++ ) {
+		ip[i] = (32 * i) % 128;
+	}*/
   
     k3 = 0; 
     k2 = 0; 
@@ -102,7 +106,7 @@ Serpent::Serpent() {
       { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
     };
 
-    std::copy( t, t+8, sBoxDecimalTable);
+	std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
 
     std::map<std::string, std::string> dict;
     std::map<std::string, std::string> inverseDict;
@@ -438,9 +442,6 @@ int main(int argc, char** argv)
     0x00, 0x00, 0xa0, 0xa0,
     0x00, 0x00, 0x00, 0x00};
  
- unsigned char test = plaintext[1]^plaintext[2];
- 
- std::cout << "Please be a value! -----> " << static_cast<unsigned>(test) << std::endl;
  
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
