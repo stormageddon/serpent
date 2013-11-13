@@ -377,37 +377,34 @@ std::string * Serpent::SBitsliceInverse(int box, std::string words[][32]){
 
 
 
-void Serpent::encrypt( unsigned char text[]){
+void Serpent::encrypt( unsigned char text[16] ){
 
-  //insert bit-shifting here
   unsigned char t[129] = {};
-  
+  std::string state = "";
+
+  for (int i = 0; i<16; i++){
+    state.append(Bitstring(int(text[i]), 8));
+  }
+  std::cout << "State before any changes: " << state << std::endl;
+
   for (int j = 0; j<128; j++){
-    t[j] = text[ip[j]];
-    std::cout << "text at ip[j] " << text[ip[j]] << std::endl;
-    std::cout << "t[j] = " << t[j] << std::endl;
-    std::cout << "ip[j] = " << ip[j] << std::endl;
+    t[j] = state[ip[j]];
+    //    std::cout << "text at ip[j] " << state[ip[j]] << std::endl;
+    //std::cout << "t[j] = " << t[j] << std::endl;
+    //std::cout << "ip[j] = " << ip[j] << std::endl; 
   }
     
 
+  //std::string str ( reinterpret_cast<char*>(t),129 );
 
-  t[128] = '\0';
-
-  std::string str ( reinterpret_cast<char*>(t),129);
-
-  std::cout << "Here's a string " <<str << std::endl;
-
-  //  for( int i = 0; i< 31; i++ ){
-    
-
+  //  std::cout << "Here's a string " <<str << std::endl;
   
 }
 
-//}
 int main(int argc, char** argv)
 {
   int n;
-  if (argc > 1) {
+   if (argc > 1) {
     n = std::stof(argv[1]);
   } else {
     std::cerr << "Not enough arguments\n";
@@ -419,7 +416,6 @@ int main(int argc, char** argv)
   std::cout << buff << std::endl;
 
   
-
   Serpent serpent; 
   std::bitset<32> x0 (std::string("11000000000000000000000000000110"));
   std::bitset<32> x1 (std::string("11000000000000000000000000000110"));
@@ -427,7 +423,7 @@ int main(int argc, char** argv)
   std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
   //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0x0, 0x01, 0x01, 0x00, 
+ unsigned char testKey[] = {0x01, 0x01, 0x01, 0x00, 
 			     0x01, 0x00, 0x00, 0x01, 
 			     0x01, 0x01, 0x00, 0x00, 
 			     0x10, 0x10, 0x10, 0x10,
@@ -436,23 +432,22 @@ int main(int argc, char** argv)
 			     0x01, 0x01, 0x01, 0x01, 
 			     0x10, 0x10, 0x10, 0x10};
   
- unsigned char plaintext[16] = {};
+ unsigned char plaintext[16] = 
+   {0x0f, 0xb0, 0xc0, 0x0f,
+    0xa0, 0xa0, 0xa0, 0xa0,
+    0x00, 0x00, 0xa0, 0xa0,
+    0x00, 0x00, 0x00, 0x00};
  
- /*{0x00, 0x00,0x00,0x00,
-   0x00,0x00,0x00,0x00,
-   0x00,0x00,0x00,0x00,
-   0x00,0x00,0x00,0x00}; */
+ unsigned char test = plaintext[1]^plaintext[2];
  
+ std::cout << "Please be a value! -----> " << static_cast<unsigned>(test) << std::endl;
+ 
+ serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
+ serpent.setKey(testKey);
+ serpent.generateSubKeys();
+ serpent.encrypt(plaintext);
+ std::cout << "Here's some plaintext " << (unsigned int)plaintext[3] << std::endl;
 
-  
- 
-
-  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
-  serpent.setKey(testKey);
-  serpent.generateSubKeys();
-  serpent.encrypt(plaintext);
-  std::cout << "Here's some plaintext " << plaintext[3] << std::endl;
-  std::cout << "Here's some testKey " << testKey[3] << std::endl;
   return 0;
 }
 

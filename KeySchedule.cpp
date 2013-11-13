@@ -35,6 +35,7 @@ public:
        24, 56, 88, 120, 25, 57, 89, 121, 26, 58, 90, 122, 27, 59, 91, 123,
        28, 60, 92, 124, 29, 61, 93, 125, 30, 62, 94, 126, 31, 63, 95, 127};
     
+    tip[127] = 127;
     std::copy(tip, tip+128, ip);  
     /*for (int i = 0; i < 127; i++ ){
       ip[i] = (32*i) % 127;
@@ -75,6 +76,7 @@ public:
    * Sets the key used to generate the values of subKeys[].
    * Byte array of size 16, 24, or 32
    */
+  
   void setKey (unsigned char userKey[]){
     
     if (size == -1){
@@ -314,7 +316,7 @@ public:
 
 int main(){
   
-  unsigned char testKey[] = {0x0, 0x01, 0x01, 0x00, 
+  /*  unsigned char testKey[] = {0x0, 0x01, 0x01, 0x00, 
 			     0x01, 0x00, 0x00, 0x01, 
 			     0x01, 0x01, 0x00, 0x00, 
 			     0x10, 0x10, 0x10, 0x10,
@@ -322,15 +324,17 @@ int main(){
 			     0x01, 0x01, 0x01, 0x01, 
 			     0x01, 0x01, 0x01, 0x01, 
 			     0x10, 0x10, 0x10, 0x10};
-  
+  */
+
+  unsigned char testKey[] = {
     
   KeySchedule *ks = new KeySchedule();
-  
+  ks->Setup();
   
   ks->setKeySize(sizeof(testKey)/sizeof(*testKey));
   ks->setKey(testKey);
   ks->generateSubKeys();
-  std::cout << "Something from testkey : " << testKey[5] << std::endl;
+  std::cout << "Something from testkey : "  << testKey[5] << std::endl;
   return 0;
 };
 
