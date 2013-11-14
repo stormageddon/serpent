@@ -175,11 +175,13 @@ void Serpent::setKey (unsigned char userKey[]){
   }
 
   if (size == 16){
-    k3 = (unsigned long long int)1<< 63;
+    k1 = 1;
+    //k3 = (unsigned long long int)1<< 63;
             
-    for (int i = 0; i<8; i++){
-      k1 ^= ((long long int)userKey[i] << (56 - (8*i)));
-      k0 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
+    //    for (int i = 0; i<8; i++){
+    // k2 ^= ((long long int)(userKey[i])
+      //k1 ^= ((long long int)userKey[i] << (56 - (8*i)));
+      //k0 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
     }
   }
     
@@ -383,7 +385,7 @@ std::string * Serpent::SBitsliceInverse(int box, std::string words[][32]){
 
 void Serpent::encrypt( unsigned char text[16] ){
 
-  unsigned char t[129] = {};
+  std::string t;
   std::string state = "";
 
   for (int i = 0; i<16; i++){
@@ -393,15 +395,26 @@ void Serpent::encrypt( unsigned char text[16] ){
 
   for (int j = 0; j<128; j++){
     t[j] = state[ip[j]];
-    //    std::cout << "text at ip[j] " << state[ip[j]] << std::endl;
-    //std::cout << "t[j] = " << t[j] << std::endl;
+    // std::cout << "text at ip[j] " << state[ip[j]] << std::endl;
+    // std::cout << "t[" << j << "] = " << t[j] << std::endl;
     //std::cout << "ip[j] = " << ip[j] << std::endl; 
   }
     
+  for ( int round = 0; round < 31; round ++ ){
+    
+    for( int index = 0; index<128; index++ )
+      t[index] ^= subKeys[round][index];
+  
+    t = SHat( round, t );
 
-  //std::string str ( reinterpret_cast<char*>(t),129 );
-
-  //  std::cout << "Here's a string " <<str << std::endl;
+    std::bitset<32> state3 (t.substr(0,31));
+    std::bitset<32> state2 (t.substr(32,31));
+    std::bitset<32> state1 (t.substr(64,31));
+    std::bitset<32> state0 (t.substr(96,31));
+    
+    
+  }
+  
   
 }
 
@@ -437,17 +450,25 @@ int main(int argc, char** argv)
 			     0x10, 0x10, 0x10, 0x10};
   
  unsigned char plaintext[16] = 
-   {0x0f, 0xb0, 0xc0, 0x0f,
+   {0x0f, 0xb0, 0xc0, 0x3f,
     0xa0, 0xa0, 0xa0, 0xa0,
     0x00, 0x00, 0xa0, 0xa0,
     0x00, 0x00, 0x00, 0x00};
- 
- 
+
+ std::cout << "plaintext after declaration: " << std::endl;
+
+ for (int i = 0; i<16; i++ ){
+   std::cout << serpent.Bitstring(int(plaintext[i]), 8);
+ }
+ std::cout << std::endl;
+
+ //std::cout << bitset<64>(words[i]) << std::endl;
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
  serpent.generateSubKeys();
  serpent.encrypt(plaintext);
- std::cout << "Here's some plaintext " << (unsigned int)plaintext[3] << std::endl;
+ std::cout << "Here's some plaintext " 
+	   << (unsigned int)plaintext[3] << std::endl;
 
   return 0;
 }
