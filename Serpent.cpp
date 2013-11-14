@@ -167,46 +167,146 @@ void Serpent::rotate(std::bitset<32> &b, unsigned m) {
  * Byte array of size 16, 24, or 32
  */
 void Serpent::setKey (unsigned char userKey[]){
-    
+
+  std::cout << "Key size is " << keySize() << std::endl;    
   if (size == -1){
     std::cout << "Keysize has not been set."<< std::endl;
     std::cout << "Call setKeySize(int n) with n = 128, 192, 256"<< std::endl;
     std::cout << "Key has not been set." << std::endl;
   }
-
+  //Idea for optimization: Rather than masking each bit, create a lookup table
+  //for all reflected bytes and assign accordingly
+ 
   if (size == 16){
+    k0 = 0;
+    std::cout << k0 << std::endl;
+    //k0 already equals 0;
     k1 = 1;
-    //k3 = (unsigned long long int)1<< 63;
-            
+   
+    for ( int i = 0; i < 8; i++ ){
+      k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
+      k3 ^= ((long long int)((userKey[i] >> 6) && 1) << (8*i + 1));
+      k3 ^= ((long long int)((userKey[i] >> 5) && 1) << (8*i + 2));
+      k3 ^= ((long long int)((userKey[i] >> 4) && 1) << (8*i + 3));
+      k3 ^= ((long long int)((userKey[i] >> 3) && 1) << (8*i + 4));
+      k3 ^= ((long long int)((userKey[i] >> 2) && 1) << (8*i + 5));
+      k3 ^= ((long long int)((userKey[i] >> 1) && 1) << (8*i + 6));
+      k3 ^= ((long long int)((userKey[i] && 1) << (8*i + 7)));
+      
+      k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
+      k2 ^= ((long long int)((userKey[i+8] >> 6) && 1) << (8*i + 1));
+      k2 ^= ((long long int)((userKey[i+8] >> 5) && 1) << (8*i + 2));
+      k2 ^= ((long long int)((userKey[i+8] >> 4) && 1) << (8*i + 3));
+      k2 ^= ((long long int)((userKey[i+8] >> 3) && 1) << (8*i + 4));
+      k2 ^= ((long long int)((userKey[i+8] >> 2) && 1) << (8*i + 5));
+      k2 ^= ((long long int)((userKey[i+8] >> 1) && 1) << (8*i + 6));
+      k2 ^= ((long long int)((userKey[i+8] && 1) << (8*i + 7)));
+      
     //    for (int i = 0; i<8; i++){
     // k2 ^= ((long long int)(userKey[i])
       //k1 ^= ((long long int)userKey[i] << (56 - (8*i)));
       //k0 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
     }
   }
-    
+
   else if (size == 24){
-    k3 = (unsigned long long int)1<<63;
+    //k3 = (unsigned long long int)1<<63;
+    
+    k0 = 1;
+    for ( int i = 0; i < 8; i++ ){
+      k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
+      k3 ^= (((long long int)(userKey[i] >> 6) && 1) << (8*i + 1));
+      k3 ^= (((long long int)(userKey[i] >> 5) && 1) << (8*i + 2));
+      k3 ^= (((long long int)(userKey[i] >> 4) && 1) << (8*i + 3));
+      k3 ^= (((long long int)(userKey[i] >> 3) && 1) << (8*i + 4));
+      k3 ^= (((long long int)(userKey[i] >> 2) && 1) << (8*i + 5));
+      k3 ^= (((long long int)(userKey[i] >> 1) && 1) << (8*i + 6));
+      k3 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
       
-    for (int i = 0; i<8; i++){
+      k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
+      k2 ^= (((long long int)(userKey[i+8] >> 6) && 1) << (8*i + 1));
+      k2 ^= (((long long int)(userKey[i+8] >> 5) && 1) << (8*i + 2));
+      k2 ^= (((long long int)(userKey[i+8] >> 4) && 1) << (8*i + 3));
+      k2 ^= (((long long int)(userKey[i+8] >> 3) && 1) << (8*i + 4));
+      k2 ^= (((long long int)(userKey[i+8] >> 2) && 1) << (8*i + 5));
+      k2 ^= (((long long int)(userKey[i+8] >> 1) && 1) << (8*i + 6));
+      k2 ^= (((long long int)(userKey[i+8] && 1) << (8*i + 7)));
+
+      k1 ^= ((long long int)(userKey[i+16] >> 7) << (8*i));
+      k1 ^= (((long long int)(userKey[i+16] >> 6) && 1) << (8*i + 1));
+      k1 ^= (((long long int)(userKey[i+16] >> 5) && 1) << (8*i + 2));
+      k1 ^= (((long long int)(userKey[i+16] >> 4) && 1) << (8*i + 3));
+      k1 ^= (((long long int)(userKey[i+16] >> 3) && 1) << (8*i + 4));
+      k1 ^= (((long long int)(userKey[i+16] >> 2) && 1) << (8*i + 5));
+      k1 ^= (((long long int)(userKey[i+16] >> 1) && 1) << (8*i + 6));
+      k1 ^= (((long long int)(userKey[i+16] && 1) << (8*i + 7)));
+    }
+    
+    /*for (int i = 0; i<8; i++){
       k2 ^= ((long long int)userKey[i] << (56 - (8*i)));
       k1 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
       k0 ^= ((long long int)userKey[i+16] << (56 - (8*i)));
     }
-  }
-    
+    }*/
+  } 
   else if(size == 32){
+    
     for (int i = 0; i<8; i++){
+
+      k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
+      k3 ^= ((long long int)(((userKey[i] >> 6) && 1) << (8*i + 1)));
+      k3 ^= ((long long int)(((userKey[i] >> 5) && 1) << (8*i + 2)));
+      k3 ^= ((long long int)(((userKey[i] >> 4) && 1) << (8*i + 3)));
+      k3 ^= ((((long long int)(userKey[i] >> 3) && 1) << (8*i + 4)));
+      k3 ^= ((((long long int)(userKey[i] >> 2) && 1) << (8*i + 5)));
+      k3 ^= ((((long long int)(userKey[i] >> 1) && 1) << (8*i + 6)));
+      k3 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
+      
+      k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
+      k2 ^= (((long long int)(userKey[i+8] >> 6) && 1) << (8*i + 1));
+      k2 ^= (((long long int)(userKey[i+8] >> 5) && 1) << (8*i + 2));
+      k2 ^= (((long long int)(userKey[i+8] >> 4) && 1) << (8*i + 3));
+      k2 ^= (((long long int)(userKey[i+8] >> 3) && 1) << (8*i + 4));
+      k2 ^= (((long long int)(userKey[i+8] >> 2) && 1) << (8*i + 5));
+      k2 ^= (((long long int)(userKey[i+8] >> 1) && 1) << (8*i + 6));
+      k2 ^= (((long long int)(userKey[i+8] && 1) << (8*i + 7)));
+
+      k1 ^= ((long long int)(userKey[i+16] >> 7) << (8*i));
+      k1 ^= (((long long int)(userKey[i+16] >> 6) && 1) << (8*i + 1));
+      k1 ^= (((long long int)(userKey[i+16] >> 5) && 1) << (8*i + 2));
+      k1 ^= (((long long int)(userKey[i+16] >> 4) && 1) << (8*i + 3));
+      k1 ^= (((long long int)(userKey[i+16] >> 3) && 1) << (8*i + 4));
+      k1 ^= (((long long int)(userKey[i+16] >> 2) && 1) << (8*i + 5));
+      k1 ^= (((long long int)(userKey[i+16] >> 1) && 1) << (8*i + 6));
+      k1 ^= (((long long int)(userKey[i+16] && 1) << (8*i + 7)));
+
+      k0 ^= (((long long int)(userKey[i+24] >> 7) << (8*i)));
+      k0 ^= (((long long int)(userKey[i+24] >> 6) && 1) << (8*i + 1));
+      k0 ^= (((long long int)(userKey[i+24] >> 5) && 1) << (8*i + 2));
+      k0 ^= (((long long int)(userKey[i+24] >> 4) && 1) << (8*i + 3));
+      k0 ^= (((long long int)(userKey[i+24] >> 3) && 1) << (8*i + 4));
+      k0 ^= (((long long int)(userKey[i+24] >> 2) && 1) << (8*i + 5));
+      k0 ^= (((long long int)(userKey[i+24] >> 1) && 1) << (8*i + 6));
+      k0 ^= (((long long int)(userKey[i+24] && 1) << (8*i + 7)));
+    }
+  }
+    /*    for (int i = 0; i<8; i++){
       k3 ^= ((long long int)userKey[i] << (56-(8*i)));
       k2 ^= ((long long int)userKey[i+8] << (56-(8*i)));
       k1 ^= ((long long int)userKey[i+16] << (56-(8*i)));
       k0 ^= ((long long int)userKey[i+24] << (56-(8*i)));
     }
   }
+    */
   else{
     std::cout << "Key has not been set." << std::endl;
     std::cout << "SERPENT takes a 128, 192, or 256-bit key." << std::endl;
   }
+  std::cout << "k0 - k3" << std::endl;
+  std::cout << std::bitset<64>(k0);
+  std::cout << std::bitset<64>(k1);
+  std::cout << std::bitset<64>(k2);
+  std::cout << std::bitset<64>(k3) << std::endl;
 
   words[0] = (k3 >> 32);
   words[1] = (k3 & (unsigned long int)4294967295);
@@ -218,7 +318,7 @@ void Serpent::setKey (unsigned char userKey[]){
   words[7] = (k0 & (unsigned long int)4294957295);
   
 }
-  
+
   
 /**
  * Generates the 33 128-subkeys to be used for encryption
@@ -440,25 +540,26 @@ int main(int argc, char** argv)
   std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
   //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0x01, 0x01, 0x01, 0x00, 
-			     0x01, 0x00, 0x00, 0x01, 
-			     0x01, 0x01, 0x00, 0x00, 
-			     0x10, 0x10, 0x10, 0x10,
-			     0x10, 0x10, 0x10, 0x10, 
+ unsigned char testKey[] = {0x01, 0x01, 0x01, 0x01, 
 			     0x01, 0x01, 0x01, 0x01, 
 			     0x01, 0x01, 0x01, 0x01, 
-			     0x10, 0x10, 0x10, 0x10};
-  
+			     0x01, 0x01, 0x01, 0x01,
+			     0x01, 0x01, 0x01, 0x01, 
+			     0x01, 0x01, 0x01, 0x01, 
+			     0x01, 0x01, 0x01, 0x01, 
+			     0x01, 0x01, 0x01, 0x01};
+ //27 0s in testKey
+
  unsigned char plaintext[16] = 
    {0x0f, 0xb0, 0xc0, 0x3f,
     0xa0, 0xa0, 0xa0, 0xa0,
     0x00, 0x00, 0xa0, 0xa0,
     0x00, 0x00, 0x00, 0x00};
 
- std::cout << "plaintext after declaration: " << std::endl;
+ std::cout << "testkey after declaration: " << std::endl;
 
- for (int i = 0; i<16; i++ ){
-   std::cout << serpent.Bitstring(int(plaintext[i]), 8);
+ for (int i = 0; i<32; i++ ){
+   std::cout << serpent.Bitstring(int(testKey[i]), 8);
  }
  std::cout << std::endl;
 
@@ -466,9 +567,9 @@ int main(int argc, char** argv)
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
  serpent.generateSubKeys();
- serpent.encrypt(plaintext);
- std::cout << "Here's some plaintext " 
-	   << (unsigned int)plaintext[3] << std::endl;
+ // serpent.encrypt(plaintext);
+ //std::cout << "Here's some plaintext " 
+ //  << (unsigned int)plaintext[3] << std::endl;
 
   return 0;
 }
