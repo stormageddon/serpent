@@ -72,23 +72,23 @@ public:                    // begin public section
 //class Serpent {
 
 Serpent::Serpent() { 
-//The initial permutation. To be applied to the plaintext and keys.
-    int tip[128] = 
-      {0, 32, 64, 96, 1, 33, 65, 97, 2, 34, 66, 98, 3, 35, 67, 99,
-       4, 36, 68, 100, 5, 37, 69, 101, 6, 38, 70, 102, 7, 39, 71, 103,
-       8, 40, 72, 104, 9, 41, 73, 105, 10, 42, 74, 106, 11, 43, 75, 107,
-       12, 44, 76, 108, 13, 45, 77, 109, 14, 46, 78, 110, 15, 47, 79, 111,
-       16, 48, 80, 112, 17, 49, 81, 113, 18, 50, 82, 114, 19, 51, 83, 115,
-       20, 52, 84, 116, 21, 53, 85, 117, 22, 54, 86, 118, 23, 55, 87, 119,
-       24, 56, 88, 120, 25, 57, 89, 121, 26, 58, 90, 122, 27, 59, 91, 123,
-       28, 60, 92, 124, 29, 61, 93, 125, 30, 62, 94, 126, 31, 63, 95, 127};
-
-    std::copy(tip, tip+128, ip);  
-	/*for( int i = 0; i < 128; i++ ) {
-		ip[i] = (32 * i) % 128;
-	}*/
+  //The initial permutation. To be applied to the plaintext and keys.
+  int tip[128] = 
+    {0, 32, 64, 96, 1, 33, 65, 97, 2, 34, 66, 98, 3, 35, 67, 99,
+     4, 36, 68, 100, 5, 37, 69, 101, 6, 38, 70, 102, 7, 39, 71, 103,
+     8, 40, 72, 104, 9, 41, 73, 105, 10, 42, 74, 106, 11, 43, 75, 107,
+     12, 44, 76, 108, 13, 45, 77, 109, 14, 46, 78, 110, 15, 47, 79, 111,
+     16, 48, 80, 112, 17, 49, 81, 113, 18, 50, 82, 114, 19, 51, 83, 115,
+     20, 52, 84, 116, 21, 53, 85, 117, 22, 54, 86, 118, 23, 55, 87, 119,
+     24, 56, 88, 120, 25, 57, 89, 121, 26, 58, 90, 122, 27, 59, 91, 123,
+     28, 60, 92, 124, 29, 61, 93, 125, 30, 62, 94, 126, 31, 63, 95, 127};
   
-    k3 = 0; 
+  std::copy(tip, tip+128, ip);  
+  /*for( int i = 0; i < 128; i++ ) {
+    ip[i] = (32 * i) % 128;
+    }*/
+  
+  k3 = 0; 
     k2 = 0; 
     k1 = 0;
     k0 = 0;  
@@ -106,8 +106,8 @@ Serpent::Serpent() {
       { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
     };
 
-	std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
-
+    std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
+    
     std::map<std::string, std::string> dict;
     std::map<std::string, std::string> inverseDict;
     std::string index;
@@ -178,29 +178,29 @@ void Serpent::setKey (unsigned char userKey[]){
   //for all reflected bytes and assign accordingly
  
   if (size == 16){
-    k0 = 0;
-    std::cout << k0 << std::endl;
+
     //k0 already equals 0;
     k1 = 1;
-   
+    
     for ( int i = 0; i < 8; i++ ){
       k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
-      k3 ^= ((long long int)((userKey[i] >> 6) && 1) << (8*i + 1));
-      k3 ^= ((long long int)((userKey[i] >> 5) && 1) << (8*i + 2));
-      k3 ^= ((long long int)((userKey[i] >> 4) && 1) << (8*i + 3));
-      k3 ^= ((long long int)((userKey[i] >> 3) && 1) << (8*i + 4));
-      k3 ^= ((long long int)((userKey[i] >> 2) && 1) << (8*i + 5));
-      k3 ^= ((long long int)((userKey[i] >> 1) && 1) << (8*i + 6));
-      k3 ^= ((long long int)((userKey[i] && 1) << (8*i + 7)));
+      k3 ^= (((long long int)(userKey[i] >> 6) & 1) << (8*i + 1));
+      k3 ^= (((long long int)(userKey[i] >> 5) & 1) << (8*i + 2));
+      k3 ^= (((long long int)(userKey[i] >> 4) & 1) << (8*i + 3));
+      k3 ^= (((long long int)(userKey[i] >> 3) & 1) << (8*i + 4));
+      k3 ^= (((long long int)(userKey[i] >> 2) & 1) << (8*i + 5));
+      k3 ^= (((long long int)(userKey[i] >> 1) & 1) << (8*i + 6));
+      k3 ^= (((long long int)(userKey[i] & 1) << (8*i + 7)));
+
       
       k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
-      k2 ^= ((long long int)((userKey[i+8] >> 6) && 1) << (8*i + 1));
-      k2 ^= ((long long int)((userKey[i+8] >> 5) && 1) << (8*i + 2));
-      k2 ^= ((long long int)((userKey[i+8] >> 4) && 1) << (8*i + 3));
-      k2 ^= ((long long int)((userKey[i+8] >> 3) && 1) << (8*i + 4));
-      k2 ^= ((long long int)((userKey[i+8] >> 2) && 1) << (8*i + 5));
-      k2 ^= ((long long int)((userKey[i+8] >> 1) && 1) << (8*i + 6));
-      k2 ^= ((long long int)((userKey[i+8] && 1) << (8*i + 7)));
+      k2 ^= (((long long int)(userKey[i+8] >> 6) & 1) << (8*i + 1));
+      k2 ^= (((long long int)(userKey[i+8] >> 5) & 1) << (8*i + 2));
+      k2 ^= (((long long int)(userKey[i+8] >> 4) & 1) << (8*i + 3));
+      k2 ^= (((long long int)(userKey[i+8] >> 3) & 1) << (8*i + 4));
+      k2 ^= (((long long int)(userKey[i+8] >> 2) & 1) << (8*i + 5));
+      k2 ^= (((long long int)(userKey[i+8] >> 1) & 1) << (8*i + 6));
+      k2 ^= (((long long int)(userKey[i+8] & 1) << (8*i + 7)));
       
     //    for (int i = 0; i<8; i++){
     // k2 ^= ((long long int)(userKey[i])
@@ -215,30 +215,30 @@ void Serpent::setKey (unsigned char userKey[]){
     k0 = 1;
     for ( int i = 0; i < 8; i++ ){
       k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
-      k3 ^= (((long long int)(userKey[i] >> 6) && 1) << (8*i + 1));
-      k3 ^= (((long long int)(userKey[i] >> 5) && 1) << (8*i + 2));
-      k3 ^= (((long long int)(userKey[i] >> 4) && 1) << (8*i + 3));
-      k3 ^= (((long long int)(userKey[i] >> 3) && 1) << (8*i + 4));
-      k3 ^= (((long long int)(userKey[i] >> 2) && 1) << (8*i + 5));
-      k3 ^= (((long long int)(userKey[i] >> 1) && 1) << (8*i + 6));
+      k3 ^= (((long long int)(userKey[i] >> 6) & 1) << (8*i + 1));
+      k3 ^= (((long long int)(userKey[i] >> 5) & 1) << (8*i + 2));
+      k3 ^= (((long long int)(userKey[i] >> 4) & 1) << (8*i + 3));
+      k3 ^= (((long long int)(userKey[i] >> 3) & 1) << (8*i + 4));
+      k3 ^= (((long long int)(userKey[i] >> 2) & 1) << (8*i + 5));
+      k3 ^= (((long long int)(userKey[i] >> 1) & 1) << (8*i + 6));
       k3 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
       
       k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
-      k2 ^= (((long long int)(userKey[i+8] >> 6) && 1) << (8*i + 1));
-      k2 ^= (((long long int)(userKey[i+8] >> 5) && 1) << (8*i + 2));
-      k2 ^= (((long long int)(userKey[i+8] >> 4) && 1) << (8*i + 3));
-      k2 ^= (((long long int)(userKey[i+8] >> 3) && 1) << (8*i + 4));
-      k2 ^= (((long long int)(userKey[i+8] >> 2) && 1) << (8*i + 5));
-      k2 ^= (((long long int)(userKey[i+8] >> 1) && 1) << (8*i + 6));
+      k2 ^= (((long long int)(userKey[i+8] >> 6) & 1) << (8*i + 1));
+      k2 ^= (((long long int)(userKey[i+8] >> 5) & 1) << (8*i + 2));
+      k2 ^= (((long long int)(userKey[i+8] >> 4) & 1) << (8*i + 3));
+      k2 ^= (((long long int)(userKey[i+8] >> 3) & 1) << (8*i + 4));
+      k2 ^= (((long long int)(userKey[i+8] >> 2) & 1) << (8*i + 5));
+      k2 ^= (((long long int)(userKey[i+8] >> 1) & 1) << (8*i + 6));
       k2 ^= (((long long int)(userKey[i+8] && 1) << (8*i + 7)));
 
       k1 ^= ((long long int)(userKey[i+16] >> 7) << (8*i));
-      k1 ^= (((long long int)(userKey[i+16] >> 6) && 1) << (8*i + 1));
-      k1 ^= (((long long int)(userKey[i+16] >> 5) && 1) << (8*i + 2));
-      k1 ^= (((long long int)(userKey[i+16] >> 4) && 1) << (8*i + 3));
-      k1 ^= (((long long int)(userKey[i+16] >> 3) && 1) << (8*i + 4));
-      k1 ^= (((long long int)(userKey[i+16] >> 2) && 1) << (8*i + 5));
-      k1 ^= (((long long int)(userKey[i+16] >> 1) && 1) << (8*i + 6));
+      k1 ^= (((long long int)(userKey[i+16] >> 6) & 1) << (8*i + 1));
+      k1 ^= (((long long int)(userKey[i+16] >> 5) & 1) << (8*i + 2));
+      k1 ^= (((long long int)(userKey[i+16] >> 4) & 1) << (8*i + 3));
+      k1 ^= (((long long int)(userKey[i+16] >> 3) & 1) << (8*i + 4));
+      k1 ^= (((long long int)(userKey[i+16] >> 2) & 1) << (8*i + 5));
+      k1 ^= (((long long int)(userKey[i+16] >> 1) & 1) << (8*i + 6));
       k1 ^= (((long long int)(userKey[i+16] && 1) << (8*i + 7)));
     }
     
@@ -254,55 +254,105 @@ void Serpent::setKey (unsigned char userKey[]){
     for (int i = 0; i<8; i++){
 
       k3 ^= ((long long int)(userKey[i] >> 7) << (8*i));
-      k3 ^= ((long long int)(((userKey[i] >> 6) && 1) << (8*i + 1)));
-      k3 ^= ((long long int)(((userKey[i] >> 5) && 1) << (8*i + 2)));
-      k3 ^= ((long long int)(((userKey[i] >> 4) && 1) << (8*i + 3)));
-      k3 ^= ((((long long int)(userKey[i] >> 3) && 1) << (8*i + 4)));
-      k3 ^= ((((long long int)(userKey[i] >> 2) && 1) << (8*i + 5)));
-      k3 ^= ((((long long int)(userKey[i] >> 1) && 1) << (8*i + 6)));
+      k3 ^= ((((long long int)(userKey[i] >> 6) & 1) << (8*i + 1)));
+      k3 ^= ((((long long int)(userKey[i] >> 5) & 1) << (8*i + 2)));
+      k3 ^= ((((long long int)(userKey[i] >> 4) & 1) << (8*i + 3)));
+      k3 ^= ((((long long int)(userKey[i] >> 3) & 1) << (8*i + 4)));
+      k3 ^= ((((long long int)(userKey[i] >> 2) & 1) << (8*i + 5)));
+      k3 ^= ((((long long int)(userKey[i] >> 1) & 1) << (8*i + 6)));
       k3 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
+            
+
       
       k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
-      k2 ^= (((long long int)(userKey[i+8] >> 6) && 1) << (8*i + 1));
-      k2 ^= (((long long int)(userKey[i+8] >> 5) && 1) << (8*i + 2));
-      k2 ^= (((long long int)(userKey[i+8] >> 4) && 1) << (8*i + 3));
-      k2 ^= (((long long int)(userKey[i+8] >> 3) && 1) << (8*i + 4));
-      k2 ^= (((long long int)(userKey[i+8] >> 2) && 1) << (8*i + 5));
-      k2 ^= (((long long int)(userKey[i+8] >> 1) && 1) << (8*i + 6));
-      k2 ^= (((long long int)(userKey[i+8] && 1) << (8*i + 7)));
+      k2 ^= (((long long int)(userKey[i+8] >> 6) & 1) << (8*i + 1));
+      k2 ^= (((long long int)(userKey[i+8] >> 5) & 1) << (8*i + 2));
+      k2 ^= (((long long int)(userKey[i+8] >> 4) & 1) << (8*i + 3));
+      k2 ^= (((long long int)(userKey[i+8] >> 3) & 1) << (8*i + 4));
+      k2 ^= (((long long int)(userKey[i+8] >> 2) & 1) << (8*i + 5));
+      k2 ^= (((long long int)(userKey[i+8] >> 1) & 1) << (8*i + 6));
+      k2 ^= (((long long int)(userKey[i+8] & 1) << (8*i + 7)));
 
       k1 ^= ((long long int)(userKey[i+16] >> 7) << (8*i));
-      k1 ^= (((long long int)(userKey[i+16] >> 6) && 1) << (8*i + 1));
-      k1 ^= (((long long int)(userKey[i+16] >> 5) && 1) << (8*i + 2));
-      k1 ^= (((long long int)(userKey[i+16] >> 4) && 1) << (8*i + 3));
-      k1 ^= (((long long int)(userKey[i+16] >> 3) && 1) << (8*i + 4));
-      k1 ^= (((long long int)(userKey[i+16] >> 2) && 1) << (8*i + 5));
-      k1 ^= (((long long int)(userKey[i+16] >> 1) && 1) << (8*i + 6));
-      k1 ^= (((long long int)(userKey[i+16] && 1) << (8*i + 7)));
+      k1 ^= (((long long int)(userKey[i+16] >> 6) & 1) << (8*i + 1));
+      k1 ^= (((long long int)(userKey[i+16] >> 5) & 1) << (8*i + 2));
+      k1 ^= (((long long int)(userKey[i+16] >> 4) & 1) << (8*i + 3));
+      k1 ^= (((long long int)(userKey[i+16] >> 3) & 1) << (8*i + 4));
+      k1 ^= (((long long int)(userKey[i+16] >> 2) & 1) << (8*i + 5));
+      k1 ^= (((long long int)(userKey[i+16] >> 1) & 1) << (8*i + 6));
+      k1 ^= (((long long int)(userKey[i+16] & 1) << (8*i + 7)));
 
       k0 ^= (((long long int)(userKey[i+24] >> 7) << (8*i)));
-      k0 ^= (((long long int)(userKey[i+24] >> 6) && 1) << (8*i + 1));
-      k0 ^= (((long long int)(userKey[i+24] >> 5) && 1) << (8*i + 2));
-      k0 ^= (((long long int)(userKey[i+24] >> 4) && 1) << (8*i + 3));
-      k0 ^= (((long long int)(userKey[i+24] >> 3) && 1) << (8*i + 4));
-      k0 ^= (((long long int)(userKey[i+24] >> 2) && 1) << (8*i + 5));
-      k0 ^= (((long long int)(userKey[i+24] >> 1) && 1) << (8*i + 6));
+      k0 ^= (((long long int)(userKey[i+24] >> 6) & 1) << (8*i + 1));
+      k0 ^= (((long long int)(userKey[i+24] >> 5) & 1) << (8*i + 2));
+      k0 ^= (((long long int)(userKey[i+24] >> 4) & 1) << (8*i + 3));
+      k0 ^= (((long long int)(userKey[i+24] >> 3) & 1) << (8*i + 4));
+      k0 ^= (((long long int)(userKey[i+24] >> 2) & 1) << (8*i + 5));
+      k0 ^= (((long long int)(userKey[i+24] >> 1) & 1) << (8*i + 6));
       k0 ^= (((long long int)(userKey[i+24] && 1) << (8*i + 7)));
     }
   }
-    /*    for (int i = 0; i<8; i++){
-      k3 ^= ((long long int)userKey[i] << (56-(8*i)));
-      k2 ^= ((long long int)userKey[i+8] << (56-(8*i)));
-      k1 ^= ((long long int)userKey[i+16] << (56-(8*i)));
-      k0 ^= ((long long int)userKey[i+24] << (56-(8*i)));
+    /*
+    for (int i = 0; i<8; i++){
+      k0 ^= ((long long int)userKey[i] << (56-(8*i)));
+      k1 ^= ((long long int)userKey[i+8] << (56-(8*i)));
+      k2 ^= ((long long int)userKey[i+16] << (56-(8*i)));
+      k3 ^= ((long long int)userKey[i+24] << (56-(8*i)));
     }
-  }
+      std::cout << "k0-k4 before swap" << std::endl;
+      std::cout << std::bitset<64>(k0) ;
+      std::cout << std::bitset<64>(k1);
+      std::cout << std::bitset<64>(k2);
+      std::cout << std::bitset<64>(k3);
+      
+      k3 = (((k3 & 0xaaaaaaaaaaaaaaaa) >> 1) | 
+	    ((k3 & 0x5555555555555555) << 1));
+      k3 = (((k3 & 0xcccccccccccccccc) >> 2) | 
+	    ((k3 & 0x3333333333333333) << 2));
+      k3 = (((k3 & 0xf0f0f0f0f0f0f0f0) >> 4) | 
+	    ((k3 & 0x0f0f0f0f0f0f0f0f) << 4));
+      k3 = (((k3 & 0xff00ff00ff00ff00) >> 8) | 
+	    ((k3 & 0x00ff00ff00ff00ff) << 8));
+
+
+      k2 = (((k2 & 0xaaaaaaaaaaaaaaaa) >> 1) | 
+	    ((k2 & 0x5555555555555555) << 1));
+      k2 = (((k2 & 0xcccccccccccccccc) >> 2) | 
+	    ((k2 & 0x3333333333333333) << 2));
+      k2 = (((k2 & 0xf0f0f0f0f0f0f0f0) >> 4) | 
+	    ((k2 & 0x0f0f0f0f0f0f0f0f) << 4));
+      k2 = (((k2 & 0xff00ff00ff00ff00) >> 8) | 
+	    ((k2 & 0x00ff00ff00ff00ff) << 8));
+      
+      k1 = (((k1 & 0xaaaaaaaaaaaaaaaa) >> 1) | 
+	    ((k1 & 0x5555555555555555) << 1));
+      k1 = (((k1 & 0xcccccccccccccccc) >> 2) | 
+	    ((k1 & 0x3333333333333333) << 2));
+      k1 = (((k1 & 0xf0f0f0f0f0f0f0f0) >> 4) | 
+	    ((k1 & 0x0f0f0f0f0f0f0f0f) << 4));
+      k1 = (((k1 & 0xff00ff00ff00ff00) >> 8) | 
+	    ((k1 & 0x00ff00ff00ff00ff) << 8));
+     
+      k0 = (((k0 & 0xaaaaaaaaaaaaaaaa) >> 1) | 
+	    ((k0 & 0x5555555555555555) << 1));
+      k0 = (((k0 & 0xcccccccccccccccc) >> 2) | 
+	    ((k0 & 0x3333333333333333) << 2));
+      k0 = (((k0 & 0xf0f0f0f0f0f0f0f0) >> 4) | 
+	    ((k0 & 0x0f0f0f0f0f0f0f0f) << 4));
+      k0 = (((k0 & 0xff00ff00ff00ff00) >> 8) | 
+	    ((k0 & 0x00ff00ff00ff00ff) << 8));
+      
+      
     */
+      
+    
+  
+  
   else{
     std::cout << "Key has not been set." << std::endl;
     std::cout << "SERPENT takes a 128, 192, or 256-bit key." << std::endl;
   }
-  std::cout << "k0 - k3" << std::endl;
+  std::cout << "k0 - k3 new method" << std::endl;
   std::cout << std::bitset<64>(k0);
   std::cout << std::bitset<64>(k1);
   std::cout << std::bitset<64>(k2);
@@ -540,14 +590,14 @@ int main(int argc, char** argv)
   std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
   //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01,
-			     0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01, 
-			     0x01, 0x01, 0x01, 0x01};
+ unsigned char testKey[] = {0xa1, 0x01, 0x01, 0x01, 
+			     0xb1, 0x01, 0x01, 0x01, 
+			     0xc1, 0x01, 0x01, 0x01, 
+			    0xd1, 0x01, 0x01, 0x01,
+			      0xe1, 0x01, 0x01, 0x01, 
+			    0xf1, 0x01, 0x01, 0x01};
+			    //   0x01, 0x01, 0x01, 0x01, 
+ //			     0xa1, 0x01, 0x01, 0x01};
  //27 0s in testKey
 
  unsigned char plaintext[16] = 
@@ -558,8 +608,11 @@ int main(int argc, char** argv)
 
  std::cout << "testkey after declaration: " << std::endl;
 
- for (int i = 0; i<32; i++ ){
+ for (int i = 0; i<24; i++ ){
    std::cout << serpent.Bitstring(int(testKey[i]), 8);
+   if ((i%4 == 0) && (!i==0)){
+   std::cout << std::endl;
+   }
  }
  std::cout << std::endl;
 
