@@ -12,6 +12,7 @@ class Serpent
 private:
   
   int ip[128];
+  int fp[128];
   int size;
   unsigned long long int k0;
   unsigned long long int k1;
@@ -31,7 +32,7 @@ public:                    // begin public section
   
   Serpent();
   
-  void linearTransform(std::bitset<32> x0, std::bitset<32> x1, std::bitset<32> x2, std::bitset<32> x3);
+  void linearTransform(std::bitset<32> &x0, std::bitset<32> &x1, std::bitset<32> &x2, std::bitset<32> &x3);
   
   void shiftRight(unsigned char *ar, int size, int shift);
   
@@ -87,6 +88,19 @@ Serpent::Serpent() {
   /*for( int i = 0; i < 128; i++ ) {
     ip[i] = (32 * i) % 128;
     }*/
+
+   int tfp[128] = 
+     {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60,
+      64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 103, 108, 112, 116, 120, 124,
+      1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 
+      65, 69, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113, 117, 121, 125,
+      2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 
+      66, 70, 74, 78, 82, 86, 90, 94, 98, 102, 106, 110, 114, 118, 122, 126,
+      3, 7, 11, 15, 19, 23, 27, 31, 35, 39, 43, 47, 51, 55, 59, 63,
+      67, 71, 75, 79, 83, 87, 91, 95, 99, 103, 107, 111, 115, 119, 123, 127};
+
+  
+  std::copy(tfp, tfp+128, fp);  
   
   k3 = 0; 
     k2 = 0; 
@@ -128,14 +142,16 @@ Serpent::Serpent() {
     }
 }
 
-void Serpent::linearTransform(std::bitset<32> x0, std::bitset<32> x1, std::bitset<32> x2, std::bitset<32> x3) {
-  std::cout << x0 << std::endl;
+void Serpent::linearTransform(std::bitset<32> &x0, std::bitset<32> &x1, std::bitset<32> &x2, std::bitset<32> &x3) {
+  //std::cout << x0 << std::endl;
   //std::cout << x1 << std::endl;
   //std::cout << x2 << std::endl;
   //std::cout << x3 << std::endl;
+  
+  
   rotate(x0,13);
-  std::cout << x0 << std::endl;
- 
+  //std::cout << x0 << std::endl;
+  
   rotate(x2,3);
   x1 = x1^x0^x2;
   x0 <<= 3;
@@ -159,8 +175,8 @@ void Serpent::linearTransform(std::bitset<32> x0, std::bitset<32> x1, std::bitse
 
 // Rotates to the left
 void Serpent::rotate(std::bitset<32> &b, unsigned m) {
-  b = b << m | b >> (32-m);
-}
+      b = b << m | b >> (32-m);
+  }
 
 /**
  * Sets the key used to generate the values of subKeys[].
@@ -168,7 +184,6 @@ void Serpent::rotate(std::bitset<32> &b, unsigned m) {
  */
 void Serpent::setKey (unsigned char userKey[]){
 
-  
   if (size == -1){
     std::cout << "Keysize has not been set."<< std::endl;
     std::cout << "Call setKeySize(int n) with n = 128, 192, 256"<< std::endl;
@@ -178,7 +193,7 @@ void Serpent::setKey (unsigned char userKey[]){
   //for all reflected bytes and assign accordingly
  
   if (size == 16){
-
+    
     //k3 already equals 0;
     k2 = 0x8000000000000000;
     
@@ -555,33 +570,43 @@ void Serpent::encrypt( unsigned char text[16] ){
    
   }
   std::cout << "State after initial permutation : " << temp <<std::endl;
-  
-  for ( int round = 0; round < 31; round ++ ){
+  int round;
+  for ( round = 0; round < 31; round ++ ){
     
     state = "";
     for( int index = 0; index<128; index++ ){
-     
+      
       // std::cout << "Subkey[" << round << "]["
       //	<< index << "] is " << subKeys[round][index] << std::endl;
       
       //std::cout << "temp[" << index << "] = " <<(int)temp[index] << std::endl;
       
       state.append( std::to_string((int)temp[index] ^ 
-				   (int)subKeys[round][index]) );
+				   (int)subKeys[round][index]) ); 
+      
       
       //std::cout << "temp [" << index << "] after xor = " 
       //  << (char)temp[index] << std::endl;
     }
     
-    std::cout << "temp = " << temp << "and has length = " 
-	      << temp.length() <<std::endl;
+    //std::cout << "temp = " << temp << "and has length = " 
+    //	      << temp.length() <<std::endl;
     
-    temp = SHat( round, temp );
-            
+    temp = SHat( round, state );
+
     std::bitset<32> state0 (temp.substr(0,32));
     std::bitset<32> state1 (temp.substr(32,31));
     std::bitset<32> state2 (temp.substr(64,31));
     std::bitset<32> state3 (temp.substr(96,31));
+    
+    std::cout << "state bitsets before linearTransform: " << std::endl;
+    std::cout << state0 << std::endl;
+    std::cout << state1 << std::endl;
+    std::cout << state2 << std::endl;
+    std::cout << state3 << std::endl;
+    
+    linearTransform( state0, state1, state2, state3 );
+    
     
     state = state0.to_string
       <char, std::string::traits_type, std::string::allocator_type>();
@@ -592,12 +617,38 @@ void Serpent::encrypt( unsigned char text[16] ){
 
     state.append(state3.to_string<char, std::string::traits_type, std::string::allocator_type>());
 
-    std::cout << "State at round " << round << " = " << state << std::endl;
-
-    
+    std::cout << "state bitsets after linearTransform: " << std::endl;
+    std::cout << state0 << std::endl;
+    std::cout << state1 << std::endl;
+    std::cout << state2 << std::endl;
+    std::cout << state3 << std::endl;
   }
   
+  // Penultimate xor with 32rd subkey
+  for ( int index = 0; index<128; index++){
+    
+    state.append( std::to_string((int)temp[index] ^ 
+				 (int)subKeys[round][index]) ); 
+  }        
+  std::cout << "No segfault here. " << std::endl;
+  temp = SHat( round, state );  
+ 
+  // Final xor with 33rd subkey
+  state = "";  
+  for ( int index = 0; index<128; index++){
   
+    state.append( std::to_string((int)temp[index] ^ 
+				 (int)subKeys[round+1][index]) ); 
+  }
+ 
+  for (int j = 0; j<128; j++){
+    temp[j] = (state[fp[j]]);
+    // std::cout << "text at fp[j] " << state[fp[j]] << std::endl;
+    //std::cout << "t[" << j << "] = " << temp[j] << std::endl;
+    //std::cout << "fp[j] = " << fp[j] << std::endl; 
+  }    
+   
+  std::cout << "Temp after uuuuurything: " << temp << std::endl;
 }
 
 int main(int argc, char** argv)
@@ -622,25 +673,25 @@ int main(int argc, char** argv)
   std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
   //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0xa1, 0x01, 0x01, 0x01, 
-			     0xb1, 0x01, 0x01, 0x01, 
-			     0xc1, 0x01, 0x01, 0x01, 
-			    0xd1, 0x01, 0x01, 0x01,
-			      0xe1, 0x01, 0x01, 0x01, 
-			    0xf1, 0x01, 0x01, 0x01};
-			    //   0x01, 0x01, 0x01, 0x01, 
- //			     0xa1, 0x01, 0x01, 0x01};
+ unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
+			     0x00, 0x00, 0x00, 0x00, 
+			     0x00, 0x00, 0x00, 0x00, 
+			    0x00, 0x00, 0x00, 0x00};
+			    // 0xe1, 0x00, 0x00, 0x00, 
+			    //0xf1, 0x00, 0x00, 0x00};
+			    //   0x00, 0x00, 0x00, 0x00, 
+ //			     0xa1, 0x00, 0x00, 0x00};
  //27 0s in testKey
 
  unsigned char plaintext[16] = 
-   {0x0f, 0xb0, 0xc0, 0x3f,
-    0xa0, 0xa0, 0xa0, 0xa0,
-    0x00, 0x00, 0xa0, 0xa0,
+   {0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
 
  std::cout << "testkey after declaration: " << std::endl;
 
- for (int i = 0; i<24; i++ ){
+ for (int i = 0; i<16; i++ ){
    if ((i%4 == 0) && (!i==0)){
    std::cout << std::endl;
    }
