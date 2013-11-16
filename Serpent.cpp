@@ -103,24 +103,24 @@ Serpent::Serpent() {
   std::copy(tfp, tfp+128, fp);  
   
   k3 = 0; 
-    k2 = 0; 
-    k1 = 0;
-    k0 = 0;  
-
-    size = -1;
+  k2 = 0; 
+  k1 = 0;
+  k0 = 0;  
   
-    int t[8][16] = {
-      { 3, 8,15, 1,10, 6, 5,11,14,13, 4, 2, 7, 0, 9,12},
-      {15,12, 2, 7, 9, 0, 5,10, 1,11,14, 8, 6,13, 3, 4},
-      { 8, 6, 7, 9, 3,12,10,15,13, 1,14, 4, 0,11, 5, 2},
-      { 0,15,11, 8,12, 9, 6, 3,13, 1, 2, 4,10, 7, 5,14},
-      { 1,15, 8, 3,12, 0,11, 6, 2, 5, 4,10, 9,14, 7,13},
-      {15, 5, 2,11, 4,10, 9,12, 0, 3,14, 8,13, 6, 7, 1},
-      { 7, 2,12, 5, 8, 4, 6,11,14, 9, 1,15,13, 3,10, 0},
-      { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
-    };
-
-    std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
+  size = -1;
+  
+  int t[8][16] = {
+    { 3, 8,15, 1,10, 6, 5,11,14,13, 4, 2, 7, 0, 9,12},
+    {15,12, 2, 7, 9, 0, 5,10, 1,11,14, 8, 6,13, 3, 4},
+    { 8, 6, 7, 9, 3,12,10,15,13, 1,14, 4, 0,11, 5, 2},
+    { 0,15,11, 8,12, 9, 6, 3,13, 1, 2, 4,10, 7, 5,14},
+    { 1,15, 8, 3,12, 0,11, 6, 2, 5, 4,10, 9,14, 7,13},
+    {15, 5, 2,11, 4,10, 9,12, 0, 3,14, 8,13, 6, 7, 1},
+    { 7, 2,12, 5, 8, 4, 6,11,14, 9, 1,15,13, 3,10, 0},
+    { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
+  };
+  
+  std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
     
     std::map<std::string, std::string> dict;
     std::map<std::string, std::string> inverseDict;
@@ -184,19 +184,40 @@ void Serpent::rotate(std::bitset<32> &b, unsigned m) {
  */
 void Serpent::setKey (unsigned char userKey[]){
 
+  //need to set the size of userKey in advance so that the key can be 
+  //initialized properly
   if (size == -1){
     std::cout << "Keysize has not been set."<< std::endl;
     std::cout << "Call setKeySize(int n) with n = 128, 192, 256"<< std::endl;
     std::cout << "Key has not been set." << std::endl;
   }
-  //Idea for optimization: Rather than masking each bit, create a lookup table
-  //for all reflected bytes and assign accordingly
+  
+  //Check the size of the given userkey. If it's 16 or 24 bytes, pad the 
+  //most significant bit with a 1 and pad the rest out with 0's
+  //k0, k1, k2, k4 were initialized to 0 in the constructor.
+  //What I think I'm doing is the following, given a 128 bit userkey:
+  // 0x1111 1111 1111 1111 1111 1111 1111 1111,
+  // k3 = 0000 0000 0000 0000
+  // k2 = 8000 0000 0000 0000 since this would be appending 1 to the MSB end
+  // k1 = AAAA AAAA AAAA AAAA 
+  // k0 = AAAA AAAA AAAA AAAA since I am flipping the bits to change from
+  // big to little-endian
+  // there's a cout statement at the end that can of setkey that seems
+  // to imply this is right, but maybe that's not what we should even be doing?
+  //
+  //(Idea for later optimization: Rather than masking each bit, create a 
+  //lookup table for all reflected bytes and assign accordingly)
  
   if (size == 16){
     
     //k3 already equals 0;
     k2 = 0x8000000000000000;
-    
+  
+
+    //What I think I'm doing: first bit of userKey[i] gets put into the
+    //8*i bit of k1, second bit of userKey[i] gets put into the 8*i + 1 bit of
+    //k2, storing the 128 bits of userKey in the 64-bit values of k1 and k2
+    //so that they're in little-endian form.
     for ( int i = 0; i < 8; i++ ){
       k1 ^= ((long long int)(userKey[i] >> 7) << (8*i));
       k1 ^= (((long long int)(userKey[i] >> 6) & 1) << (8*i + 1));
@@ -236,7 +257,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k2 ^= (((long long int)(userKey[i] >> 3) & 1) << (8*i + 4));
       k2 ^= (((long long int)(userKey[i] >> 2) & 1) << (8*i + 5));
       k2 ^= (((long long int)(userKey[i] >> 1) & 1) << (8*i + 6));
-      k2 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
+      k2 ^= (((long long int)(userKey[i] & 1) << (8*i + 7)));
       
       k1 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
       k1 ^= (((long long int)(userKey[i+8] >> 6) & 1) << (8*i + 1));
@@ -245,7 +266,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k1 ^= (((long long int)(userKey[i+8] >> 3) & 1) << (8*i + 4));
       k1 ^= (((long long int)(userKey[i+8] >> 2) & 1) << (8*i + 5));
       k1 ^= (((long long int)(userKey[i+8] >> 1) & 1) << (8*i + 6));
-      k1 ^= (((long long int)(userKey[i+8] && 1) << (8*i + 7)));
+      k1 ^= (((long long int)(userKey[i+8] & 1) << (8*i + 7)));
 
       k0 ^= ((long long int)(userKey[i+16] >> 7) << (8*i));
       k0 ^= (((long long int)(userKey[i+16] >> 6) & 1) << (8*i + 1));
@@ -254,7 +275,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k0 ^= (((long long int)(userKey[i+16] >> 3) & 1) << (8*i + 4));
       k0 ^= (((long long int)(userKey[i+16] >> 2) & 1) << (8*i + 5));
       k0 ^= (((long long int)(userKey[i+16] >> 1) & 1) << (8*i + 6));
-      k0 ^= (((long long int)(userKey[i+16] && 1) << (8*i + 7)));
+      k0 ^= (((long long int)(userKey[i+16] & 1) << (8*i + 7)));
     }
     
     /*for (int i = 0; i<8; i++){
@@ -275,9 +296,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k3 ^= ((((long long int)(userKey[i] >> 3) & 1) << (8*i + 4)));
       k3 ^= ((((long long int)(userKey[i] >> 2) & 1) << (8*i + 5)));
       k3 ^= ((((long long int)(userKey[i] >> 1) & 1) << (8*i + 6)));
-      k3 ^= (((long long int)(userKey[i] && 1) << (8*i + 7)));
-            
-
+      k3 ^= (((long long int)(userKey[i] & 1) << (8*i + 7)));
       
       k2 ^= ((long long int)(userKey[i+8] >> 7) << (8*i));
       k2 ^= (((long long int)(userKey[i+8] >> 6) & 1) << (8*i + 1));
@@ -304,7 +323,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k0 ^= (((long long int)(userKey[i+24] >> 3) & 1) << (8*i + 4));
       k0 ^= (((long long int)(userKey[i+24] >> 2) & 1) << (8*i + 5));
       k0 ^= (((long long int)(userKey[i+24] >> 1) & 1) << (8*i + 6));
-      k0 ^= (((long long int)(userKey[i+24] && 1) << (8*i + 7)));
+      k0 ^= (((long long int)(userKey[i+24] & 1) << (8*i + 7)));
     }
   }
     /*
@@ -313,7 +332,7 @@ void Serpent::setKey (unsigned char userKey[]){
       k1 ^= ((long long int)userKey[i+8] << (56-(8*i)));
       k2 ^= ((long long int)userKey[i+16] << (56-(8*i)));
       k3 ^= ((long long int)userKey[i+24] << (56-(8*i)));
-    }
+      }
       std::cout << "k0-k4 before swap" << std::endl;
       std::cout << std::bitset<64>(k0) ;
       std::cout << std::bitset<64>(k1);
@@ -369,20 +388,39 @@ void Serpent::setKey (unsigned char userKey[]){
   std::cout << std::bitset<64>(k0);
   std::cout << std::bitset<64>(k1);
   std::cout << std::bitset<64>(k2);
-  std::cout << std::bitset<64>(k3) << std::endl;*/
-
+  std::cout << std::bitset<64>(k3) << std::endl;
+  */
+  // This is the weirdness with breaking the key, after it's been set
+  // into 8 32-bit words. THIS IS A PLACE I FUCKED UP AND FORGOT TO CHANGE
+  // SHIT AFTER THE BIG->LITTLE-ENDIAN TRANSITION!
+  /*
   words[0] = (k3 >> 32);
   words[1] = (k3 & (unsigned long int)4294967295);
   words[2] = (k2 >> 32);
-  words[3] = (k2 & (unsigned long int)4294957295);
+  words[3] = (k2 & (unsigned long int)4294967295);
   words[4] = (k1 >> 32);
-  words[5] = (k1 & (unsigned long int)4294957295);
+  words[5] = (k1 & (unsigned long int)4294967295);
   words[6] = (k0 >> 32);
-  words[7] = (k0 & (unsigned long int)4294957295);
-  /*
+  words[7] = (k0 & (unsigned long int)4294967295);
+  */
+
+  //Let's try again...
+  //4294967295 is the decimal representation of 32 bits of 1's
+  //Using this to mask the 
+  words[0] = (k0 >> 32);
+  words[1] = (k0 & (unsigned long int)4294967295);
+  words[2] = (k1 >> 32);
+  words[3] = (k1 & (unsigned long int)4294967295);
+  words[4] = (k2 >> 32);
+  words[5] = (k2 & (unsigned long int)4294967295);
+  words[6] = (k3 >> 32);
+  words[7] = (k3 & (unsigned long int)4294967295);
+  
+  /*  
   for (int i = 0; i < 8; i++ ){
     std::cout << "word[" << i << "] = " << words[i] << std::endl;
-    }*/
+    }
+  */
 }
 
   
@@ -391,22 +429,28 @@ void Serpent::setKey (unsigned char userKey[]){
  */
 void Serpent::generateSubKeys(){
     
-  for (int i = 8; i < 139; i++){
+  //Populate the array of words. The first 8 words are not used in the
+  //final subkeys, they're just used as the seed for generation of 
+  //the 33 subkeys that will be used in the encryption algorithm
+  for (int i = 8; i < 140; i++){
        
     words[i] = (words[i-8] ^ words[i-5] ^ words[i-3] ^ words[i-1]
 		^ (i-8) ^ phi);
-    //std::cout << bitset<64>(words[i]) << std::endl;
-    words[i] = (((words[i] << 11)&((unsigned long int)4294965248))
-		^ (words[i] >> 21));
-    // std::cout << std::bitset<32>(words[i]) << std::endl;
+    
+    words[i] = ((words[i] << 11) | (words[i] >> 21));
+            
+    //Just put this in here to try and track values through generate subkeys
+    //And didn't want to deal with everything at once
+    if (( i >135) && (i <= 139 )){
+      std::cout << "Word[" << i << "] initialized to " << words[i] << std::endl;
+      std::cout << std::bitset<32>(words[i]) << std::endl;
+    }
   }
-        
- 
   
   for ( int i = 0; i<33; i++ ){
-
+    
     std::string t = "";  
-    // std::cout << "word[" << i << "] = " << words[i] << std::endl;
+    std::cout << "word[" << i << "] = " << words[i] << std::endl;
     t.append( Bitstring( words[4*i + 8], 32 ) );
     t.append( Bitstring( words[4*i+ 9], 32 ) );
     t.append( Bitstring( words[4*i+ 10], 32 ) );
@@ -598,12 +642,14 @@ void Serpent::encrypt( unsigned char text[16] ){
     std::bitset<32> state1 (temp.substr(32,31));
     std::bitset<32> state2 (temp.substr(64,31));
     std::bitset<32> state3 (temp.substr(96,31));
-    
+
+    /* 
     std::cout << "state bitsets before linearTransform: " << std::endl;
     std::cout << state0 << std::endl;
     std::cout << state1 << std::endl;
     std::cout << state2 << std::endl;
     std::cout << state3 << std::endl;
+    */
     
     linearTransform( state0, state1, state2, state3 );
     
@@ -616,12 +662,12 @@ void Serpent::encrypt( unsigned char text[16] ){
     state.append(state2.to_string<char, std::string::traits_type, std::string::allocator_type>());
 
     state.append(state3.to_string<char, std::string::traits_type, std::string::allocator_type>());
-
+    /*
     std::cout << "state bitsets after linearTransform: " << std::endl;
     std::cout << state0 << std::endl;
     std::cout << state1 << std::endl;
     std::cout << state2 << std::endl;
-    std::cout << state3 << std::endl;
+    std::cout << state3 << std::endl;*/
   }
   
   // Penultimate xor with 32rd subkey
@@ -630,8 +676,7 @@ void Serpent::encrypt( unsigned char text[16] ){
     state.append( std::to_string((int)temp[index] ^ 
 				 (int)subKeys[round][index]) ); 
   }        
-  std::cout << "No segfault here. " << std::endl;
-  temp = SHat( round, state );  
+    temp = SHat( round, state );  
  
   // Final xor with 33rd subkey
   state = "";  
