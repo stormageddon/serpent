@@ -450,13 +450,17 @@ void Serpent::generateSubKeys(){
   for ( int i = 0; i<33; i++ ){
     
     std::string t = "";  
-    std::cout << "word[" << i << "] = " << words[i] << std::endl;
+    
     t.append( Bitstring( words[4*i + 8], 32 ) );
     t.append( Bitstring( words[4*i+ 9], 32 ) );
     t.append( Bitstring( words[4*i+ 10], 32 ) );
     t.append( Bitstring( words[4*i+ 11], 32 ) );
-   
-
+    
+    //Selectively printing the string that should now contain the same words
+    //printed out previously (words 136-139)
+    if(i == 32){
+      std::cout << "T at round " << i << " of keygen = " << t << std::endl;
+    }
     /* std::cout << std::bitset<32>(words[i]) << std::endl;
        std::cout << std::bitset<32>(words[i+1]) << std::endl;
        std::cout << std::bitset<32>(words[i+2]) << std::endl;
@@ -464,18 +468,46 @@ void Serpent::generateSubKeys(){
 
        std::cout << "tstring" << std::endl;
        std::cout << t << std::endl; */
-
+    //std::cout << "subKey before appending " << subKeys[i] << std::endl;
+    if(i ==32 ){
+      std::cout << "Sbox 3 applied to t " << std::endl;
+    }
+    
     for (int j = 0; j<128; j+= 4){
-      subKeys[i].append( S( (i+3), t.substr(j,4)));
+      
+      //The subkeys are passed through the sboxes, starting with sbox 3
+      //and descending. There was another mistake here, where I cycled
+      //through the sboxes in ascending order instead of descending
+      //The sbox to be used is written as 35 - i because c++ will NOT
+      //recognize -1 mod 8 as 7. I tried writing it as 3-i and found this out.
+      if(i == 32){
+	if (j % 32 == 0){
+	  std::cout << std::endl;
+	}
+	std::cout << S( 35 - i, t.substr(j,4)) ;
+	
+	
+      }
+      subKeys[i].append( S( 35 - i, t.substr(j,4)));
+      
+      //std::cout <<"appended to subKey "<< i << " " << subKeys[i] << std::endl;
       //std::cout << "j = " << j << " : " << subKeys[i] << std::endl; 
     } 
-      
+       
     t = subKeys[i];
 
     for (int j = 0; j<128; j++){
       subKeys[i][j] = t[ip[j]];
     }
-    //  std::cout << "Subkey " << i << ": " << subKeys[i] << std::endl;
+    if(i==32){
+      std::cout<< std::endl;
+      std::cout << "IP applied to t " << i << ": " << std::endl;
+      std::cout << subKeys[i].substr(0,32) << std::endl;
+      std::cout << subKeys[i].substr(32,32) << std::endl;
+      std::cout << subKeys[i].substr(64,32) << std::endl;
+      std::cout << subKeys[i].substr(96,32) << std::endl;
+    }
+    
   }
   
 }  
