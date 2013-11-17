@@ -154,15 +154,15 @@ void Serpent::linearTransform(std::bitset<32> &x0, std::bitset<32> &x1, std::bit
   
   rotate(x2,3);
   x1 = x1^x0^x2;
-  x0 <<= 3;
-  //x3 = x3^x2^(x0 << 3);
-  x3 = x3^x2^x0;
+  //x0 <<= 3;
+  x3 = x3^x2^(x0 << 3);
+  //x3 = x3^x2^x0;
   rotate(x1,1);
   rotate(x3,7);
   x0 = x0^x1^x3;
-  x1 <<= 7;
-  //x2 = x2^x3^(x1 << 7);
-  x2 = x2^x3^x1;
+  //x1 <<= 7;
+  x2 = x2^x3^(x1 << 7);
+  //x2 = x2^x3^x1;
   rotate(x0,5);
   rotate(x2,22);
   //std::cout << x0 << std::endl;
@@ -460,19 +460,21 @@ void Serpent::generateSubKeys(){
       // }
   }
   for (int i = 8; i<140; i++){
-          
-      words[i] = (((words[i] & 0xaaaaaaaa) >> 1) | 
-	    ((words[i] & 0x55555555) << 1));
-      words[i] = (((words[i] & 0xcccccccc) >> 2) | 
-	    ((words[i] & 0x33333333) << 2));
-      words[i] = (((words[i] & 0xf0f0f0f0) >> 4) | 
-	    ((words[i] & 0x0f0f0f0f) << 4));
-      words[i] = (((words[i] & 0xff00ff00) >> 8) | 
-	    ((words[i] & 0x00ff00ff) << 8));
-      words[i] = (( words[i] >> 16) | (words[i] << 16));
-      std::cout << "words[" << std::dec <<  i-8 << "] : " 
-		<< std::bitset<32>(words[i]) << std::endl;
+    
+    words[i] = (((words[i] & 0xaaaaaaaa) >> 1) | 
+		((words[i] & 0x55555555) << 1));
+    words[i] = (((words[i] & 0xcccccccc) >> 2) | 
+		((words[i] & 0x33333333) << 2));
+    words[i] = (((words[i] & 0xf0f0f0f0) >> 4) | 
+		((words[i] & 0x0f0f0f0f) << 4));
+    words[i] = (((words[i] & 0xff00ff00) >> 8) | 
+		((words[i] & 0x00ff00ff) << 8));
+    words[i] = (( words[i] >> 16) | (words[i] << 16));
+    //      std::cout << "words[" << std::dec <<  i-8 << "] : " 
+    //	<< std::bitset<32>(words[i]) << std::endl;
   }
+
+  // Things have tested correct up until this point
 
   for ( int i = 0; i<33; i++ ){
     
@@ -486,7 +488,7 @@ void Serpent::generateSubKeys(){
     //Selectively printing the string that should now contain the same words
     //printed out previously (words 136-139)
     if(i == 32){
-      std::cout << "T at round " << i << " of keygen = " << t << std::endl;
+      //std::cout << "T at round " << i << " of keygen = " << t << std::endl;
     }
     /* std::cout << std::bitset<32>(words[i]) << std::endl;
        std::cout << std::bitset<32>(words[i+1]) << std::endl;
@@ -496,8 +498,8 @@ void Serpent::generateSubKeys(){
        std::cout << "tstring" << std::endl;
        std::cout << t << std::endl; */
     //std::cout << "subKey before appending " << subKeys[i] << std::endl;
-    if(i ==32 ){
-      std::cout << "Sbox 3 applied to t " << std::endl;
+    if( i ==32 ){
+      // std::cout << "Sbox 3 applied to t " << std::endl;
     }
     
     for (int j = 0; j<128; j+= 4){
@@ -507,6 +509,8 @@ void Serpent::generateSubKeys(){
       //through the sboxes in ascending order instead of descending
       //The sbox to be used is written as 35 - i because c++ will NOT
       //recognize -1 mod 8 as 7. I tried writing it as 3-i and found this out.
+      
+      /*
       if(i == 32){
 	if (j % 32 == 0){
 	  std::cout << std::endl;
@@ -515,25 +519,31 @@ void Serpent::generateSubKeys(){
 	
 	
       }
+      */
       subKeys[i].append( S( 35 - i, t.substr(j,4)));
       
       //std::cout <<"appended to subKey "<< i << " " << subKeys[i] << std::endl;
       //std::cout << "j = " << j << " : " << subKeys[i] << std::endl; 
     } 
-       
+    std::cout << "Subkey before IP" << std::dec << i << ": " << std::endl;
+    std::cout << subKeys[i] << std::endl;
+    
     t = subKeys[i];
-
+    
     for (int j = 0; j<128; j++){
       subKeys[i][j] = t[ip[j]];
     }
-    if(i==32){
-      std::cout<< std::endl;
-      std::cout << "IP applied to t " << i << ": " << std::endl;
-      std::cout << subKeys[i].substr(0,32) << std::endl;
-      std::cout << subKeys[i].substr(32,32) << std::endl;
-      std::cout << subKeys[i].substr(64,32) << std::endl;
-      std::cout << subKeys[i].substr(96,32) << std::endl;
-    }
+    
+    std::cout<< std::endl;
+    std::cout << "Subkey after IP" << std::dec << i << ": " << std::endl;
+    
+    std::cout << subKeys[i] << std::endl;
+    /*
+    std::cout << subKeys[i].substr(0,32) << std::endl;
+    std::cout << subKeys[i].substr(32,32) << std::endl;
+    std::cout << subKeys[i].substr(64,32) << std::endl;
+    std::cout << subKeys[i].substr(96,32) << std::endl;
+    */
     
   }
   
