@@ -155,11 +155,13 @@ void Serpent::linearTransform(std::bitset<32> &x0, std::bitset<32> &x1, std::bit
   rotate(x2,3);
   x1 = x1^x0^x2;
   x0 <<= 3;
+  //x3 = x3^x2^(x0 << 3);
   x3 = x3^x2^x0;
   rotate(x1,1);
   rotate(x3,7);
   x0 = x0^x1^x3;
   x1 <<= 7;
+  //x2 = x2^x3^(x1 << 7);
   x2 = x2^x3^x1;
   rotate(x0,5);
   rotate(x2,22);
@@ -210,15 +212,17 @@ void Serpent::setKey (unsigned char userKey[]){
  
   if (size == 16){
     
-    //k3 already equals 0;
-    k2 = 0x8000000000000000;
+    //k0 already equals 0;
+    k1 = 1;
   
 
     //What I think I'm doing: first bit of userKey[i] gets put into the
     //8*i bit of k1, second bit of userKey[i] gets put into the 8*i + 1 bit of
     //k2, storing the 128 bits of userKey in the 64-bit values of k1 and k2
     //so that they're in little-endian form.
-    for ( int i = 0; i < 8; i++ ){
+    //for ( int i = 0; i < 8; i++ ){
+
+      /*
       k1 ^= ((long long int)(userKey[i] >> 7) << (8*i));
       k1 ^= (((long long int)(userKey[i] >> 6) & 1) << (8*i + 1));
       k1 ^= (((long long int)(userKey[i] >> 5) & 1) << (8*i + 2));
@@ -237,16 +241,18 @@ void Serpent::setKey (unsigned char userKey[]){
       k0 ^= (((long long int)(userKey[i+8] >> 2) & 1) << (8*i + 5));
       k0 ^= (((long long int)(userKey[i+8] >> 1) & 1) << (8*i + 6));
       k0 ^= (((long long int)(userKey[i+8] & 1) << (8*i + 7)));
+      */
+
       
-      //    for (int i = 0; i<8; i++){
-      // k2 ^= ((long long int)(userKey[i])
-      //k1 ^= ((long long int)userKey[i] << (56 - (8*i)));
-      //k0 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
+    for (int i = 0; i<8; i++){
+	
+      k2 ^= ((long long int)userKey[i] << (56 - (8*i)));
+      k3 ^= ((long long int)userKey[i+8] << (56 - (8*i)));
     }
   }
-
+  
   else if (size == 24){
-
+    
     
     k3 = 0x8000000000000000;
     for ( int i = 0; i < 8; i++ ){
@@ -383,13 +389,19 @@ void Serpent::setKey (unsigned char userKey[]){
     std::cout << "Key has not been set." << std::endl;
     std::cout << "SERPENT takes a 128, 192, or 256-bit key." << std::endl;
   }
-  /*
+  
   std::cout << "k0 - k3 new method" << std::endl;
-  std::cout << std::bitset<64>(k0);
-  std::cout << std::bitset<64>(k1);
-  std::cout << std::bitset<64>(k2);
-  std::cout << std::bitset<64>(k3) << std::endl;
-  */
+  std::cout << std::hex << k0 << std::endl;
+  std::cout << std::hex << k1 << std::endl;
+  std::cout << std::hex << k2 << std::endl;
+  std::cout << std::hex << k3 << std::endl;
+  
+
+  //std::cout << std::bitset<64>(k0);
+  //std::cout << std::bitset<64>(k1);
+  //std::cout << std::bitset<64>(k2);
+  //std::cout << std::bitset<64>(k3) << std::endl;
+  
   // This is the weirdness with breaking the key, after it's been set
   // into 8 32-bit words. THIS IS A PLACE I FUCKED UP AND FORGOT TO CHANGE
   // SHIT AFTER THE BIG->LITTLE-ENDIAN TRANSITION!
@@ -407,20 +419,20 @@ void Serpent::setKey (unsigned char userKey[]){
   //Let's try again...
   //4294967295 is the decimal representation of 32 bits of 1's
   //Using this to mask the 
-  words[0] = (k0 >> 32);
-  words[1] = (k0 & (unsigned long int)4294967295);
-  words[2] = (k1 >> 32);
-  words[3] = (k1 & (unsigned long int)4294967295);
-  words[4] = (k2 >> 32);
-  words[5] = (k2 & (unsigned long int)4294967295);
-  words[6] = (k3 >> 32);
-  words[7] = (k3 & (unsigned long int)4294967295);
+  words[0] = (k3 & (unsigned long int)4294967295);
+  words[1] = (k3 >> 32);
+  words[2] = (k2 & (unsigned long int)4294967295);
+  words[3] = (k2 >> 32);
+  words[4] = (k1 & (unsigned long int)4294967295);
+  words[5] = (k1 >> 32);
+  words[6] = (k0 & (unsigned long int)4294967295);
+  words[7] = (k0 >> 32);
   
-  /*  
+  
   for (int i = 0; i < 8; i++ ){
-    std::cout << "word[" << i << "] = " << words[i] << std::endl;
+    std::cout << "word[" << std::dec << i-8 << "] = " << std::hex << words[i] << std::endl;
     }
-  */
+  
 }
 
   
@@ -436,17 +448,32 @@ void Serpent::generateSubKeys(){
        
     words[i] = (words[i-8] ^ words[i-5] ^ words[i-3] ^ words[i-1]
 		^ (i-8) ^ phi);
-    
+    //std::cout << std::bitset<32>(words[i]) << std::endl;
     words[i] = ((words[i] << 11) | (words[i] >> 21));
-            
+    // std::cout << std::bitset<32>(words[i-8]) << std::endl;
     //Just put this in here to try and track values through generate subkeys
     //And didn't want to deal with everything at once
-    if (( i >135) && (i <= 139 )){
-      std::cout << "Word[" << i << "] initialized to " << words[i] << std::endl;
-      std::cout << std::bitset<32>(words[i]) << std::endl;
-    }
+    //if (( i >135) && (i <= 139 )){
+    // std::cout << "Word[" << std::dec <<i-8 << "] initialized to " << 
+    // std::hex << words[i] << std::endl;
+      // std::cout << std::bitset<32>(words[i]) << std::endl;
+      // }
   }
-  
+  for (int i = 8; i<140; i++){
+          
+      words[i] = (((words[i] & 0xaaaaaaaa) >> 1) | 
+	    ((words[i] & 0x55555555) << 1));
+      words[i] = (((words[i] & 0xcccccccc) >> 2) | 
+	    ((words[i] & 0x33333333) << 2));
+      words[i] = (((words[i] & 0xf0f0f0f0) >> 4) | 
+	    ((words[i] & 0x0f0f0f0f) << 4));
+      words[i] = (((words[i] & 0xff00ff00) >> 8) | 
+	    ((words[i] & 0x00ff00ff) << 8));
+      words[i] = (( words[i] >> 16) | (words[i] << 16));
+      std::cout << "words[" << std::dec <<  i-8 << "] : " 
+		<< std::bitset<32>(words[i]) << std::endl;
+  }
+
   for ( int i = 0; i<33; i++ ){
     
     std::string t = "";  
@@ -751,14 +778,15 @@ int main(int argc, char** argv)
   //  serpent.linearTransform(x0,x1,x2,x3);
 
  unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
-			     0x00, 0x00, 0x00, 0x00, 
-			     0x00, 0x00, 0x00, 0x00, 
+			    0x00, 0x00, 0x00, 0x00, 
+			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
-			    // 0xe1, 0x00, 0x00, 0x00, 
-			    //0xf1, 0x00, 0x00, 0x00};
-			    //   0x00, 0x00, 0x00, 0x00, 
- //			     0xa1, 0x00, 0x00, 0x00};
- //27 0s in testKey
+ /*
+			    0x00, 0x00, 0x00, 0x00, 
+			    0x00, 0x00, 0x00, 0x00,
+			    0x00, 0x00, 0x00, 0x00, 
+			    0x00, 0x00, 0x00, 0x00};
+ */
 
  unsigned char plaintext[16] = 
    {0x00, 0x00, 0x00, 0x00,
