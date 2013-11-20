@@ -475,16 +475,37 @@ void Serpent::generateSubKeys(){
   }
 
   // Things have tested correct up until this point
+  // When comparing this section to the Python implementation, note that
+  // Ki contains the subkeys before the initial permutation, but after
+  // the Sbox stage. KHat contains the subkeys after the initial permutation.
 
   for ( int i = 0; i<33; i++ ){
-    
-    std::string t = "";  
+
+    std::string sBoxInput0 = Bitstring( words[4*i], 32 );
+    std::string sBoxInput1 = Bitstring( words[4*i + 1], 32);
+    std::string sBoxInput2 = Bitstring( words[4*i + 2], 32);
+    std::string sBoxInput3 = Bitstring( words[4*i + 3], 32); 
+      
+    for ( int j = 0; j<32; j++ ){
+      
+      std::string sBoxInput = "";
+            	
+      sBoxInput += sBoxInput0[j];
+      sBoxInput += sBoxInput1[j];
+      sBoxInput += sBoxInput2[j];
+      sBoxInput += sBoxInput3[j];
+        
+      std::string sBoxString = S( 35 - i, sBoxInput);
+    }
+  }
+  
+    /*std::string t = "";  
     
     t.append( Bitstring( words[4*i + 8], 32 ) );
     t.append( Bitstring( words[4*i+ 9], 32 ) );
     t.append( Bitstring( words[4*i+ 10], 32 ) );
     t.append( Bitstring( words[4*i+ 11], 32 ) );
-    
+    */
     //Selectively printing the string that should now contain the same words
     //printed out previously (words 136-139)
     if(i == 32){
