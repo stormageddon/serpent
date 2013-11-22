@@ -464,6 +464,8 @@ void Serpent::generateSubKeys(){
       // std::cout << std::bitset<32>(words[i]) << std::endl;
       // }
   }
+
+  //This shit flips bits
   for (int i = 8; i<140; i++){
     
     words[i] = (((words[i] & 0xaaaaaaaa) >> 1) | 
@@ -484,7 +486,7 @@ void Serpent::generateSubKeys(){
   // Ki contains the subkeys before the initial permutation, but after
   // the Sbox stage. KHat contains the subkeys after the initial permutation.
 
-  //  std::string k[132];
+  std::string preKeys[132];
   for ( int i = 0; i<33; i++ ){
 
     std::string sBoxInput0 = Bitstring( words[4*i + 8], 32 );
@@ -503,18 +505,43 @@ void Serpent::generateSubKeys(){
         
       std::string sBoxString = S( 35 - i, sBoxInput);
     }*/
-    std::string input[4] = {sBoxInput0, sBoxInput1, sBoxInput2, sBoxInput3};
-    std::string *result = SBitslice( 35 - i, input);
-    //std::cout << "THIS IS AN AMAZING STRING" << std::endl;
-    //std::cout << result[0] << std::endl;
-    //std::cout << result[0].length() << std::endl; 
- 
-    for ( int j = 0; j<4 ; j++ ) 
-      subKeys[i].append(result[j]);
 
+    //subKeys[i] = "";
+
+    for ( int k = 0; k< 33; k++ ){
+
+      std::string input = "";
+      input.append(1, sBoxInput0[k]);
+      input.append(1, sBoxInput1[k]);
+      input.append(1, sBoxInput2[k]);
+      input.append(1, sBoxInput3[k]);
+      std::cout << "Input at[ " << std::dec << i << "][" << k << "] : "
+		<< input << std::endl;
+
+      std::string result = S( 35 - i, input);
+      std::cout  << "Result after sbox: " << result << std::endl;
+
+      //std::cout << "THIS IS AN AMAZING STRING" << std::endl;
+      //std::cout << result[0] << std::endl;
+      //std::cout << result[0].length() << std::endl; 
+      
+      for ( int j = 0; j<4 ; j++ ){
+	//	std::cout << "result " << 4*i + j << ": " << result[j] << std::endl; 
+	preKeys[j + 4*i] = preKeys[j+ 4*i] + result[j];
+
+      }
+    }
+  }
   
-  
-    std::string t = "";  
+  for ( int i = 0; i<33; i++ ){
+    
+    subKeys[i].append(preKeys[4*i]);
+    subKeys[i].append(preKeys[4*i + 1]);
+    subKeys[i].append(preKeys[4*i + 2]);
+    subKeys[i].append(preKeys[4*i + 3]);
+    
+  }
+  std::string t = "";  
     /*
     t.append( Bitstring( words[4*i + 8], 32 ) );
     t.append( Bitstring( words[4*i+ 9], 32 ) );
@@ -560,20 +587,23 @@ void Serpent::generateSubKeys(){
       
       //std::cout <<"appended to subKey "<< i << " " << subKeys[i] << std::endl;
       //std::cout << "j = " << j << " : " << subKeys[i] << std::endl; 
-    } 
-    std::cout << "Subkey before IP" << std::dec << i << ": " << std::endl;
-    std::cout << subKeys[i] << std::endl;
-    
-    t = subKeys[i];
-    
-    for (int j = 0; j<128; j++){
-      subKeys[i][j] = t[ip[j]];
     }
-    
-    std::cout<< std::endl;
-    std::cout << "Subkey after IP" << std::dec << i << ": " << std::endl;
-    
-    std::cout << subKeys[i] << std::endl;
+
+    for (int i = 0; i < 33; i ++ ){
+      std::cout << "Subkey before IP" << std::dec << i << ": " << std::endl;
+      std::cout << subKeys[i] << std::endl;
+      
+      t = subKeys[i];
+      
+      for (int j = 0; j<128; j++){
+	subKeys[i][j] = t[ip[j]];
+      }
+      
+      std::cout<< std::endl;
+      std::cout << "Subkey after IP" << std::dec << i << ": " << std::endl;
+      
+      std::cout << subKeys[i] << std::endl;
+    }
     /*
     std::cout << subKeys[i].substr(0,32) << std::endl;
     std::cout << subKeys[i].substr(32,32) << std::endl;
@@ -581,8 +611,8 @@ void Serpent::generateSubKeys(){
     std::cout << subKeys[i].substr(96,32) << std::endl;
     */
     
-  }
 }
+
 
 
 /**
