@@ -4,6 +4,7 @@
 #include <bitset>
 #include <map>
 #include <string>
+#include <cstring>
 
 class Serpent
 {
@@ -140,6 +141,9 @@ Serpent::Serpent() {
       
       sBoxBitstring[x] = dict;
       sBoxBitstringInverse[x] = inverseDict;
+
+      std::string bitSliceResult[4] = {"", "", "", ""};
+
     }
 }
 
@@ -480,7 +484,7 @@ void Serpent::generateSubKeys(){
   // Ki contains the subkeys before the initial permutation, but after
   // the Sbox stage. KHat contains the subkeys after the initial permutation.
 
-  std::string k[132];
+  //  std::string k[132];
   for ( int i = 0; i<33; i++ ){
 
     std::string sBoxInput0 = Bitstring( words[4*i + 8], 32 );
@@ -501,10 +505,15 @@ void Serpent::generateSubKeys(){
     }*/
     std::string input[4] = {sBoxInput0, sBoxInput1, sBoxInput2, sBoxInput3};
     std::string *result = SBitslice( 35 - i, input);
-    std::cout << "THIS IS AN AMAZING STRING" << std::endl;
-    std::cout << result[0] << std::endl;
-    std::cout << result[0].length() << std::endl; 
+    //std::cout << "THIS IS AN AMAZING STRING" << std::endl;
+    //std::cout << result[0] << std::endl;
+    //std::cout << result[0].length() << std::endl; 
  
+    for ( int j = 0; j<4 ; j++ ) 
+      subKeys[i].append(result[j]);
+
+  
+  
     std::string t = "";  
     /*
     t.append( Bitstring( words[4*i + 8], 32 ) );
@@ -515,7 +524,7 @@ void Serpent::generateSubKeys(){
     //Selectively printing the string that should now contain the same words
     //printed out previously (words 136-139)
     //if(i == 32){
-      //std::cout << "T at round " << i << " of keygen = " << t << std::endl;
+    //std::cout << "T at round " << i << " of keygen = " << t << std::endl;
     //}
     /* std::cout << std::bitset<32>(words[i]) << std::endl;
        std::cout << std::bitset<32>(words[i+1]) << std::endl;
@@ -573,8 +582,8 @@ void Serpent::generateSubKeys(){
     */
     
   }
-  
-}  
+}
+
 
 /**
  * Sets the size to keyLength
@@ -650,7 +659,11 @@ std::string Serpent::SHatInverse(int box, std::string output){
 }
   
 std::string * Serpent::SBitslice(int box, std::string param[4]){
-  bitSliceResult[4] = {"", "", "", ""};
+
+  for (int i = 0; i < 4; i++ ){
+    bitSliceResult[i].clear();
+  }
+
   std::string input = "";
   std::string quad;
   for (int i = 0; i < 32; i++) {
@@ -659,13 +672,14 @@ std::string * Serpent::SBitslice(int box, std::string param[4]){
     input.append(1, param[2][i]);
     input.append(1, param[3][i]);
     quad = S(box, input);
+    
     for (int j = 0; j < 4; j++) {
       bitSliceResult[j] += quad[j];
     }
     input = "";
   }
   
-  std::cout << bitSliceResult[0] << std::endl;
+  //  std::cout << bitSliceResult[0] << std::endl;
   return bitSliceResult;
 }
   
