@@ -519,6 +519,7 @@ void Serpent::generateSubKeys(){
 		<< input << std::endl;
 
       std::string result = S( 35 - i, input);
+      std::cout << "Using sbox: " << (35 -i) % 8 << std::endl;
       std::cout  << "Result after sbox: " << result << std::endl;
 
       //std::cout << "THIS IS AN AMAZING STRING" << std::endl;
