@@ -86,6 +86,8 @@ public:                    // begin public section
 
   unsigned int bitMirrorInt ( unsigned int image );
 
+  unsigned char bitMirrorByte( unsigned char image);
+
   std::bitset<32> bitMirrorBitset ( std::bitset<32> image );
 
   std::tuple< std::bitset<64>, std::bitset<64> > 
@@ -103,7 +105,13 @@ public:                    // begin public section
 
   std::string hexString (std::tuple< std::bitset<64>, std::bitset<64> > string);
 
+  std::string nessify (std::string reformat);
+
+  std::string unnessify (std::string reformat);
+
   void printState (std::tuple< std::bitset<64>, std::bitset<64> > string);
+
+  void printStateBinary (std::tuple< std::bitset<64>, std::bitset<64> > string);
 
   unsigned long long int readIn ( unsigned char bytes[8] );
 
@@ -459,7 +467,23 @@ void Serpent::setKey (unsigned char userKey[]){
   //
   //(Idea for later optimization: Rather than masking each bit, create a 
   //lookup table for all reflected bytes and assign accordingly)
- 
+
+  
+
+
+
+  unsigned char tempKey[size];
+  int tempIndex = 0;
+
+  for( int i = size-1; i >= 0; i-- ){
+    
+    tempKey[tempIndex] = userKey[i];
+    tempIndex ++;
+
+  }
+
+  userKey = tempKey;
+  
   if (size == 16){
     
     //k0 already equals 0;
@@ -739,6 +763,23 @@ unsigned int Serpent::bitMirrorInt( unsigned int image ){
     return image;
 }
 
+unsigned char Serpent::bitMirrorByte( unsigned char image) {
+
+  unsigned int imageInt = static_cast<unsigned int>(image);
+  imageInt = (imageInt & 0xaa) >> 1 | (imageInt & 0x55) << 1;
+  imageInt = (imageInt & 0xcc) >> 2 | (imageInt & 0x33) << 2;
+  imageInt = (imageInt & 0xf0) >> 4 | (imageInt & 0x0f) << 4;
+
+  unsigned char mirrored = static_cast<unsigned char>(imageInt);
+
+/*std::cout << "image before flip: " << imageInt << std::endl;
+  imageInt = bitMirrorInt(imageInt);
+  std::cout << "image after flip: " << imageInt << std::endl;
+  unsigned char mirrored = static_cast<unsigned char>(imageInt);
+  */
+  return mirrored;
+
+}
 //Flips the bits of the given bitset, about the 16th bit
 //For example, 1 -> 80000000 (in hex)
 //image is a bitset of size 32
@@ -842,7 +883,22 @@ std::string Serpent::hexString (std::tuple< std::bitset<64>, std::bitset<64> > s
   return hexVal0.append(hexVal1.append(hexVal2.append(hexVal3)));
 }
     
+std::string Serpent::nessify (std::string reformat){
 
+  std::string nessied = "";
+  for ( int i = 0; i < reformat.length(); i+=2 ){
+    
+    nessied = nessied.insert(0, 1, reformat[i+1]);
+    nessied = nessied.insert(0, 1, reformat[i]);
+    
+  } 
+  
+  return nessied;
+}
+
+std::string Serpent::unnessify (std::string reformat){
+
+}
 //Prints the current state in big-endian hex
 void Serpent::printState 
 (std::tuple< std::bitset<64>, std::bitset<64> > string){
@@ -854,7 +910,15 @@ void Serpent::printState
 
 }
 
+//Print the current state
+void Serpent::printStateBinary (std::tuple< std::bitset<64>, std::bitset<64> > string){
 
+  std::tuple< std::bitset<64>, std::bitset<64> > toPrint
+    = bitMirrorTuple(string);
+
+  std::cout << std::get<0>(toPrint) << std::get<1>(toPrint) << std::endl;
+
+}
 //Reads bytes into an unsigned long long int
 //bytes[] must have length 8
 unsigned long long int Serpent::readIn ( unsigned char bytes[8] ){
@@ -948,6 +1012,18 @@ Serpent::finalP ( std::tuple< std::bitset<64>,
    					
 
 void Serpent::encrypt( unsigned char * text ){
+  
+  unsigned char tempText[16];
+  int tempIndex = 0;
+
+  for( int i = 0; i <= 15; i++ ){
+    std::cout << "text at " << i << ": " << static_cast<unsigned int>(text[i]) << std::endl;
+    std::cout << "BitMirrorByte of text: " << static_cast<unsigned int>(bitMirrorByte(text[i])) << std::endl;
+    text[i] = bitMirrorByte(text[i]);
+
+  }
+
+  //  text = tempText;
 
   unsigned long long int stateMSB = readIn(text);
   unsigned long long int stateLSB = readIn(text + 8);
@@ -959,6 +1035,8 @@ void Serpent::encrypt( unsigned char * text ){
   std::get<1>(state) = stateLSB;
   std::tuple< std::bitset<64>, std::bitset<64> > tempState;
 
+  std::cout << "State before any changes: " << std::endl;
+  printState(state);
   state = initialP(state);
 
   std::cout << "After IP: " << std::endl;
@@ -969,19 +1047,19 @@ void Serpent::encrypt( unsigned char * text ){
     std::get<0>(state) = (std::get<0>(subKeys[round]) ^ std::get<0>(state));
     std::get<1>(state) = (std::get<1>(subKeys[round]) ^ std::get<1>(state));
    
-    std::cout << "Subkey at round " << std::dec << round << ": " << std::endl;
+    //std::cout << "Subkey at round " << std::dec << round << ": " << std::endl;
     printState(subKeys[round]);
    
-    std::cout << "After xor " << std::dec << round << ": " << std::endl;
+    //std::cout << "After xor " << std::dec << round << ": " << std::endl;
     
     printState(state);
 
     state = SBitset( round, state);
-    std::cout << "After sbox " << std::endl;
+    //std::cout << "After sbox " << std::endl;
     printState(state);
 
     state = linearTransform(state);
-    std::cout << "After LT round " << std::dec << round << ": " << std::endl;
+    // std::cout << "After LT round " << std::dec << round << ": " << std::endl;
     printState(state);
   }
   
@@ -996,6 +1074,9 @@ void Serpent::encrypt( unsigned char * text ){
 
   state = finalP(state);
   printState(state);
+  printStateBinary(state);
+  std::string nessieOutput = nessify(hexString(bitMirrorTuple(state)));
+  std::cout << "Ciphertext: " << nessieOutput << std::endl;
 
 }
 
@@ -1024,13 +1105,14 @@ int main(int argc, char** argv)
  unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
-			    0x00, 0x00, 0x00, 0x00};
- /*
+			    0x00, 0x00, 0x00, 0x00,
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00,
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
- */
+
+
+
 
  unsigned char plaintext[16] = 
    {0x00, 0x00, 0x00, 0x00,
