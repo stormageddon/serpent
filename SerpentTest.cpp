@@ -15,7 +15,6 @@ private:
   
   int ip[128];
   int fp[128];
-  
   const char * hexTable;
 
   int size;
@@ -31,6 +30,7 @@ private:
   
   int sBoxDecimalTable[8][16];
   int transformTable[128][7];
+  int inverseTransformTable[128][7];
   
   std::map<std::string, std::string> sBoxBitstring[8];
   std::map<std::string, std::string> sBoxBitstringInverse[8];
@@ -44,7 +44,10 @@ public:                    // begin public section
 
   std::tuple< std::bitset<64>, std::bitset<64> >
   linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state);
-  
+
+  std::tuple< std::bitset<64>, std::bitset<64> >
+  inverseLinearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state);
+
   void shiftRight(unsigned char *ar, int size, int shift);
   
   void shiftLeft(unsigned char *array);
@@ -73,6 +76,10 @@ public:                    // begin public section
   SBitset( int box,  std::tuple< std::bitset<64>, std::bitset<64> > bitState );
 
   std::string SInverse(int box, std::string output);
+
+  std::tuple < std::bitset<64>, std::bitset<64> >
+  inverseSBitset( int box, std::tuple< std::bitset<64>, std::bitset<64> > 
+		  bitState);
 
   std::string SHat(int box, std::string input);
 
@@ -117,12 +124,19 @@ public:                    // begin public section
 
   std::tuple< std::bitset<64>, std::bitset<64> > 
   initialP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
-
+  
+  std::tuple< std::bitset<64>, std::bitset<64> >
+  inverseIP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
+  
   std::tuple< std::bitset<64>, std::bitset<64> > 
   finalP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
-  void encrypt( unsigned char * text );
+  std::tuple< std::bitset<64>, std::bitset<64> >
+  inverseFP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
+  void encrypt( unsigned char * text );
+
+  void decrypt ( unsigned char * text );
 };
 
 //class Serpent {
@@ -146,7 +160,7 @@ Serpent::Serpent() {
 
    int tfp[128] = 
      {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60,
-      64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 103, 108, 112, 116, 120, 124,
+      64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116, 120, 124,
       1, 5, 9, 13, 17, 21, 25, 29, 33, 37, 41, 45, 49, 53, 57, 61, 
       65, 69, 73, 77, 81, 85, 89, 93, 97, 101, 105, 109, 113, 117, 121, 125,
       2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62, 
@@ -292,7 +306,141 @@ Serpent::Serpent() {
   
   std::copy( &ttransformTable[0][0], &ttransformTable[0][0]+128*7, 
 	     &transformTable[0][0] );
+  
+  int tinverseTransformTable[128][7]  = 
+    {
+      {53, 55, 72, -1, -1, -1, -1},
+      {1, 5, 20, 90, -1, -1, -1},
+      {15, 102, -1, -1, -1, -1, -1},
+      {3, 31, 90, -1, -1, -1, -1},
+      {57, 59, 76, -1, -1, -1, -1},
+      {5, 9, 24, 94, -1, -1, -1},
+      {19, 106, -1, -1, -1, -1, -1},
+      {7, 35, 94, -1, -1, -1, -1},
+      {61, 63, 80, -1, -1, -1, -1},
+      {9, 13, 28, 98, -1, -1, -1},
+      {23, 110, -1, -1, -1, -1, -1},
+      {11, 39, 98, -1, -1, -1, -1},
+      {65, 67, 84, -1, -1, -1, -1},
+      {13, 17, 32, 102, -1, -1, -1},
+      {27, 114, -1, -1, -1, -1, -1},
+      {1, 3, 15, 20, 43, 102, -1},
+      {69, 71, 88, -1, -1, -1, -1},
+      {17, 21, 36, 106, -1, -1, -1},
+      {1, 31, 118, -1, -1, -1, -1},
+      {5, 7, 19, 24, 47, 106, -1},
+      {73, 75, 92, -1, -1, -1, -1},
+      {21, 25, 40, 110, -1, -1, -1},
+      {5, 35, 122, -1, -1, -1, -1},
+      {9, 11, 23, 28, 51, 110, -1},
+      {77, 79, 96, -1, -1, -1, -1},
+      {25, 29, 44, 114, -1, -1, -1},
+      {9, 39, 126, -1, -1, -1, -1},
+      {13, 15, 27, 32, 55, 114, -1},
+      {81, 83, 100, -1, -1, -1, -1},
+      {1, 29, 33, 48, 118, -1, -1},
+      {2, 13, 43, -1, -1, -1, -1},
+      {1, 17, 19, 31, 36, 59, 118},
+      {85, 87, 104, -1, -1, -1, -1},
+      {5, 33, 37, 52, 122, -1, -1},
+      {6, 17, 47, -1, -1, -1, -1},
+      {5, 21, 23, 35, 40, 63, 122},
+      {89, 91, 108, -1, -1, -1, -1},
+      {9, 37, 41, 56, 126, -1, -1},
+      {10, 21, 51, -1, -1, -1, -1},
+      {9, 25, 27, 39, 44, 67, 126},
+      {93, 95, 112, -1, -1, -1, -1},
+      {2, 13, 41, 45, 60, -1, -1},
+      {14, 25, 55, -1, -1, -1, -1},
+      {2, 13, 29, 31, 43, 48, 71},
+      {97, 99, 116, -1, -1, -1, -1},
+      {6, 17, 45, 49, 64, -1, -1},
+      {18, 29, 59, -1, -1, -1, -1},
+      {6, 17, 33, 35, 47, 52, 75},
+      {101, 103, 120, -1, -1, -1, -1},
+      {10, 21, 49, 53, 68, -1, -1},
+      {22, 33, 63, -1, -1, -1, -1},
+      {10, 21, 37, 39, 51, 56, 79},
+      {105, 107, 124, -1, -1, -1, -1},
+      {14, 25, 53, 57, 72, -1, -1},
+      {26, 37, 67, -1, -1, -1, -1},
+      {14, 25, 41, 43, 55, 60, 83},
+      {0, 109, 111, -1, -1, -1, -1},
+      {18, 29, 57, 61, 76, -1, -1},
+      {30, 41, 71, -1, -1, -1, -1},
+      {18, 29, 45, 47, 59, 64, 87},
+      {4, 113, 115, -1, -1, -1, -1},
+      {22, 33, 61, 65, 80, -1, -1},
+      {34, 45, 75, -1, -1, -1, -1},
+      {22, 33, 49, 51, 63, 68, 91},
+      {8, 117, 119, -1, -1, -1, -1},
+      {26, 37, 65, 69, 84, -1, -1},
+      {38, 49, 79, -1, -1, -1, -1},
+      {26, 37, 53, 55, 67, 72, 95},
+      {12, 121, 123, -1, -1, -1, -1},
+      {30, 41, 69, 73, 88, -1, -1},
+      {42, 53, 83, -1, -1, -1, -1},
+      {30, 41, 57, 59, 71, 76, 99},
+      {16, 125, 127, -1, -1, -1, -1},
+      {34, 45, 73, 77, 92, -1, -1},
+      {46, 57, 87, -1, -1, -1, -1},
+      {34, 45, 61, 63, 75, 80, 103},
+      {1, 3, 20, -1, -1, -1, -1},
+      {38, 49, 77, 81, 96, -1, -1},
+      {50, 61, 91, -1, -1, -1, -1},
+      {38, 49, 65, 67, 79, 84, 107},
+      {5, 7, 24, -1, -1, -1, -1},
+      {42, 53, 81, 85, 100, -1, -1},
+      {54, 65, 95, -1, -1, -1, -1},
+      {42, 53, 69, 71, 83, 88, 111},
+      {9, 11, 28, -1, -1, -1, -1},
+      {46, 57, 85, 89, 104, -1, -1},
+      {58, 69, 99, -1, -1, -1, -1},
+      {46, 57, 73, 75, 87, 92, 115},
+      {13, 15, 32, -1, -1, -1, -1},
+      {50, 61, 89, 93, 108, -1, -1},
+      {62, 73, 103, -1, -1, -1, -1},
+      {50, 61, 77, 79, 91, 96, 119},
+      {17, 19, 36, -1, -1, -1, -1},
+      {54, 65, 93, 97, 112, -1, -1},
+      {66, 77, 107, -1, -1, -1, -1},
+      {54, 65, 81, 83, 95, 100, 123},
+      {21, 23, 40, -1, -1, -1, -1},
+      {58, 69, 97, 101, 116, -1, -1},
+      {70, 81, 111, -1, -1, -1, -1},
+      {58, 69, 85, 87, 99, 104, 127},
+      {25, 27, 44, -1, -1, -1, -1},
+      {62, 73, 101, 105, 120, -1, -1},
+      {74, 85, 115, -1, -1, -1, -1},
+      {3, 62, 73, 89, 91, 103, 108},
+      {29, 31, 48, -1, -1, -1, -1},
+      {66, 77, 105, 109, 124, -1, -1},
+      {78, 89, 119, -1, -1, -1, -1},
+      {7, 66, 77, 93, 95, 107, 112},
+      {33, 35, 52, -1, -1, -1, -1},
+      {0, 70, 81, 109, 113, -1, -1},
+      {82, 93, 123, -1, -1, -1, -1},
+      {11, 70, 81, 97, 99, 111, 116},
+      {37, 39, 56, -1, -1, -1, -1},
+      {4, 74, 85, 113, 117, -1, -1},
+      {86, 97, 127, -1, -1, -1, -1},
+      {15, 74, 85, 101, 103, 115, 120},
+      {41, 43, 60, -1, -1, -1, -1},
+      {8, 78, 89, 117, 121, -1, -1},
+      {3, 90, -1, -1, -1, -1, -1},
+      {19, 78, 89, 105, 107, 119, 124},
+      {45, 47, 64, -1, -1, -1, -1},
+      {12, 82, 93, 121, 125, -1, -1},
+      {7, 94, -1, -1, -1, -1, -1},
+      {0, 23, 82, 93, 109, 111, 123},
+      {49, 51, 68, -1, -1, -1, -1},
+      {1, 16, 86, 97, 125, -1, -1},
+      {11, 98, -1, -1, -1, -1, -1},
+      {4, 27, 86, 97, 113, 115, 127},
+    };
 
+  std::copy( &tinverseTransformTable[0][0], &tinverseTransformTable[0][0]+128*7, 
+	     &inverseTransformTable[0][0] );
   
   k3 = 0; 
   k2 = 0; 
@@ -313,7 +461,7 @@ Serpent::Serpent() {
   };
   */  
 
-  hexTable = "0123456789ABCDEF";
+  hexTable = "0123456789abcdef";
 
   int t[8][16] = {
     { 3, 8,15, 1,10, 6, 5,11,14,13, 4, 2, 7, 0, 9,12},
@@ -364,36 +512,22 @@ std::tuple< std::bitset<64>, std::bitset<64> > Serpent::linearTransformBitSlice
   std::bitset<32> x2 (temp1.substr(0, 32));
   std::bitset<32> x3 (temp1.substr(32, 32));
 
-  //std::cout << x0 << std::endl;
-  //std::cout << x1 << std::endl;
-  //std::cout << x2 << std::endl;
-  //std::cout << x3 << std::endl;
-  
-  
-  rotate(x0, 13);
-  //std::cout << x0 << std::endl;
+   rotate(x0, 13);
+ 
   
   rotate(x2, 3);
   x1 = x1^x0^x2;
-  //x0 <<= 3;
+ 
   x3 = x3^x2^(x0 >> 3);
-  //x3 = x3^x2^x0;
+ 
   rotate(x1, 1);
   rotate(x3, 7);
   x0 = x0^x1^x3;
-  //x1 <<= 7;
+ 
   x2 = x2^x3^(x1 >> 7);
-  //x2 = x2^x3^x1;
   rotate(x0, 5);
   rotate(x2, 22);
-  //std::cout << x0 << std::endl;
-  //std::cout << x1 << std::endl;
-  //std::cout << x2 << std::endl;
-  //std::cout << x3 << std::endl;
-  //b <<= 4;
-  //rotate(b,4);
-  //std::cout << b << std::endl;
-
+    
   std::get<0>(state) = std::bitset<64>((x0.to_string()).append(x1.to_string()));
   std::get<1>(state) = std::bitset<64>((x2.to_string()).append(x3.to_string()));
 
@@ -432,11 +566,39 @@ Serpent::linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
 
 }
 
+std::tuple< std::bitset<64>, std::bitset<64> >
+Serpent::inverseLinearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
+
+  std::string stateString0 = std::get<0>(state).to_string();
+  std::string stateString1 = std::get<1>(state).to_string();
+  std::string stateString = stateString0.append(stateString1);
+  
+  std::string tempState = "";
+  
+  for ( int i = 0; i < 128; i ++ ){
+    unsigned char bit = '0';
+    for ( int j = 0; j < 7; j ++ ){
+     
+      if (inverseTransformTable[i][j] >= 0 ){
+	int bit2 = ((stateString[inverseTransformTable[i][j]]) - '0');
+	bit ^= bit2;
+      }
+    }
+    tempState.append(1, bit);
+  }
+  
+  std::bitset<64> tempState0(tempState.substr(0,64));
+  std::bitset<64> tempState1(tempState.substr(64,64));
+  std::get<0>(state) = tempState0;
+  std::get<1>(state) = tempState1;
+  return state;
+}
+
 
 // Rotates to the left
 void Serpent::rotate(std::bitset<32> &b, unsigned m) {
   b = (b >>  m | b << (32-m));
-  }
+}
 
 /**
  * Sets the key used to generate the values of subKeys[].
@@ -455,33 +617,15 @@ void Serpent::setKey (unsigned char userKey[]){
   //Check the size of the given userkey. If it's 16 or 24 bytes, pad the 
   //most significant bit with a 1 and pad the rest out with 0's
   //k0, k1, k2, k4 were initialized to 0 in the constructor.
-  //What I think I'm doing is the following, given a 128 bit userkey:
-  // 0x1111 1111 1111 1111 1111 1111 1111 1111,
-  // k3 = 0000 0000 0000 0000
-  // k2 = 8000 0000 0000 0000 since this would be appending 1 to the MSB end
-  // k1 = AAAA AAAA AAAA AAAA 
-  // k0 = AAAA AAAA AAAA AAAA since I am flipping the bits to change from
-  // big to little-endian
-  // there's a cout statement at the end that can of setkey that seems
-  // to imply this is right, but maybe that's not what we should even be doing?
-  //
-  //(Idea for later optimization: Rather than masking each bit, create a 
-  //lookup table for all reflected bytes and assign accordingly)
-
   
-
-
-
   unsigned char tempKey[size];
   int tempIndex = 0;
 
   for( int i = size-1; i >= 0; i-- ){
-    
     tempKey[tempIndex] = userKey[i];
     tempIndex ++;
-
   }
-
+  
   userKey = tempKey;
   
   if (size == 16){
@@ -496,7 +640,7 @@ void Serpent::setKey (unsigned char userKey[]){
   else if (size == 24){
     
     
-    k0 = 0x8000000000000000;
+    k0 = 1;
     k1 = readIn(userKey);
     k2 = readIn(userKey + 8);
     k3 = readIn(userKey + 16);
@@ -583,7 +727,7 @@ void Serpent::generateSubKeys(){
       ( preKeys[4*i + 2].append(preKeys[4*i + 3]));
        
     subKeys[i] = initialP(subKeys[i]);
-    
+        
   }
 }
 
@@ -642,6 +786,7 @@ unsigned int Serpent::SInt ( int box, unsigned int input ){
   return sBoxDecimalTable[box % 8][input];
 }
 
+//Passes the state through the given sbox
 std::tuple< std::bitset<64>, std::bitset<64> > 
 Serpent::SBitset ( int box, std::tuple< std::bitset<64>, std::bitset<64> > bitState ){
   
@@ -655,11 +800,27 @@ Serpent::SBitset ( int box, std::tuple< std::bitset<64>, std::bitset<64> > bitSt
   return bitState;
 }
   
-  
+//Passes a binary string of length 4 through the given sbox
 std::string Serpent::SInverse(int box, std::string output){
   return sBoxBitstringInverse[box%8][output];
 }
+
+
+//Passes the state through the inverse of the given sbox  
+ std::tuple < std::bitset<64>, std::bitset<64> >
+ Serpent::inverseSBitset( int box, std::tuple< std::bitset<64>, 
+					       std::bitset<64> >  bitState){
+
+  std::string sBoxString0 = std::get<0>(bitState).to_string();
+  std::string sBoxString1 = std::get<1>(bitState).to_string();
+  std::string sBoxString = sBoxString0.append(sBoxString1);
+  sBoxString = SHatInverse( box, sBoxString );
   
+  std::get<0>(bitState) = std::bitset<64>(sBoxString.substr(0, 64));
+  std::get<1>(bitState) = std::bitset<64>(sBoxString.substr(64,64));
+  return bitState;
+}
+
 std::string Serpent::SHat(int box, std::string input){
   std::string result = "";
   
@@ -679,7 +840,9 @@ std::string Serpent::SHatInverse(int box, std::string output){
     
   return result;
 }
-  
+ 
+
+ 
 std::string * Serpent::SBitslice(int box, std::string param[4]){
 
   for (int i = 0; i < 4; i++ ){
@@ -701,7 +864,6 @@ std::string * Serpent::SBitslice(int box, std::string param[4]){
     input = "";
   }
   
-  //  std::cout << bitSliceResult[0] << std::endl;
   return bitSliceResult;
 }
   
@@ -882,7 +1044,8 @@ std::string Serpent::hexString (std::tuple< std::bitset<64>, std::bitset<64> > s
   }
   return hexVal0.append(hexVal1.append(hexVal2.append(hexVal3)));
 }
-    
+
+//Nessify output hexstring so that is reads sensibly    
 std::string Serpent::nessify (std::string reformat){
 
   std::string nessied = "";
@@ -892,13 +1055,19 @@ std::string Serpent::nessify (std::string reformat){
     nessied = nessied.insert(0, 1, reformat[i]);
     
   } 
-  
   return nessied;
 }
 
+
 std::string Serpent::unnessify (std::string reformat){
 
+  std::string unnessied = "";
+  for (int i = 0; i < reformat.length(); i+=2 ){
+          
+  }
 }
+
+
 //Prints the current state in big-endian hex
 void Serpent::printState 
 (std::tuple< std::bitset<64>, std::bitset<64> > string){
@@ -919,6 +1088,8 @@ void Serpent::printStateBinary (std::tuple< std::bitset<64>, std::bitset<64> > s
   std::cout << std::get<0>(toPrint) << std::get<1>(toPrint) << std::endl;
 
 }
+
+
 //Reads bytes into an unsigned long long int
 //bytes[] must have length 8
 unsigned long long int Serpent::readIn ( unsigned char bytes[8] ){
@@ -933,92 +1104,127 @@ unsigned long long int Serpent::readIn ( unsigned char bytes[8] ){
 }
 
 
-
+//Inverse initial permutation
 std::tuple< std::bitset<64>, std::bitset<64> >
 Serpent::initialP ( std::tuple< std::bitset<64>, 
-				     std::bitset<64> > before ){
+				     std::bitset<64> > state ){
 
-  std::bitset<64> before0 (std::get<0>(before));
-  std::bitset<64> before1 (std::get<1>(before));
+  std::bitset<64> state0 (std::get<0>(state));
+  std::bitset<64> state1 (std::get<1>(state));
   
   std::bitset<64> tempState0;
   std::bitset<64> tempState1;
   
   for ( int i = 0; i < 128; i++ ){
-    
-    
+        
     if (i < 64){
       
       if ( ip[i] < 64 ){
-	tempState0[63-i] = before0[63-ip[i]];
+	tempState0[63-i] = state0[63-ip[i]];
       }
       else{
-	tempState0[63-i] = before1[63-(ip[i] - 64)];
+	tempState0[63-i] = state1[63-(ip[i] - 64)];
       }
     }
-    
     else{
-      
       if (ip[i] > 63){
-	tempState1[127 - i] = before1[63 -(ip[i] - 64)];
+	tempState1[127 - i] = state1[63 -(ip[i] - 64)];
       }
       else {
-	tempState1[127 - i] = before0[63 - ip[i]];
+	tempState1[127 - i] = state0[63 - ip[i]];
       }
     }
   }
-  std::get<0>(before) = tempState0;
-  std::get<1>(before) = tempState1;
-  return before;
+  std::get<0>(state) = tempState0;
+  std::get<1>(state) = tempState1;
+  return state;
 }
 
+
+//Inverse initial permutation
+std::tuple< std::bitset<64>, std::bitset<64> >
+Serpent::inverseIP ( std::tuple< std::bitset<64>, 
+				     std::bitset<64> > state ){
+
+  std::string stateString = std::get<0>(state)
+    .to_string().append(std::get<1>(state).to_string());
+				
+  std::string tempString(128, '0');
+				   
+  for ( int i = 0; i < 128; i++ ){
+    tempString[ip[i]] = stateString[i];
+  }
+  
+  std::get<0>(state) = std::bitset<64>(tempString.substr(0,64));
+  std::get<1>(state) = std::bitset<64>(tempString.substr(64,64));
+    
+  return state;
+}
+
+
+//Final permutation
 std::tuple< std::bitset<64>, std::bitset<64> >
 Serpent::finalP ( std::tuple< std::bitset<64>, 
-				     std::bitset<64> > before ){
+				     std::bitset<64> > state ){
 
-  std::bitset<64> before0 (std::get<0>(before));
-  std::bitset<64> before1 (std::get<1>(before));
+  std::bitset<64> state0 (std::get<0>(state));
+  std::bitset<64> state1 (std::get<1>(state));
   
   std::bitset<64> tempState0;
   std::bitset<64> tempState1;
   
   for ( int i = 0; i < 128; i++ ){
     
-    
     if (i < 64){
-      
       if ( fp[i] < 64 ){
-	tempState0[63-i] = before0[63-fp[i]];
+	tempState0[63-i] = state0[63-fp[i]];
       }
       else{
-	tempState0[63-i] = before1[63-(fp[i] - 64)];
+	tempState0[63-i] = state1[63-(fp[i] - 64)];
       }
     }
-    
     else{
-      
       if (fp[i] > 63){
-	tempState1[127 - i] = before1[63 -(fp[i] - 64)];
+	tempState1[127 - i] = state1[63 -(fp[i] - 64)];
       }
       else {
-	tempState1[127 - i] = before0[63 - fp[i]];
+	tempState1[127 - i] = state0[63 - fp[i]];
       }
     }
   }
-  std::get<0>(before) = tempState0;
-  std::get<1>(before) = tempState1;
-  return before;
+  std::get<0>(state) = tempState0;
+  std::get<1>(state) = tempState1;
+  return state;
 }
-   					
 
-void Serpent::encrypt( unsigned char * text ){
+
+//Inverse final permutation   					
+std::tuple< std::bitset<64>, std::bitset<64> >
+Serpent::inverseFP ( std::tuple< std::bitset<64>, std::bitset<64> > state ){
+
+  std::string stateString = std::get<0>(state)
+    .to_string().append(std::get<1>(state).to_string());
   
-  unsigned char tempText[16];
-  int tempIndex = 0;
+  std::string tempString(128, '0');
+  
+  for ( int i = 0; i < 128; i++ ){
+    tempString[fp[i]] = stateString[i];
+  }
+  
+  std::get<0>(state) = std::bitset<64>(tempString.substr(0,64));
+  std::get<1>(state) = std::bitset<64>(tempString.substr(64,64));
+    
+  return state;  
+}
+
+//Encrypt text
+void Serpent::encrypt( unsigned char * text ){
 
   for( int i = 0; i <= 15; i++ ){
-    std::cout << "text at " << i << ": " << static_cast<unsigned int>(text[i]) << std::endl;
-    std::cout << "BitMirrorByte of text: " << static_cast<unsigned int>(bitMirrorByte(text[i])) << std::endl;
+    //    std::cout << "text at " << i << ": " 
+    //<< static_cast<unsigned int>(text[i]) << std::endl;
+    //std::cout << "BitMirrorByte of text: " 
+    //	      << static_cast<unsigned int>(bitMirrorByte(text[i])) << std::endl;
     text[i] = bitMirrorByte(text[i]);
 
   }
@@ -1028,8 +1234,8 @@ void Serpent::encrypt( unsigned char * text ){
   unsigned long long int stateMSB = readIn(text);
   unsigned long long int stateLSB = readIn(text + 8);
     
-  std::cout << "int state 1: " << stateMSB << std::endl;
-  std::cout << "int state 2: " << stateLSB << std::endl;
+  
+  
   std::tuple< std::bitset<64>, std::bitset<64> > state;
   std::get<0>(state) = stateMSB;
   std::get<1>(state) = stateLSB;
@@ -1080,6 +1286,68 @@ void Serpent::encrypt( unsigned char * text ){
 
 }
 
+void Serpent::decrypt ( unsigned char * text ){
+   
+  unsigned char tempText[16] = {};
+
+  for( int i = 0; i <=15; i++ ){
+    tempText[i] = bitMirrorByte(text[i]);
+  }
+
+  unsigned long long int stateMSB = readIn(tempText);
+  unsigned long long int stateLSB = readIn(tempText + 8);
+
+  std::tuple< std::bitset<64>, std::bitset<64> > state;
+  std::get<0>(state) = stateMSB;
+  std::get<1>(state) = stateLSB;
+  std::tuple< std::bitset<64>, std::bitset<64> > tempState;
+
+  std::cout << "Initial State: " ;
+  printState(state);
+
+  state = inverseFP(state);
+  std::cout << "After IFP: " ;
+  printState(state);
+
+  std::get<0>(state) = (std::get<0>(subKeys[32]) ^ std::get<0>(state));
+  std::get<1>(state) = (std::get<1>(subKeys[32]) ^ std::get<1>(state));
+
+  state = inverseSBitset(7, state);
+  std::cout << "After inverse s: ";
+  printState(state);
+
+  std::get<0>(state) = (std::get<0>(subKeys[31]) ^ std::get<0>(state));
+  std::get<1>(state) = (std::get<1>(subKeys[31]) ^ std::get<1>(state));
+  
+  std::cout << "after xor: ";
+  printState(state);
+
+  for ( int round = 30; round >= 0; round -- ){
+
+    state = inverseLinearTransform(state);
+    std::cout << "LT: " ;
+    printState(state);
+   
+    state = inverseSBitset(round, state);
+    std::cout << "inverse s: ";
+    printState(state);
+
+    std::get<0>(state) = (std::get<0>(subKeys[round]) ^ std::get<0>(state));
+    std::get<1>(state) = (std::get<1>(subKeys[round]) ^ std::get<1>(state));
+    std::cout << "xor: " ;
+    printState(state);
+  }
+    
+  state = inverseIP(state);
+  std::cout << "after IP: ";
+  printState(state);
+
+  std::string nessieOutput = nessify(hexString(bitMirrorTuple(state)));
+  std::cout << "Plaintext: " << nessieOutput << std::endl;
+
+}
+
+
 int main(int argc, char** argv)
 {
   int n;
@@ -1107,12 +1375,10 @@ int main(int argc, char** argv)
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00,
 			    0x00, 0x00, 0x00, 0x00, 
-			    0x00, 0x00, 0x00, 0x00,
-			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
 
-
-
+ //			    0x00, 0x00, 0x00, 0x00, 
+ //			    0x00, 0x00, 0x00, 0x00};
 
  unsigned char plaintext[16] = 
    {0x00, 0x00, 0x00, 0x00,
@@ -1120,6 +1386,9 @@ int main(int argc, char** argv)
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
 
+ //unsigned char ciphertext[16] =
+
+   
 
  std::bitset<64> test0 (serpent.readIn(testKey));
  std::bitset<64> test1 (serpent.readIn(testKey + 8));
@@ -1130,20 +1399,7 @@ int main(int argc, char** argv)
  serpent.setKey(testKey);
  serpent.generateSubKeys();
  serpent.encrypt(plaintext);
-
- /*
- std::bitset<32> set0 = std::bitset<32>(0xF0000000);
- std::bitset<32> set1 = std::bitset<32>(0x00000001);
- std::bitset<32> set2 = std::bitset<32>(0xAAAAAAAA);
- std::bitset<32> set3 = std::bitset<32>(0x01010101);
- */
-
- //std::cout << "Testing four bits with 80000000 : \n" ;
- //std::cout << serpent.fourBits(set0,0) << std::endl;
-
- // std::cout << "Testing fourBitsFromWords with - " << std::endl;
- //std::cout << "80000000, 00000001, AAAAAAAA, 01010101 \n";
- //std::cout << serpent.fourBitsFromWords(set0, set1, set2, set3, 0) << std::endl;
+ // serpent.decrypt(ciphertext);
 
  return 0;
 }
