@@ -12,7 +12,8 @@ class Serpent
   
   
 private:
-  
+
+    
   int ip[128];                       //initial permutation
   int fp[128];                       //final permutation
   const char * hexTable;             //a string used for converting to hex
@@ -142,42 +143,59 @@ public:                    // begin public section
 				   std::bitset<32> word2, 
 				   std::bitset<32> word3,
 				   int pos);
-
+  
   std::string fourBitsString( std::bitset<64> words, int pos );
 
+  //Returns a hexadecimal representation of the state
   std::string hexString (std::tuple< std::bitset<64>, std::bitset<64> > state);
 
+  //Take the string in Serpent format and return a string in NESSIE format
   std::string nessify (std::string reformat);
 
+  //Prints the state in big-endian hexadecimal
   void printState (std::tuple< std::bitset<64>, std::bitset<64> > string);
 
+  //Print the current state in binary
+  //Used for testing/debugging
   void printStateBinary (std::tuple< std::bitset<64>, std::bitset<64> > string);
 
+  //Reads 8 bytes into an unsigned long long int.
+  //Used for reading in the unsigned char[] input
   unsigned long long int readIn ( unsigned char bytes[8] );
 
+  //Applies the initial permutation to the state
   std::tuple< std::bitset<64>, std::bitset<64> > 
   initialP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
+  //Applies the inverse of the initial permutation to the state.
+  //Used for decryption
   std::tuple< std::bitset<64>, std::bitset<64> >
   inverseIP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
+  //Applies the final permutation to the state
   std::tuple< std::bitset<64>, std::bitset<64> > 
   finalP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
+  //Inverse of the final permutation. Used for decryption
   std::tuple< std::bitset<64>, std::bitset<64> >
   inverseFP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
+   //Encrypt the given plaintext
   void encrypt( unsigned char * text );
 
+  //Decrypt the given ciphertext
   void decrypt ( unsigned char * text );
+  
 };
+
 
 //class Serpent {
 
 Serpent::Serpent() { 
   
   //The initial permutation. To be applied to the plaintext and keys.
-  
+
+ 
   int tempIP[128] = 
     {0, 32, 64, 96, 1, 33, 65, 97, 2, 34, 66, 98, 3, 35, 67, 99,
      4, 36, 68, 100, 5, 37, 69, 101, 6, 38, 70, 102, 7, 39, 71, 103,
@@ -701,7 +719,15 @@ int Serpent::keySize (){
     return size;
   }
 }
-  
+
+//Returns this block cipher's block size in bytes.
+// @return Block size.
+
+int Serpent::blockSize (){
+  return 16;
+}
+ 
+ 
 //Returns of string of 0's and 1's with the specified length
 //representing the value num in binary  
 std::string Serpent::Bitstring(unsigned int num, int length) {
@@ -728,6 +754,8 @@ std::string Serpent::S(int box, std::string input){
 }
 */
 
+//Return the sbox value for the given input and sbox
+//For example, if box = 0 and input = 12, SInt returns 8
 unsigned int Serpent::SInt ( int box, unsigned int input ){
   return sBoxes[box % 8][input];
 }
@@ -1033,7 +1061,7 @@ void Serpent::printState
 
 }
 
-//Print the current state
+//Print the current state in big-endian binary
 void Serpent::printStateBinary (std::tuple< std::bitset<64>, std::bitset<64> > string){
 
   std::tuple< std::bitset<64>, std::bitset<64> > toPrint
@@ -1171,16 +1199,12 @@ Serpent::inverseFP ( std::tuple< std::bitset<64>, std::bitset<64> > state ){
   return state;  
 }
 
+
 //Encrypt text
 void Serpent::encrypt( unsigned char * text ){
 
-  for( int i = 0; i <= 15; i++ ){
-    //    std::cout << "text at " << i << ": " 
-    //<< static_cast<unsigned int>(text[i]) << std::endl;
-    //std::cout << "BitMirrorByte of text: " 
-    //	      << static_cast<unsigned int>(bitMirrorByte(text[i])) << std::endl;
+  for( int i = 0; i < 16; i++ ){
     text[i] = bitMirrorByte(text[i]);
-
   }
 
   unsigned long long int stateMSB = readIn(text);
@@ -1232,6 +1256,17 @@ void Serpent::encrypt( unsigned char * text ){
   printStateBinary(state);
   std::string nessieOutput = nessify(hexString(bitMirrorTuple(state)));
   std::cout << "Ciphertext: " << nessieOutput << std::endl;
+
+
+  //The following code changes the values of the plaintext array
+  //so that it holds the ciphertext in a format that will allow for
+  //repeated encryptions
+  unsigned char temp = '0';
+      
+  for ( int i = 0; i < 16; i++ ){
+    temp = ((fourBits(state, 8*i) << 4) ^ (fourBits(state, 8*i + 4)));
+    text[i] = bitMirrorByte(temp);
+  }
 
 }
 
@@ -1319,16 +1354,16 @@ int main(int argc, char** argv)
   std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
   //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
+ unsigned char testKey[] = {0x40, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
  //	    0x00, 0x00, 0x00, 0x00, 
  //			    0x00, 0x00, 0x00, 0x00};
-
+ 
  //			    0x00, 0x00, 0x00, 0x00, 
  //			    0x00, 0x00, 0x00, 0x00};
-
+ 
  unsigned char plaintext[16] = 
    {0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
@@ -1336,26 +1371,21 @@ int main(int argc, char** argv)
     0x00, 0x00, 0x00, 0x00};
 
  unsigned char ciphertext[16] =
-   {0x26, 0x4e, 0x54, 0x81, 
-    0xef, 0xf4, 0x2a, 0x46, 
-    0x06, 0xab, 0xda, 0x06, 
-    0xc0, 0xbf, 0xda, 0x3d};
+   {0x4a, 0x23, 0x1b, 0x3b, 
+    0xc7, 0x27, 0x99, 0x34, 
+    0x07, 0xac, 0x6e, 0xc8, 
+    0x35, 0x0e, 0x85, 0x24};
  
-
- std::bitset<64> test0 (serpent.readIn(testKey));
- std::bitset<64> test1 (serpent.readIn(testKey + 8));
- std::tuple< std::bitset<64>, std::bitset<64> > testTuple (test0, test1);
-
- 
+ //Set the keysize to the given keysize (in bytes)
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
 
- serpent.encrypt(plaintext);
- serpent.decrypt(ciphertext);
-
+ //Encrypt the given plaintext n times 
  for (int i = 0; i < n; i++ ){
+   serpent.encrypt(plaintext);
  }
-   
+ 
+ 
 
  return 0;
 }
