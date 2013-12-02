@@ -1,12 +1,10 @@
-#include <algorithm>
-#include <cstdio>
 #include <iostream>
 #include <bitset>
 #include <string>
 #include <cstring>
-#include <utility>
 #include <tuple>
-#include <vector>
+#include <fstream>
+#include <sstream>
 
 class Serpent
 {
@@ -53,8 +51,7 @@ private:
   //transformPositions[0] and so forth.
   //if fewer than 7 values are to be xor'ed, the array is padded out with -1's
   int transformPositions[128][7];
-  std::vector< std::vector<int> > transform;
-  
+ 
 
   //the inverse of transformPositions. used for decryption
   int inverseTransformPositions[128][7];
@@ -271,12 +268,7 @@ Serpent::Serpent() {
   std::copy( &ttransformPositions[0][0], &ttransformPositions[0][0]+128*7, 
 	     &transformPositions[0][0] );
  
-  for (int i = 0; i<128; i++){
-    std::vector<int> row (ttransformPositions[i], ttransformPositions[i] + sizeof(ttransformPositions[i])/sizeof(int));
 
-    transform.push_back(row);
-  }
- 
   int tinverseTransformPositions[128][7]  = 
     {
       {53, 55, 72, -1, -1, -1, -1}, {1, 5, 20, 90, -1, -1, -1},
@@ -426,7 +418,7 @@ Serpent::linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
     for ( int j = 0; j < 7; j ++ ){
      
       if (transformPositions[i][j] >= 0 ){
-	//int bit2 = ((stateString[transformPositions[i][j]]) - '0');
+	
 	bit ^= ((stateString[transformPositions[i][j]]) - '0');
       }
       else{
@@ -1073,52 +1065,144 @@ void Serpent::decrypt ( unsigned char * text ){
 
 int main(int argc, char** argv)
 {
-  int n;
-   if (argc > 1) {
-    n = std::stof(argv[1]);
-  } else {
-    std::cerr << "Not enough arguments\n";
+  std::string usageWarning =  "usage: [-i/--input fileName] [-o/--output fileName] [-k/--key 32bitKey] [-n/--nonce numEncryptions]";
+  int nonce = 1;
+  std::string inputFile;
+  std::string outputFile;
+  std::string key;
+  bool hasInputFile = false;
+  bool hasOutputFile = false;
+  bool hasKey = false;
+  std::ofstream out;
+  
+  if (argc < 2) {
+    std::cerr << usageWarning << std::endl;
     return 1;
   }
 
-  char buff[100];
-  sprintf(buff,"The program was run with the following command: %d",n);
-  std::cout << buff << std::endl;
+  //Parse command line input
+  for( int i = 1; i < argc; i++ ) {
+    if (0 == strncmp(argv[i], "-n", 2) || 0 == strncmp(argv[i], "--nonce", 7)) {
+i = i + 1;
+      nonce = std::stof(argv[i]);
+    }
+    else if (0 == strncmp(argv[i], "-i", 2) || 0 == strncmp(argv[i], "--input", 7)) {
+      i = i + 1;
+      inputFile = argv[i];
+      hasInputFile = true;
+    }
+    else if (0 == strncmp(argv[i], "-o", 2) || 0 == strncmp(argv[i], "--output", 8)) {
+      i = i + 1;
+      outputFile = argv[i];
+      out.open(outputFile);
+      std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+      std::cout.rdbuf(out.rdbuf()); 
+      hasOutputFile = true;
+    }
+    else if (0 == strncmp(argv[i], "-k", 2) || 0 == strncmp(argv[i], "--key", 5)) {
+      i = i + 1;
+      key = argv[i];
+      hasKey = true;
+    }
+    else {
+      std::cerr << "Unrecognized option." << std::endl;
+      std::cerr << usageWarning << std::endl;
+      return 1;
+    }
+
+  }
   
-  Serpent serpent = Serpent();
- unsigned char testKey[] = {0x00, 0x00, 0x00, 0x00, 
+  Serpent serpent; 
+  std::bitset<32> x0 (std::string("11000000000000000000000000000110"));
+  std::bitset<32> x1 (std::string("11000000000000000000000000000110"));
+  std::bitset<32> x2 (std::string("11000000000000000000000000000110"));
+  std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
+  //  serpent.linearTransform(x0,x1,x2,x3);
+
+ unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
-			    0x00, 0x00, 0x00, 0x00, 
-			    0x00, 0x00, 0x00, 0x00,
-			    0x00, 0x00, 0x00, 0x00, 
- 			    0x00, 0x00, 0x00, 0x00,
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
  
  unsigned char plaintext[16] = 
-   {0x01, 0x23, 0x45, 0x67,
-    0x89, 0xab, 0xcd, 0xef,
+   {0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
- 
- unsigned char ciphertext[16] =
-   {0x36, 0x20, 0xb1, 0x7a, 
-    0xe6, 0xa9, 0x93, 0xd0, 
-    0x96, 0x18, 0xb8, 0x76, 
-    0x82, 0x66, 0xba, 0xe9};
- 
- //Set the keysize to the given keysize (in bytes)
+
+ if (hasKey) {
+   unsigned char new_key[32];
+   int index = 0;
+   for (int i = 0; i < key.length() - 2; i++) {
+     std::stringstream ss;
+     ss << std::hex << key[i] << key[i+1];
+     int n;
+     ss >> n;
+     unsigned char x = (unsigned char)n;
+     new_key[index] = x;
+     index += 1;
+     i += 1;
+   }
+   memcpy(testKey, new_key, sizeof(testKey));
+ }
+
+ if (hasInputFile) {
+    unsigned char new_plaintext[16];
+
+    std::ifstream in(inputFile);
+    unsigned char  x;
+    int index = 0;
+    int temp;
+    std::string temp_string = "";
+
+    while (in >> std::noskipws >> x) {
+
+      std::cout << "X: " << std::hex << x << std::endl;
+      temp_string += x;
+
+      if (temp_string.length() == 2) {
+        std::stringstream ss;
+        ss << std::hex << temp_string;
+        int n;
+        ss >> n;
+        unsigned char y = (unsigned char)n;
+        new_plaintext[index] = y;
+        index += 1;
+        temp_string = "";
+      }
+    }
+    memcpy(plaintext, new_plaintext, sizeof(plaintext));  // Set plaintext to be the plaintext we read in from file
+ }
+ else {
+ }
+
+
+
+/* std::bitset<64> test0 (serpent.readIn(testKey));
+ std::bitset<64> test1 (serpent.readIn(testKey + 8));
+ std::tuple< std::bitset<64>, std::bitset<64> > testTuple (test0, test1);
+
+*/ 
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
+ serpent.generateSubKeys();
 
- //Encrypt the given plaintext n times 
- for (int i = 0; i < n; i++ ){
+ std::cout << "TESTING" << std::endl;
+ int encryptionRound = 0;
+ while (encryptionRound <= nonce) {
+   std::cout << std::dec << "================================ ROUND " << encryptionRound << " ================================\n" << std::endl;
    serpent.encrypt(plaintext);
+   std::cout << std::dec << "============================ END ROUND " << encryptionRound << " ============================\n"<< std::endl;
+   encryptionRound++;
  }
- 
- serpent.decrypt(ciphertext);
+
+ if (hasOutputFile){
+   out.close();
+ }
+
  return 0;
 }
+
 
 
 
