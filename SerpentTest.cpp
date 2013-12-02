@@ -20,6 +20,11 @@ private:
   int ip[128];                       //initial permutation
   int fp[128];                       //final permutation
   const char * hexTable;             //a string used for converting to hex
+  std::string dec2bin[16];        //a lookup table for binary strings from ints
+
+  //a lookup table for ints from binary strings
+  std::map<std::string, int> bin2dec;     
+
 
   int size;                          //size of the key
 
@@ -74,6 +79,12 @@ public:                    // begin public section
   std::tuple< std::bitset<64>, std::bitset<64> >
   linearTransformBitSlice(std::tuple< std::bitset<64>, std::bitset<64> > state);
 
+
+ //Inverse bitslice linear transform
+  std::tuple< std::bitset<64>, std::bitset<64> >
+  inverseLinearTransformBitslice(std::tuple< std::bitset<64>, 
+					     std::bitset<64> > state);
+
   //The regular linear transformation that takes place in rounds 0-30
   std::tuple< std::bitset<64>, std::bitset<64> >
   linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state);
@@ -112,21 +123,23 @@ public:                    // begin public section
 
   std::tuple< std::bitset<64>, std::bitset<64> > 
   SBitset( int box,  std::tuple< std::bitset<64>, std::bitset<64> > state );
+  
+  //Passes the state through the sbox in bitslice mode
+  std::tuple < std::bitset<64>, std::bitset<64> >
+  SboxBitslice ( int box,  std::tuple< std::bitset<64>, 
+				       std::bitset<64> >  state);
 
-  //std::string SInverse(int box, std::string output);
-
+  //Passes the state through the inverse sbox in bitslice mode
+  std::tuple < std::bitset<64>, std::bitset<64> >
+  inverseSboxBitslice ( int box, std::tuple < std::bitset<64>, 
+					    std::bitset<64> > state);
+  
+  //Passes the state through the given inverse sbox
   std::tuple < std::bitset<64>, std::bitset<64> >
   inverseSBitset( int box, std::tuple< std::bitset<64>, std::bitset<64> > 
 		  state);
-
-  //std::string SHat(int box, std::string input);
-
-  //std::string SHatInverse(int box, std::string output);
-
-  //std::string * SBitslice(int box, std::string words[4]);
-
-  //std::string * SBitsliceInverse(int box, std::string words[][32]);
-
+  
+  
   std::string bitMirrorString (std::string image, std::string reflection);
 
   unsigned int bitMirrorInt ( unsigned int image );
@@ -372,12 +385,39 @@ Serpent::Serpent() {
 	     &inverseTransformPositions[0][0] );
 
 
+  //An array for looking up binary string representation of 4-bit ints
+  std::string tdec2bin[16] = {"0000", "0001", "0010", "0011", 
+			      "0100", "0101", "0110", "0111", 
+			      "1000", "1001", "1010", "1011", 
+			      "1100", "1101", "1110", "1111"};
+  
+  std::copy(tdec2bin, tdec2bin+16, dec2bin);  
+  
+  bin2dec["0000"] = 0;
+  bin2dec["0001"] = 1;
+  bin2dec["0010"] = 2;
+  bin2dec["0011"] = 3;
+  bin2dec["0100"] = 4;
+  bin2dec["0101"] = 5;
+  bin2dec["0110"] = 6;
+  bin2dec["0111"] = 7;
+  bin2dec["1000"] = 8;
+  bin2dec["1001"] = 9;
+  bin2dec["1010"] = 10;
+  bin2dec["1011"] = 11;
+  bin2dec["1100"] = 12;
+  bin2dec["1101"] = 13;
+  bin2dec["1110"] = 14;
+  bin2dec["1111"] = 15;
+
+  
+  
   //initialize k0 - k3
   k3 = 0; 
   k2 = 0; 
   k1 = 0;
   k0 = 0;  
-  
+
   //initialize the size of the key to -1
   size = -1;
 
@@ -423,45 +463,10 @@ Serpent::Serpent() {
   //hex representation
   hexTable = "0123456789abcdef";
 
-  /*
-  int t[8][16] = {
-    { 3, 8,15, 1,10, 6, 5,11,14,13, 4, 2, 7, 0, 9,12},
-    {15,12, 2, 7, 9, 0, 5,10, 1,11,14, 8, 6,13, 3, 4},
-    { 8, 6, 7, 9, 3,12,10,15,13, 1,14, 4, 0,11, 5, 2},
-    { 0,15,11, 8,12, 9, 6, 3,13, 1, 2, 4,10, 7, 5,14},
-    { 1,15, 8, 3,12, 0,11, 6, 2, 5, 4,10, 9,14, 7,13},
-    {15, 5, 2,11, 4,10, 9,12, 0, 3,14, 8,13, 6, 7, 1},
-    { 7, 2,12, 5, 8, 4, 6,11,14, 9, 1,15,13, 3,10, 0},
-    { 1,13,15, 0,14, 8, 2,11, 7, 4,12,10, 9, 3, 5, 6}
-  };
-  
-  std::copy( &t[0][0], &t[0][0] + (8 * 16), &sBoxDecimalTable[0][0] );
-    
-    std::map<std::string, std::string> dict;
-    std::map<std::string, std::string> inverseDict;
-    std::string index;
-    std::string value;
-    
-    for(int x = 0; x < 8; x++) {
-      dict.clear();
-      inverseDict.clear();
-      for(int y = 0; y < 16; y++) {
-	index = Bitstring(y, 4);
-	value = Bitstring(sBoxDecimalTable[x][y], 4);
-	dict[index] = value;
-	inverseDict[value] = index;
-      }
-      
-      sBoxBitstring[x] = dict;
-      sBoxBitstringInverse[x] = inverseDict;
-
-      std::string bitSliceResult[4] = {"", "", "", ""};
-
-    }
-  */
     
 }
 
+//Perform the linear transformation in bitslice mode
 std::tuple< std::bitset<64>, std::bitset<64> > Serpent::linearTransformBitSlice 
 (std::tuple< std::bitset<64>, std::bitset<64> > state){
   
@@ -496,6 +501,39 @@ std::tuple< std::bitset<64>, std::bitset<64> > Serpent::linearTransformBitSlice
 
 }
 
+
+//Inverse linear transformation in bitslice mode 
+ std::tuple< std::bitset<64>, std::bitset<64> >
+ Serpent::inverseLinearTransformBitslice(std::tuple< std::bitset<64>, 
+						     std::bitset<64> > state){
+ 
+ std::string temp0 = std::get<0>(state).to_string();
+  std::string temp1 = std::get<1>(state).to_string();
+  
+  std::bitset<32> x0 (temp0.substr(0, 32));
+  std::bitset<32> x1 (temp0.substr(32, 32));
+  std::bitset<32> x2 (temp1.substr(0, 32));
+  std::bitset<32> x3 (temp1.substr(32, 32));
+
+  rotate(x2, 10);
+  rotate(x0, 27);
+  x2 = x2^x3^(x1 >> 7);
+  x0 = x0^x1^x3;
+  rotate(x3, 25);
+  rotate(x1, 31);
+  x3 = x3^x2^(x0 >> 3);
+  x1 = x0^x1^x2;
+  rotate(x2, 29);
+  rotate(x0, 19);
+
+  std::get<0>(state) = std::bitset<64>((x0.to_string()).append(x1.to_string()));
+  std::get<1>(state) = std::bitset<64>((x2.to_string()).append(x3.to_string()));
+
+  return state;
+
+}
+
+
 //linearTransform used in non-bitslice mode
 std::tuple< std::bitset<64>, std::bitset<64> >
 Serpent::linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
@@ -527,6 +565,7 @@ Serpent::linearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
 
 }
 
+//Perform the inverse of the linear transform. Used for decryption
 std::tuple< std::bitset<64>, std::bitset<64> >
 Serpent::inverseLinearTransform(std::tuple< std::bitset<64>, std::bitset<64> > state){
 
@@ -745,11 +784,7 @@ std::string Serpent::Bitstring(unsigned int num, int length) {
   return result;
 }
   
-/*
-std::string Serpent::S(int box, std::string input){
-  return sBoxBitstring[box%8][input];
-}
-*/
+
 
 //Return the sbox value for the given input and sbox
 //For example, if box = 0 and input = 12, SInt returns 8
@@ -784,12 +819,10 @@ Serpent::SBitset ( int box, std::tuple< std::bitset<64>, std::bitset<64> > state
   return state;
 
 }
-/*  
-//Passes a binary string of length 4 through the given sbox
-std::string Serpent::SInverse(int box, std::string output){
-  return sBoxBitstringInverse[box%8][output];
-}
-  */
+
+
+
+
 
 //Passes the state through the inverse of the given sbox  
  std::tuple < std::bitset<64>, std::bitset<64> >
@@ -820,72 +853,86 @@ std::string Serpent::SInverse(int box, std::string output){
   
  }
 
-/*
-std::string Serpent::SHat(int box, std::string input){
-  std::string result = "";
-  
-  for(int i = 0; i < 32; i++) {
-  
-    result.append(S(box, input.substr((4*i), 4)));
-  }
-  return result;
+//Passes the state through the sbox in bitslice mode
+ std::tuple < std::bitset<64>, std::bitset<64> >
+ Serpent::SboxBitslice ( int box,  std::tuple< std::bitset<64>, 
+					       std::bitset<64> >  state){
+         
+   std::string state0 = std::get<0>(state).to_string();
+   std::string state1 = std::get<1>(state).to_string();
+   
+   std::string stateString0 = "";
+   std::string stateString1 = "";
+   std::string stateString2 = "";
+   std::string stateString3 = "";
+
+   int sValue = 0;
+
+   for (int i = 0; i<32; i ++){
+     std::string tempString1 = "";
+     tempString1.append(1, state0[i]);
+     tempString1.append(1, state0[i+32]);
+     tempString1.append(1, state1[i]);
+     tempString1.append(1, state1[i+32]);
+        
+     sValue = sBoxes[box%8][bin2dec[tempString1]];
+    
+     std::string tempString2 = dec2bin[sValue];
+    
+     stateString0.append(1, tempString2[0]);
+     stateString1.append(1, tempString2[1]);
+     stateString2.append(1, tempString2[2]);
+     stateString3.append(1, tempString2[3]);
+   }
+   
+   stateString0.append(stateString1);
+   stateString2.append(stateString3);
+   std::get<0>(state) = std::bitset<64>(stateString0);
+   std::get<1>(state) = std::bitset<64>(stateString2);
+   return state;
+
 }
 
-std::string Serpent::SHatInverse(int box, std::string output){
-  std::string result = "";
+
+//Passes the state through the given inverse sbox in bitslice mode
+std::tuple < std::bitset<64>, std::bitset<64> >
+Serpent::inverseSboxBitslice ( int box, std::tuple < std::bitset<64>, 
+					    std::bitset<64> > state){
+
+ std::string state0 = std::get<0>(state).to_string();
+   std::string state1 = std::get<1>(state).to_string();
+   
+   std::string stateString0 = "";
+   std::string stateString1 = "";
+   std::string stateString2 = "";
+   std::string stateString3 = "";
+
+   int sValue = 0;
+
+   for (int i = 0; i<32; i ++){
+     std::string tempString1 = "";
+     tempString1.append(1, state0[i]);
+     tempString1.append(1, state0[i+32]);
+     tempString1.append(1, state1[i]);
+     tempString1.append(1, state1[i+32]);
+        
+     sValue = inverseSBoxes[box%8][bin2dec[tempString1]];
     
-  for (int i = 0; i < 32; i++) {
-    result.append(SInverse(box, output.substr((4*i), 4)));
-  }
+     std::string tempString2 = dec2bin[sValue];
     
-  return result;
+     stateString0.append(1, tempString2[0]);
+     stateString1.append(1, tempString2[1]);
+     stateString2.append(1, tempString2[2]);
+     stateString3.append(1, tempString2[3]);
+   }
+   
+   stateString0.append(stateString1);
+   stateString2.append(stateString3);
+   std::get<0>(state) = std::bitset<64>(stateString0);
+   std::get<1>(state) = std::bitset<64>(stateString2);
+   return state;
 }
 
- 
-std::string * Serpent::SBitslice(int box, std::string param[4]){
-
-  for (int i = 0; i < 4; i++ ){
-    bitSliceResult[i].clear();
-  }
-
-  std::string input = "";
-  std::string quad;
-  for (int i = 0; i < 32; i++) {
-    input.append(1, param[0][i]);
-    input.append(1, param[1][i]);
-    input.append(1, param[2][i]);
-    input.append(1, param[3][i]);
-    quad = S(box, input);
-    
-    for (int j = 0; j < 4; j++) {
-      bitSliceResult[j] += quad[j];
-    }
-    input = "";
-  }
-  
-  return bitSliceResult;
-}
-  
-std::string * Serpent::SBitsliceInverse(int box, std::string words[][32]){
-  static std::string bitSliceInverseResult[] = {"", "", "", ""};
-  std::string output = "";
-  std::string quad;
-  for (int i = 0; i < 32; i++) {
-    output.append(words[0][i]);
-    output.append(words[1][i]);
-    output.append(words[2][i]);
-    output.append(words[3][i]);
-      
-    quad = SInverse(box, output);
-      
-    for (int j = 0; j < 4; j++) {
-      bitSliceInverseResult[j] += quad[j];
-    }
-  }
-    
-  return bitSliceInverseResult;
-}
-*/
 
 //Flips the bits of the given string, about the 16th bit
 //For example, 1 -> 80000000 (in hex)
@@ -1253,19 +1300,10 @@ void Serpent::encrypt( unsigned char * text ){
   std::string nessieOutput = nessify(hexString(bitMirrorTuple(state)));
   std::cout << "Ciphertext: " << nessieOutput << std::endl;
 
-
-  //The following code changes the values of the plaintext array
-  //so that it holds the ciphertext in a format that will allow for
-  //repeated encryptions
-  /*unsigned char temp = '0';
-      
-  for ( int i = 0; i < 16; i++ ){
-    temp = ((fourBits(state, 8*i) << 4) ^ (fourBits(state, 8*i + 4)));
-    text[i] = bitMirrorByte(temp);
-    }*/
-
 }
 
+
+//Decrypts the given ciphertext
 void Serpent::decrypt ( unsigned char * text ){
    
   unsigned char tempText[16] = {};
