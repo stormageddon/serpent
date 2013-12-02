@@ -1461,6 +1461,10 @@ i = i + 1;
    encryptionRound++;
  }
 
+ if (hasOutputFile){
+   out.close();
+ }
+
  return 0;
 }
 
