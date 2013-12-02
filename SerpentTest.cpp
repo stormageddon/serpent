@@ -7,6 +7,9 @@
 #include <cstring>
 #include <utility>
 #include <tuple>
+#include <vector>
+#include <fstream>
+#include <sstream>
 class Serpent
 {
   
@@ -122,6 +125,8 @@ public:                    // begin public section
   finalP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
   void encrypt( unsigned char * text );
+
+  std::string string_to_hex(const std::string& input);
   
 };
 
@@ -897,7 +902,8 @@ std::string Serpent::nessify (std::string reformat){
 }
 
 std::string Serpent::unnessify (std::string reformat){
-
+  std::string unessied = "";
+  return unessied;
 }
 //Prints the current state in big-endian hex
 void Serpent::printState 
@@ -1080,20 +1086,75 @@ void Serpent::encrypt( unsigned char * text ){
 
 }
 
+std::string Serpent::string_to_hex(const std::string& input)
+{
+    static const char* const lut = "0123456789ABCDEF";
+    size_t len = input.length();
+
+    std::string output;
+    output.reserve(2 * len);
+    for (size_t i = 0; i < len; ++i)
+    {
+        const unsigned char c = input[i];
+        output.push_back(lut[c >> 4]);
+        output.push_back(lut[c & 15]);
+    }
+    return output;
+}
+
 int main(int argc, char** argv)
 {
-  int n;
-   if (argc > 1) {
-    n = std::stof(argv[1]);
-  } else {
-    std::cerr << "Not enough arguments\n";
+  std::string usageWarning =  "usage: [Input file] [Output file] [Key] [Nonce]";
+  int nonce = 1;
+  std::string inputFile;
+  std::string outputFile;
+  std::string key;
+  bool hasInputFile = false;
+  bool hasOutputFile = false;
+  bool hasKey = false;
+  std::ofstream out;
+  
+  if (argc < 2) {
+    std::cerr << usageWarning << std::endl;
     return 1;
   }
 
-  char buff[100];
-  sprintf(buff,"The program was run with the following command: %d",n);
-  std::cout << buff << std::endl;
+  //Parse command line input
+  for( int i = 1; i < argc; i++ ) {
+    if (0 == strncmp(argv[i], "-n", 2) || 0 == strncmp(argv[i], "--nonce", 7)) {
+std::cout << "HERE" << std::endl;
+i = i + 1;
+      nonce = std::stof(argv[i]);
+    }
+    else if (0 == strncmp(argv[i], "-i", 2) || 0 == strncmp(argv[i], "--input", 7)) {
+      i = i + 1;
+      inputFile = argv[i];
+      hasInputFile = true;
+    }
+    else if (0 == strncmp(argv[i], "-o", 2) || 0 == strncmp(argv[i], "--output", 8)) {
+      i = i + 1;
+      outputFile = argv[i];
+      out.open(outputFile);
+      std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+      std::cout.rdbuf(out.rdbuf()); 
+      hasOutputFile = true;
+      std::cout << "TEST" << std::endl;
+    }
+    else if (0 == strncmp(argv[i], "-k", 2) || 0 == strncmp(argv[i], "--key", 5)) {
+      i = i + 1;
+      key = argv[i];
+      hasKey = true;
+    }
+    else {
+      std::cerr << "Unrecognized option." << std::endl;
+      std::cerr << usageWarning << std::endl;
+      return 1;
+    }
 
+  }
+
+  std::cout << "Nonce: " << nonce << ", key: " << key << ", input file: " << inputFile << ", output file: " << outputFile << std::endl;
+  
   
   Serpent serpent; 
   std::bitset<32> x0 (std::string("11000000000000000000000000000110"));
@@ -1113,23 +1174,88 @@ int main(int argc, char** argv)
 
 
 
-
- unsigned char plaintext[16] = 
-   {0x00, 0x00, 0x00, 0x00,
+ unsigned char plaintext[16] = {0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00};
 
+//unsigned char plaintext[16] = {0xFF, 0xFF, 0xFF, 0xFF,
+//    0xFF, 0xFF, 0xFF, 0xFF,
+//    0xFF, 0xFF, 0xFF, 0xFF,
+//    0xFF, 0xFF, 0xFF, 0xFF};
 
- std::bitset<64> test0 (serpent.readIn(testKey));
+ if (hasKey) {
+   unsigned char new_key[32];
+   int index = 0;
+   for (int i = 0; i < key.length() - 2; i++) {
+     std::stringstream ss;
+     ss << std::hex << key[i] << key[i+1];
+     int n;
+     ss >> n;
+     unsigned char x = (unsigned char)n;
+     new_key[index] = x;
+     index += 1;
+     i += 1;
+   }
+   memcpy(testKey, new_key, sizeof(testKey));
+ }
+
+ if (hasInputFile) {
+    unsigned char new_plaintext[16];
+
+    std::ifstream in(inputFile);
+    unsigned char  x;
+    int index = 0;
+    int temp;
+    std::string temp_string = "";
+
+    while (in >> std::noskipws >> x) {
+
+      std::cout << "X: " << std::hex << x << std::endl;
+      temp_string += x;
+
+      if (temp_string.length() == 2) {
+        std::stringstream ss;
+        ss << std::hex << temp_string;
+        int n;
+        ss >> n;
+        unsigned char y = (unsigned char)n;
+        new_plaintext[index] = y;
+        index += 1;
+        temp_string = "";
+      }
+    }
+    memcpy(plaintext, new_plaintext, sizeof(plaintext));  // Set plaintext to be the plaintext we read in from file
+ }
+ else {
+// plaintext = {0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00,
+//    0x00, 0x00, 0x00, 0x00};
+ }
+
+
+
+/* std::bitset<64> test0 (serpent.readIn(testKey));
  std::bitset<64> test1 (serpent.readIn(testKey + 8));
  std::tuple< std::bitset<64>, std::bitset<64> > testTuple (test0, test1);
 
- 
+*/ 
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
  serpent.generateSubKeys();
- serpent.encrypt(plaintext);
+
+ std::cout << "TESTING" << std::endl;
+ int encryptionRound = 0;
+ while (encryptionRound <= nonce) {
+   std::cout << std::dec << "================================ ROUND " << encryptionRound << " ================================\n" << std::endl;
+   serpent.encrypt(plaintext);
+   std::cout << std::dec << "============================ END ROUND " << encryptionRound << " ============================\n"<< std::endl;
+   encryptionRound++;
+ }
+std::cout << "NONCE: " << nonce << std::endl;
+
+
 
  /*
  std::bitset<32> set0 = std::bitset<32>(0xF0000000);
