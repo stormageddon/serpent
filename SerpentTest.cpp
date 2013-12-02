@@ -1330,7 +1330,7 @@ void Serpent::decrypt ( unsigned char * text ){
 
 int main(int argc, char** argv)
 {
-  std::string usageWarning =  "usage: [Input file] [Output file] [Key] [Nonce]";
+  std::string usageWarning =  "usage: [-i/--input fileName] [-o/--output fileName] [-k/--key 32bitKey] [-n/--nonce numEncryptions]";
   int nonce = 1;
   std::string inputFile;
   std::string outputFile;
