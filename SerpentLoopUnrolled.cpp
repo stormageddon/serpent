@@ -4,7 +4,6 @@
 #include <string>
 #include <cstring>
 #include <tuple>
-#include <vector>
 #include <map>
 #include <sstream>
 #include <fstream>
@@ -56,11 +55,9 @@ private:
   //during the linear transformation. 
   //to determine the 0th bit of output, xor the values listed in 
   //transformPositions[0] and so forth.
-  //if fewer than 7 values are to be xor'ed, the array is padded out with -1's
   int transformPositions[128][7];
-  std::vector< std::vector<int> > transform;
-  
-
+ 
+ 
   //the inverse of transformPositions. used for decryption
   int inverseTransformPositions[128][7];
     
@@ -181,9 +178,7 @@ public:                    // begin public section
 Serpent::Serpent() { 
   
   //The initial permutation. To be applied to the plaintext and keys.
-
- 
-  int tempIP[128] = 
+   int tempIP[128] = 
     {0, 32, 64, 96, 1, 33, 65, 97, 2, 34, 66, 98, 3, 35, 67, 99,
      4, 36, 68, 100, 5, 37, 69, 101, 6, 38, 70, 102, 7, 39, 71, 103,
      8, 40, 72, 104, 9, 41, 73, 105, 10, 42, 74, 106, 11, 43, 75, 107,
@@ -195,7 +190,7 @@ Serpent::Serpent() {
   
   std::copy(tempIP, tempIP+128, ip);  
 
-
+  //The final permutation
    int tempFP[128] = 
      {0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60,
       64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116, 120, 124,
@@ -209,7 +204,8 @@ Serpent::Serpent() {
   
   std::copy(tempFP, tempFP+128, fp);  
 
- 
+  //Linear transform indices. For example, output bit 0 would come from the 
+  //xor of bits 16, 52, 56, 70, 83, 94, and 105
   int ttransformPositions[128][7] = 
     {
       {16, 52, 56, 70, 83, 94, 105}, {72, 114, 125, 128, 128, 128, 128},
@@ -281,12 +277,7 @@ Serpent::Serpent() {
   std::copy( &ttransformPositions[0][0], &ttransformPositions[0][0]+128*7, 
 	     &transformPositions[0][0] );
  
-  for (int i = 0; i<128; i++){
-    std::vector<int> row (ttransformPositions[i], ttransformPositions[i] + sizeof(ttransformPositions[i])/sizeof(int));
-
-    transform.push_back(row);
-  }
- 
+  //The inverse linear transformation lookup
   int tinverseTransformPositions[128][7]  = 
     {
       {53, 55, 72, -1, -1, -1, -1}, {1, 5, 20, 90, -1, -1, -1},
@@ -737,7 +728,7 @@ Serpent::SBitset ( int box, std::tuple< std::bitset<64>, std::bitset<64> > state
 //Flips the bits of the given string, about the 16th bit
 //For example, 1 -> 80000000 (in hex)
 std::string Serpent::bitMirrorString( std::string image, 
-			      std::string reflection ){
+			      std::string reflection = "" ){
   
   if ( image.length() <= 1 ){
 
@@ -875,18 +866,10 @@ std::string Serpent::hexString (std::tuple< std::bitset<64>, std::bitset<64> > s
   }
 
   for ( i = 16; i < 32; i++ ){
-    index = int(fourBits64(state1, (4*i - 16)));
+    index = int(fourBits64(state1, (4*i - 64)));
     hexVal.append(1, hexTable[index]);
   }
 
-  /*
-  for (int i = 0; i < 32; i ++ ){
-    
-    index = (int)(fourBits(state, 4*i));
-    hexVal.append(1, hexTable[index]);
-    
-  }
-  */
   return hexVal;
 }
 
@@ -1174,13 +1157,8 @@ i = i + 1;
   }
   
   Serpent serpent; 
-  std::bitset<32> x0 (std::string("11000000000000000000000000000110"));
-  std::bitset<32> x1 (std::string("11000000000000000000000000000110"));
-  std::bitset<32> x2 (std::string("11000000000000000000000000000110"));
-  std::bitset<32> x3 (std::string("11000000000000000000000000000110"));
-  //  serpent.linearTransform(x0,x1,x2,x3);
 
- unsigned char testKey[] = {0x80, 0x00, 0x00, 0x00, 
+ unsigned char testKey[] = {0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00, 
 			    0x00, 0x00, 0x00, 0x00};
@@ -1213,7 +1191,7 @@ i = i + 1;
     std::ifstream in(inputFile);
     unsigned char  x;
     int index = 0;
-    //    int temp;
+        int temp;
     std::string temp_string = "";
 
     while (in >> std::noskipws >> x) {
@@ -1238,12 +1216,6 @@ i = i + 1;
  }
 
 
-
-/* std::bitset<64> test0 (serpent.readIn(testKey));
- std::bitset<64> test1 (serpent.readIn(testKey + 8));
- std::tuple< std::bitset<64>, std::bitset<64> > testTuple (test0, test1);
-
-*/ 
  serpent.setKeySize(sizeof(testKey)/sizeof(*testKey));
  serpent.setKey(testKey);
  serpent.generateSubKeys();
