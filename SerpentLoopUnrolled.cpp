@@ -988,6 +988,7 @@ Serpent::finalP ( std::tuple< std::bitset<64>,
 //Encrypt text
 void Serpent::encrypt( unsigned char * text ){
 
+  //Correct format issues
   for( int i = 0; i < 16; i++ ){
     text[i] = bitMirrorByte(text[i]);
   }
@@ -1000,42 +1001,35 @@ void Serpent::encrypt( unsigned char * text ){
   std::get<1>(state) = stateLSB;
   std::tuple< std::bitset<64>, std::bitset<64> > tempState;
 
-  //std::cout << "State before any changes: " << std::endl;
-  //printState(state);
+  //Initial permutation
   state = initialP(state);
-  //std::cout << "After IP: " << std::endl;
-  //printState(state);
-
+  
   for ( int round = 0; round < 31; round ++ ){
     
+    //Xor with key
     std::get<0>(state) = (std::get<0>(subKeys[round]) ^ std::get<0>(state));
     std::get<1>(state) = (std::get<1>(subKeys[round]) ^ std::get<1>(state));
-   
-    //std::cout << "Subkey at round " << std::dec << round << ": " << std::endl;
-    //printState(subKeys[round]);
-   
-    // std::cout << "After xor " << std::dec << round << ": " << std::endl;
-    
-    //printState(state);
-
+      
+    //Sbox
     state = SBitset( round, state);
-    //std::cout << "After sbox " << std::endl;
-    //printState(state);
-
+   
+    //Linear transformation
     state = linearTransform(state);
-    //std::cout << "After LT round " << std::dec << round << ": " << std::endl;
-    //printState(state);
+   
   }
   
-    
+  //Xor with key  
   std::get<0>(state) = (std::get<0>(subKeys[31]) ^ std::get<0>(state));
   std::get<1>(state) = (std::get<1>(subKeys[31]) ^ std::get<1>(state));
   
+  //Sbox
   state = SBitset( 7, state);
   
+  //Xor with key
   std::get<0>(state) = (std::get<0>(subKeys[32]) ^ std::get<0>(state));
   std::get<1>(state) = (std::get<1>(subKeys[32]) ^ std::get<1>(state));
 
+  //Final permutation
   state = finalP(state);
   //printState(state);
 
@@ -1060,48 +1054,44 @@ void Serpent::decrypt ( unsigned char * text ){
   std::get<1>(state) = stateLSB;
   std::tuple< std::bitset<64>, std::bitset<64> > tempState;
 
-  // std::cout << "Initial State: " ;
-  //printState(state);
 
+  //Initial permutation
+  //NB the final permutation is the inverse of the initial permutation 
+  //so new functions weren't needed and were removed
   state = initialP(state);
-  //std::cout << "After IFP: " ;
-  //printState(state);
 
+  //Xor with key
   std::get<0>(state) = (std::get<0>(subKeys[32]) ^ std::get<0>(state));
   std::get<1>(state) = (std::get<1>(subKeys[32]) ^ std::get<1>(state));
 
-  state = inverseSBitset(7, state);
-  //std::cout << "After inverse s: ";
-  //printState(state);
 
+  //Inverse sbox
+  state = inverseSBitset(7, state);
+
+  //Xor with subkey
   std::get<0>(state) = (std::get<0>(subKeys[31]) ^ std::get<0>(state));
   std::get<1>(state) = (std::get<1>(subKeys[31]) ^ std::get<1>(state));
   
-  //std::cout << "after xor: ";
-  //printState(state);
 
   for ( int round = 30; round >= 0; round -- ){
 
+    //Inverse linear transform
     state = inverseLinearTransform(state);
-    //std::cout << "LT: " ;
-    //printState(state);
    
+    //Inverse sbox
     state = inverseSBitset(round, state);
-    //std::cout << "inverse s: ";
-    //printState(state);
 
+    //Xor with key
     std::get<0>(state) = (std::get<0>(subKeys[round]) ^ std::get<0>(state));
     std::get<1>(state) = (std::get<1>(subKeys[round]) ^ std::get<1>(state));
-    //std::cout << "xor: " ;
-    //printState(state);
+
+
   }
     
   state = finalP(state);
-  //std::cout << "after IP: ";
-  //printState(state);
 
   std::string nessieOutput = nessify(hexString(bitMirrorTuple(state)));
-   std::cout << "Plaintext: " << nessieOutput << std::endl;
+  std::cout << "Plaintext: " << nessieOutput << std::endl;
 
 }
 
@@ -1118,6 +1108,7 @@ int main(int argc, char** argv)
    bool hasOutputFile = false;
   bool hasKey = false;
   std::ofstream out;
+  std::streambuf *coutbuf;
   
   if (argc < 2) {
     std::cerr << usageWarning << std::endl;
@@ -1139,7 +1130,7 @@ i = i + 1;
       i = i + 1;
       outputFile = argv[i];
       out.open(outputFile);
-      // std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+      coutbuf = std::cout.rdbuf(); //save old buf
       std::cout.rdbuf(out.rdbuf()); 
       hasOutputFile = true;
     }
@@ -1230,11 +1221,12 @@ i = i + 1;
   
  }
 
-if (hasOutputFile){
+ std::cout.rdbuf(coutbuf);
+
+ if (hasOutputFile){
    out.close();
  }
-
-
+ 
  return 0;
  
  }
