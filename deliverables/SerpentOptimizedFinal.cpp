@@ -29,7 +29,7 @@ private:
   unsigned long long int k1;
   unsigned long long int k2;
   unsigned long long int k3;
-v
+
   //words holds the 32-bit words used to generate the 33 keys used 
   //for encryption
   //N.B. words 0-7 are used as a seed to generate the remaining 132 
@@ -78,7 +78,7 @@ public:                    // begin public section
   //Sets the key to be used for encryption or decryption.
   //N.B. key size must have already been set with setKeySize()
   //for this to work properly
-  void setKey (unsigned char userKey[]);
+  virtual void setKey (unsigned char userKey[]);
 
 
   //Populates the subKeys array with the subkeys to be used during encryption
@@ -89,11 +89,11 @@ public:                    // begin public section
   void setKeySize( int keyLength);
 
   //Returns the size of the user-supplied key.
-  int keySize();
+  virtual int keySize();
 
   //Returns the plaintext block size in bytes. Serpent only supports
   //a 16 byte blocksize
-  int blockSize();
+  virtual int blockSize();
 
   //Passes the state through the given sbox, four bits at a time
   std::tuple< std::bitset<64>, std::bitset<64> > 
@@ -162,7 +162,7 @@ public:                    // begin public section
   finalP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
    //Encrypt the given plaintext
-  void encrypt( unsigned char * text );
+  virtual void encrypt( unsigned char * text );
 
   //Decrypt the given ciphertext
   void decrypt ( unsigned char * text );
