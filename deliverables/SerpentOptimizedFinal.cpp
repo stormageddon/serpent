@@ -29,7 +29,7 @@ private:
   unsigned long long int k1;
   unsigned long long int k2;
   unsigned long long int k3;
-
+v
   //words holds the 32-bit words used to generate the 33 keys used 
   //for encryption
   //N.B. words 0-7 are used as a seed to generate the remaining 132 

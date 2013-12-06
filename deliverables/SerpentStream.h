@@ -43,7 +43,7 @@ class SerpentStream{
   
   
   //Encrypts the next byte
-  unsigned int encrypt(unsigned int byte);
+  int encrypt(int byte);
   
   
 };

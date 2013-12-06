@@ -1,3 +1,19 @@
 Note on test files:
 
-input0 - A 
+input0: A 128-bit hex string of all zeroes
+cipher_input0.txt: The ciphertext for an 128-bit string of all zeroes 
+		   encrypted with an all zero key
+
+input4: A 128-bit hex string led by a four and followed by zeroes
+cipher_input4.txt: The ciphertext for an 128-bit hex string led by a four
+		   and followed by zeroes, encrypted with an all zero key
+
+input8: A 128-bit hex string led by a eight and followed by zeroes
+cipher_input4.txt: The ciphertext for an 128-bit hex string led by a four
+		   and followed by zeroes, encrypted with an all zero key
+
+input0D: A 128-bit hex string that matches (0D)*
+cipher_input4.txt: The ciphertext for an 128-bit hex string led by a four
+		   and followed by zeroes, encrypted with an all zero key
+
+all_chars_input: An input file to test file encryption
