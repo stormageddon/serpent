@@ -94,7 +94,7 @@ public:                    // begin public section
   //Sets the key to be used for encryption or decryption.
   //N.B. key size must have already been set with setKeySize()
   //for this to work properly
-  void setKey (unsigned char userKey[]);
+  virtual void setKey (unsigned char userKey[]);
   
   
   //Populates the subKeys array with the subkeys to be used during encryption
@@ -106,11 +106,11 @@ public:                    // begin public section
   void setKeySize( int keyLength);
   
   //Returns the cipher's key size in bytes
-  int keySize();
+  virtual int keySize();
   
   //Returns the block cipher's block size in bytes
   //Always returns 16
-  int blockSize();
+  virtual int blockSize();
 
   //Returns a binary string representation of the given integer, padded out
   //with zeroes to the given length. 
@@ -211,7 +211,7 @@ public:                    // begin public section
   inverseFP ( std::tuple< std::bitset<64>, std::bitset<64> > state );
   
    //Encrypt the given plaintext
-  void encrypt( unsigned char * text );
+  virtual void encrypt( unsigned char * text );
 
   //Decrypt the given ciphertext
   void decrypt ( unsigned char * text );
@@ -1377,6 +1377,7 @@ int main(int argc, char** argv)
   bool hasInputFile = false;
   bool hasOutputFile = false;
   bool hasKey = false;
+  std::ifstream in;
   std::ofstream out;
   std::streambuf *coutbuf;
   
@@ -1449,7 +1450,7 @@ i = i + 1;
  if (hasInputFile) {
     unsigned char new_plaintext[16];
 
-    std::ifstream in(inputFile);
+    in.open(inputFile);
     unsigned char  x;
     int index = 0;
 
@@ -1492,9 +1493,12 @@ i = i + 1;
    encryptionRound++;
  }
 
- std::cout.rdbuf(coutbuf);
+ if (hasInputFile){
+   in.close();
+ }
  
  if (hasOutputFile){
+   std::cout.rdbuf(coutbuf);
    out.close();
  }
 
