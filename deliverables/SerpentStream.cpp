@@ -1,7 +1,5 @@
 #include <iostream>
 #include <iomanip>
-#include <stdio.h>
-#include <stdarg.h>
 #include <bitset>
 #include <string>
 #include <cstring>
@@ -9,7 +7,7 @@
 #include <map>
 #include <sstream>
 #include <fstream>
-#include "SerpentCounter.h"
+#include "SerpentOptimizedFinal.h"
 #include "SerpentStream.h"
 
 
@@ -63,7 +61,7 @@ void SerpentStream::setKey(unsigned char * key){
 
 
 //Encrypt the next byte
-unsigned int SerpentStream::encrypt(unsigned int byte ){
+int SerpentStream::encrypt(int byte ){
 
   //If we've reached the end of the keyStream block
   if (byteCounter % 16 == 0){
@@ -87,7 +85,7 @@ unsigned int SerpentStream::encrypt(unsigned int byte ){
     byteCounter = 0;
   } 
   byteCounter ++;
-  return byte ^ (unsigned int)keyStream[byteCounter-1];
+  return byte ^ (int)keyStream[byteCounter-1];
   
 }
 
@@ -195,27 +193,12 @@ int main(int argc, char** argv)
    std::ifstream in(inputFile);
 
    unsigned char  x;
-   std::string temp_string = "";
-   
-   //encrypt the file byte by byte
-   while (in >> std::noskipws >> x) {
-     temp_string += x;
-     
-     //encrypt one byte at a time
-     if (temp_string.length() == 2) {
-       std::stringstream ss;
-       ss << std::hex << temp_string;
-       int n;
-       ss >> n;
-       unsigned char y = (unsigned char)n;
-       unsigned int cipherByte = serpentStream.encrypt(y);
-       //       int k = std::sprintf(formatted, "%2X", cipherByte);
-       //format output to be two characters regardless of value
-       std::cout  << std::setfill('0') << std::setw(2) << 
-	 std::hex << cipherByte ;
+  std::string temp_string = "";
 
-       temp_string = "";
-     }
+  //encrypt the file byte by byte
+  while (in >> std::noskipws >> x) {
+    int cipherByte = serpentStream.encrypt((int)x);
+    std::cout << (char)cipherByte;
   }
   
   //Restore the old buffer

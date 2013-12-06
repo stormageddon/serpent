@@ -1,0 +1,991 @@
+Flat profile for 230000 encryptions:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 34.74     27.96    27.96  7130000     0.00     0.01  Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+ 11.97     37.59     9.63 14720132     0.00     0.00  void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char)
+ 10.20     45.80     8.21 14720000     0.00     0.00  void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const
+  4.54     49.45     3.66 1526548032     0.00     0.00  std::_Base_bitset<1ul>::_S_maskbit(unsigned long)
+  4.49     53.07     3.61 1408762688     0.00     0.00  std::char_traits<char>::eq(char const&, char const&)
+  3.67     56.02     2.95 942080000     0.00     0.00  std::bitset<64ul>::_Unchecked_test(unsigned long) const
+  3.42     58.77     2.75 1644341824     0.00     0.00  std::_Base_bitset<1ul>::_S_whichbit(unsigned long)
+  3.11     61.27     2.50  7360000     0.00     0.00  Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  2.66     63.41     2.14 466674240     0.00     0.00  std::bitset<64ul>::_Unchecked_set(unsigned long)
+  2.57     65.48     2.07 462530000     0.00     0.00  std::char_traits<char>::assign(char&, char const&)
+  1.75     66.89     1.41 942080000     0.00     0.00  std::_Base_bitset<1ul>::_M_getword(unsigned long) const
+  1.34     67.96     1.08 584468032     0.00     0.00  std::_Base_bitset<1ul>::_M_getword(unsigned long)
+  1.06     68.81     0.85 242880000     0.00     0.00  Serpent::fourBits64(std::bitset<64ul>, int)
+  0.88     69.52     0.71 58888448     0.00     0.00  std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&)
+  0.86     70.22     0.70 117776896     0.00     0.00  std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long)
+  0.80     70.86     0.64 15180536     0.00     0.00  std::_Base_bitset<1ul>::_Base_bitset(unsigned long long)
+  0.76     71.47     0.61   230066     0.00     0.01  Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.75     72.07     0.60   460000     0.00     0.00  Serpent::bitMirrorString(std::string, std::string)
+  0.75     72.67     0.60 98670396     0.00     0.00  std::_Head_base<0ul, std::bitset<64ul>, false>::_M_head()
+  0.65     73.19     0.53 15180000     0.00     0.00  std::bitset<64ul> std::operator^<64ul>(std::bitset<64ul> const&, std::bitset<64ul> const&)
+  0.54     73.63     0.44 117776896     0.00     0.00  std::bitset<64ul>::operator[](unsigned long)
+  0.52     74.05     0.42   230000     0.00     0.01  Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.52     74.47     0.42 242880000     0.00     0.00  std::_Base_bitset<1ul>::_M_do_to_ullong() const
+  0.48     74.86     0.39 242880000     0.00     0.00  std::bitset<64ul>::to_ullong() const
+  0.47     75.24     0.38   230000     0.00     0.35  Serpent::encrypt(unsigned char*)
+  0.42     75.57     0.34 29440264     0.00     0.00  unsigned long const& std::min<unsigned long>(unsigned long const&, unsigned long const&)
+  0.38     75.88     0.31 98670396     0.00     0.00  std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head()
+  0.33     76.14     0.27 53590198     0.00     0.00  std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&)
+  0.27     76.36     0.22 98670396     0.00     0.00  std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head()
+  0.24     76.56     0.20 14720132     0.00     0.00  void std::bitset<64ul>::_M_copy_from_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, unsigned long, char, char)
+  0.24     76.75     0.19        1   190.05   190.05  _GLOBAL__sub_I__ZN7SerpentC2Ev
+  0.24     76.94     0.19 53590198     0.00     0.00  std::__add_ref<std::bitset<64ul> >::type std::__get_helper<1ul, std::bitset<64ul>>(std::_Tuple_impl<1ul, std::bitset<64ul>>&)
+  0.22     77.12     0.18 90620396     0.00     0.00  std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&)
+  0.22     77.30     0.18 53590198     0.00     0.00  std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&)
+  0.20     77.46     0.16 117776896     0.00     0.00  std::bitset<64ul>::reference::~reference()
+  0.20     77.62     0.16 98670396     0.00     0.00  std::_Head_base<1ul, std::bitset<64ul>, false>::_M_head()
+  0.17     77.76     0.14   230000     0.00     0.00  Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.16     77.89     0.13 14720132     0.00     0.00  std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)
+  0.16     78.01     0.13 14720000     0.00     0.00  std::bitset<64ul>::to_string() const
+  0.15     78.13     0.12 14950066     0.00     0.00  std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&)
+  0.15     78.25     0.12     2112     0.06     0.06  std::_Base_bitset<1ul>::_M_do_to_ulong() const
+  0.15     78.37     0.12 15180066     0.00     0.00  std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&)
+  0.14     78.48     0.11 14950066     0.00     0.00  std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&)
+  0.13     78.59     0.11 45080198     0.00     0.00  std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_tail()
+  0.12     78.69     0.10 53590198     0.00     0.00  std::__add_ref<std::bitset<64ul> >::type std::__get_helper<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&)
+  0.11     78.78     0.09 30130132     0.00     0.00  std::remove_reference<std::_Tuple_impl<1ul, std::bitset<64ul> >&>::type&& std::move<std::_Tuple_impl<1ul, std::bitset<64ul> >&>(std::_Tuple_impl<1ul, std::bitset<64ul> >&)
+  0.11     78.87     0.09 15181320     0.00     0.00  std::_Base_bitset<1ul>::_M_do_xor(std::_Base_bitset<1ul> const&)
+  0.11     78.95     0.09 14720000     0.00     0.00  std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::bitset<64ul>::to_string<char, std::char_traits<char>, std::allocator<char> >() const
+  0.10     79.03     0.08   230000     0.00     0.01  Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.10     79.11     0.08   230000     0.00     0.00  Serpent::nessify(std::string)
+  0.10     79.19     0.08        1    80.02    80.02  std::string* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::string*, std::string*>(std::string*, std::string*, std::string*)
+  0.09     79.27     0.08 15180066     0.00     0.00  std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&)
+  0.07     79.33     0.06 15180066     0.00     0.00  std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&)
+  0.07     79.39     0.06 15180066     0.00     0.00  std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&)
+  0.07     79.45     0.06 15180000     0.00     0.00  std::_Sanitize_val<64ul, false>::_S_do_sanitize_val(unsigned long long)
+  0.07     79.51     0.06 15180000     0.00     0.00  std::bitset<64ul>::bitset(unsigned long long)
+  0.06     79.56     0.05        1    50.01   130.04  std::string* std::__copy_move_a<false, std::string*, std::string*>(std::string*, std::string*, std::string*)
+  0.06     79.61     0.05        1    50.01   180.05  std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*)
+  0.06     79.66     0.05                             main
+  0.06     79.71     0.05   460002     0.00     0.00  Serpent::readIn(unsigned char*)
+  0.06     79.75     0.05 14720132     0.00     0.00  std::bitset<64ul>::reset()
+  0.05     79.79     0.04 45080198     0.00     0.00  std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_tail()
+  0.05     79.83     0.04 30130132     0.00     0.00  std::remove_reference<std::_Tuple_impl<2ul>&>::type&& std::move<std::_Tuple_impl<2ul>&>(std::_Tuple_impl<2ul>&)
+  0.05     79.87     0.04 15180066     0.00     0.00  std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&)
+  0.05     79.91     0.04   460000     0.00     0.00  std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+  0.05     79.95     0.04     1320     0.03     0.03  std::bitset<32ul>::operator^=(std::bitset<32ul> const&)
+  0.05     79.99     0.04        1    40.01   220.06  std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*)
+  0.04     80.03     0.04     8448     0.00     0.00  std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long)
+  0.04     80.06     0.04 14950066     0.00     0.00  std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&)
+  0.04     80.10     0.04  3680000     0.00     0.00  Serpent::bitMirrorByte(unsigned char)
+  0.04     80.13     0.03 15180000     0.00     0.00  std::bitset<64ul>::operator^=(std::bitset<64ul> const&)
+  0.04     80.16     0.03 14950066     0.00     0.00  std::remove_reference<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>::type&& std::move<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&)
+  0.04     80.19     0.03 14720338     0.00     0.00  std::_Base_bitset<1ul>::_Base_bitset()
+  0.04     80.22     0.03                             std::bitset<32ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)
+  0.02     80.24     0.02 14720132     0.00     0.00  std::_Base_bitset<1ul>::_M_do_reset()
+  0.02     80.26     0.02   460000     0.00     0.00  std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)
+  0.02     80.28     0.02   460000     0.00     0.00  std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+  0.02     80.30     0.02      536     0.04     0.04  std::bitset<32ul>::bitset(unsigned long long)
+  0.02     80.32     0.02      264     0.08     0.08  std::_Base_bitset<1ul>::_M_do_right_shift(unsigned long)
+  0.02     80.34     0.02                             Serpent::printState(std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.02     80.36     0.02                             Serpent::inverseSBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >)
+  0.02     80.38     0.02                             Serpent::bitMirrorBitset(std::bitset<32ul>)
+  0.02     80.40     0.02                             Serpent::blockSize()
+  0.02     80.41     0.02     2112     0.01     0.06  std::bitset<4ul>::to_ulong() const
+  0.02     80.43     0.02                             std::dec(std::ios_base&)
+  0.02     80.44     0.02                             std::noskipws(std::ios_base&)
+  0.01     80.45     0.01   920000     0.00     0.00  std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+  0.01     80.46     0.01        1    10.00   230.07  Serpent::Serpent()
+  0.01     80.47     0.01        1    10.00    10.00  std::operator|(std::_Ios_Openmode, std::_Ios_Openmode)
+  0.01     80.48     0.01                             std::hex(std::ios_base&)
+  0.01     80.49     0.01     8448     0.00     0.00  std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char)
+  0.01     80.49     0.01      536     0.01     0.01  Serpent::bitMirrorInt(unsigned int)
+  0.00     80.49     0.00   460000     0.00     0.00  std::operator~(std::_Ios_Fmtflags)
+  0.00     80.49     0.00   460000     0.00     0.00  std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<32ul>::reference::operator bool() const
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<32ul>::reference::~reference()
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<32ul>::operator[](unsigned long)
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long)
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<4ul>::reference::~reference()
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<4ul>::reference::operator=(bool)
+  0.00     80.49     0.00     8448     0.00     0.00  std::bitset<4ul>::operator[](unsigned long)
+  0.00     80.49     0.00     2112     0.00     0.08  Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int)
+  0.00     80.49     0.00     1320     0.00     0.03  std::bitset<32ul> std::operator^<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&)
+  0.00     80.49     0.00      536     0.00     0.00  std::_Sanitize_val<32ul, true>::_S_do_sanitize_val(unsigned long long)
+  0.00     80.49     0.00      528     0.00     0.00  std::_Base_bitset<1ul>::_M_hiword()
+  0.00     80.49     0.00      528     0.00     0.00  std::bitset<32ul>::_M_do_sanitize()
+  0.00     80.49     0.00      528     0.00     0.00  std::_Sanitize<32ul>::_S_do_sanitize(unsigned long&)
+  0.00     80.49     0.00      264     0.00     0.00  std::bitset<32ul>::operator<<(unsigned long) const
+  0.00     80.49     0.00      264     0.00     0.08  std::bitset<32ul>::operator>>(unsigned long) const
+  0.00     80.49     0.00      264     0.00     0.00  std::_Base_bitset<1ul>::_M_do_left_shift(unsigned long)
+  0.00     80.49     0.00      264     0.00     0.00  std::_Base_bitset<1ul>::_M_do_or(std::_Base_bitset<1ul> const&)
+  0.00     80.49     0.00      264     0.00     0.00  std::bitset<32ul>::operator<<=(unsigned long)
+  0.00     80.49     0.00      264     0.00     0.00  std::bitset<32ul>::operator|=(std::bitset<32ul> const&)
+  0.00     80.49     0.00      264     0.00     0.08  std::bitset<32ul>::operator>>=(unsigned long)
+  0.00     80.49     0.00      264     0.00     0.00  std::bitset<32ul> std::operator|<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&)
+  0.00     80.49     0.00      140     0.00     0.00  std::bitset<32ul>::bitset()
+  0.00     80.49     0.00       66     0.00     0.00  std::bitset<64ul>::bitset()
+  0.00     80.49     0.00       33     0.00     0.00  std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base()
+  0.00     80.49     0.00       33     0.00     0.00  std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base()
+  0.00     80.49     0.00       33     0.00     0.00  std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl()
+  0.00     80.49     0.00       33     0.00     0.00  std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl()
+  0.00     80.49     0.00       33     0.00     0.00  std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple()
+  0.00     80.49     0.00       30     0.00     0.00  std::_Iter_base<int*, false>::_S_base(int*)
+  0.00     80.49     0.00       18     0.00     0.00  std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*)
+  0.00     80.49     0.00       12     0.00     0.00  std::_Miter_base<int*>::iterator_type std::__miter_base<int*>(int*)
+  0.00     80.49     0.00        6     0.00     0.00  int* std::__copy_move<false, true, std::random_access_iterator_tag>::__copy_m<int>(int const*, int const*, int*)
+  0.00     80.49     0.00        6     0.00     0.00  int* std::__copy_move_a<false, int*, int*>(int*, int*, int*)
+  0.00     80.49     0.00        6     0.00     0.00  int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*)
+  0.00     80.49     0.00        6     0.00     0.00  int* std::copy<int*, int*>(int*, int*, int*)
+  0.00     80.49     0.00        5     0.00     0.00  std::_Iter_base<std::string*, false>::_S_base(std::string*)
+  0.00     80.49     0.00        3     0.00     0.00  std::_Niter_base<std::string*>::iterator_type std::__niter_base<std::string*>(std::string*)
+  0.00     80.49     0.00        2     0.00   130.32  Serpent::generateSubKeys()
+  0.00     80.49     0.00        2     0.00     0.00  std::_Miter_base<std::string*>::iterator_type std::__miter_base<std::string*>(std::string*)
+  0.00     80.49     0.00        1     0.00     0.00  __static_initialization_and_destruction_0(int, int)
+  0.00     80.49     0.00        1     0.00     0.00  Serpent::setKeySize(int)
+  0.00     80.49     0.00        1     0.00   130.69  Serpent::setKey(unsigned char*)
+  0.00     80.49     0.00        1     0.00     0.00  Serpent::~Serpent()
+  0.00     80.49     0.00        1     0.00     0.00  float __gnu_cxx::__stoa<float, float, char>(float (*)(char const*, char**), char const*, char const*, unsigned long*, float (char const*, char**))
+  0.00     80.49     0.00        1     0.00     0.00  std::stof(std::string const&, unsigned long*)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.01% of 80.49 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.5    0.05   80.01                 main [1]
+                0.38   79.13  230000/230000      Serpent::encrypt(unsigned char*) [2]
+                0.01    0.22       1/1           Serpent::Serpent() [47]
+                0.00    0.13       1/1           Serpent::setKey(unsigned char*) [58]
+                0.00    0.13       1/2           Serpent::generateSubKeys() [46]
+                0.01    0.00       1/1           std::operator|(std::_Ios_Openmode, std::_Ios_Openmode) [98]
+                0.00    0.00       1/1           std::stof(std::string const&, unsigned long*) [144]
+                0.00    0.00       1/1           Serpent::setKeySize(int) [141]
+                0.00    0.00       1/1           Serpent::~Serpent() [142]
+-----------------------------------------------
+                0.38   79.13  230000/230000      main [1]
+[2]     98.8    0.38   79.13  230000         Serpent::encrypt(unsigned char*) [2]
+               27.96   37.16 7130000/7130000     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+                2.50    3.12 7360000/7360000     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+                0.61    1.47  230000/230066      Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.42    1.47  230000/230000      Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.08    1.80  230000/230000      Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.04    0.87 14950000/14950066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [27]
+                0.53    0.12 15180000/15180000     std::bitset<64ul> std::operator^<64ul>(std::bitset<64ul> const&, std::bitset<64ul> const&) [34]
+                0.11    0.25 23000000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.08    0.17 23000000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+                0.14    0.06  230000/230000      Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [49]
+                0.08    0.00  230000/230000      Serpent::nessify(std::string) [68]
+                0.05    0.00  460000/460002      Serpent::readIn(unsigned char*) [73]
+                0.04    0.00 3680000/3680000     Serpent::bitMirrorByte(unsigned char) [80]
+                0.00    0.02  460000/15180000     std::bitset<64ul>::bitset(unsigned long long) [32]
+-----------------------------------------------
+               27.96   37.16 7130000/7130000     Serpent::encrypt(unsigned char*) [2]
+[3]     80.9   27.96   37.16 7130000         Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+                0.13   18.18 14260000/14720132     std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+                0.12   17.98 14260000/14720000     std::bitset<64ul>::to_string() const [6]
+                0.03    0.34 7130000/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.07    0.16 14260000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.05    0.11 14260000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                0.00    0.00     132/14720132     Serpent::generateSubKeys() [46]
+                0.00    0.59  460000/14720132     Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.13   18.18 14260000/14720132     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+[4]     23.5    0.13   18.77 14720132         std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+                0.20   18.54 14720132/14720132     void std::bitset<64ul>::_M_copy_from_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, unsigned long, char, char) [5]
+                0.03    0.00 14720132/14720338     std::_Base_bitset<1ul>::_Base_bitset() [82]
+-----------------------------------------------
+                0.20   18.54 14720132/14720132     std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+[5]     23.3    0.20   18.54 14720132         void std::bitset<64ul>::_M_copy_from_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, unsigned long, char, char) [5]
+                9.63    8.91 14720132/14720132     void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+-----------------------------------------------
+                0.00    0.58  460000/14720000     Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.12   17.98 14260000/14720000     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+[6]     23.2    0.13   18.56 14720000         std::bitset<64ul>::to_string() const [6]
+                0.09   18.47 14720000/14720000     std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::bitset<64ul>::to_string<char, std::char_traits<char>, std::allocator<char> >() const [7]
+-----------------------------------------------
+                0.09   18.47 14720000/14720000     std::bitset<64ul>::to_string() const [6]
+[7]     23.1    0.09   18.47 14720000         std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::bitset<64ul>::to_string<char, std::char_traits<char>, std::allocator<char> >() const [7]
+                8.21   10.26 14720000/14720000     void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const [9]
+-----------------------------------------------
+                9.63    8.91 14720132/14720132     void std::bitset<64ul>::_M_copy_from_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, unsigned long, char, char) [5]
+[8]     23.0    9.63    8.91 14720132         void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+                2.14    2.76 466674240/466674240     std::bitset<64ul>::_Unchecked_set(unsigned long) [13]
+                3.61    0.00 1408762688/1408762688     std::char_traits<char>::eq(char const&, char const&) [14]
+                0.34    0.00 29440264/29440264     unsigned long const& std::min<unsigned long>(unsigned long const&, unsigned long const&) [43]
+                0.05    0.02 14720132/14720132     std::bitset<64ul>::reset() [71]
+-----------------------------------------------
+                8.21   10.26 14720000/14720000     std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::bitset<64ul>::to_string<char, std::char_traits<char>, std::allocator<char> >() const [7]
+[9]     22.9    8.21   10.26 14720000         void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const [9]
+                2.95    5.24 942080000/942080000     std::bitset<64ul>::_Unchecked_test(unsigned long) const [10]
+                2.07    0.00 462530000/462530000     std::char_traits<char>::assign(char&, char const&) [17]
+-----------------------------------------------
+                2.95    5.24 942080000/942080000     void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const [9]
+[10]    10.2    2.95    5.24 942080000         std::bitset<64ul>::_Unchecked_test(unsigned long) const [10]
+                2.26    1.58 942080000/1526548032     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+                1.41    0.00 942080000/942080000     std::_Base_bitset<1ul>::_M_getword(unsigned long) const [22]
+-----------------------------------------------
+                0.00    0.00    8448/1526548032     std::bitset<32ul>::reference::operator bool() const [102]
+                0.00    0.00    8448/1526548032     std::bitset<4ul>::reference::operator=(bool) [103]
+                0.28    0.20 117776896/1526548032     std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&) [23]
+                1.12    0.78 466674240/1526548032     std::bitset<64ul>::_Unchecked_set(unsigned long) [13]
+                2.26    1.58 942080000/1526548032     std::bitset<64ul>::_Unchecked_test(unsigned long) const [10]
+[11]     7.7    3.66    2.55 1526548032         std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+                2.55    0.00 1526548032/1644341824     std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [15]
+-----------------------------------------------
+                2.50    3.12 7360000/7360000     Serpent::encrypt(unsigned char*) [2]
+[12]     7.0    2.50    3.12 7360000         Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+                0.82    0.79 235520000/242880000     Serpent::fourBits64(std::bitset<64ul>, int) [20]
+                0.06    0.68 14720000/15180000     std::bitset<64ul>::bitset(unsigned long long) [32]
+                0.03    0.35 7360000/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.07    0.16 14720000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.05    0.11 14720000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                2.14    2.76 466674240/466674240     void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+[13]     6.1    2.14    2.76 466674240         std::bitset<64ul>::_Unchecked_set(unsigned long) [13]
+                1.12    0.78 466674240/1526548032     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+                0.86    0.00 466674240/584468032     std::_Base_bitset<1ul>::_M_getword(unsigned long) [25]
+-----------------------------------------------
+                3.61    0.00 1408762688/1408762688     void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+[14]     4.5    3.61    0.00 1408762688         std::char_traits<char>::eq(char const&, char const&) [14]
+-----------------------------------------------
+                0.00    0.00    8448/1644341824     std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long) [104]
+                0.00    0.00    8448/1644341824     std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long) [78]
+                0.20    0.00 117776896/1644341824     std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long) [24]
+                2.55    0.00 1526548032/1644341824     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+[15]     3.4    2.75    0.00 1644341824         std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [15]
+-----------------------------------------------
+                0.00    0.00      66/230066      Serpent::generateSubKeys() [46]
+                0.61    1.47  230000/230066      Serpent::encrypt(unsigned char*) [2]
+[16]     2.6    0.61    1.47  230066         Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.22    0.55 58896896/117776896     std::bitset<64ul>::operator[](unsigned long) [21]
+                0.35    0.24 29448448/58888448     std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&) [23]
+                0.08    0.00 58896896/117776896     std::bitset<64ul>::reference::~reference() [55]
+                0.00    0.01  230066/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.00    0.01  460132/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.00    0.00  460132/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                2.07    0.00 462530000/462530000     void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const [9]
+[17]     2.6    2.07    0.00 462530000         std::char_traits<char>::assign(char&, char const&) [17]
+-----------------------------------------------
+                0.42    1.47  230000/230000      Serpent::encrypt(unsigned char*) [2]
+[18]     2.3    0.42    1.47  230000         Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.22    0.55 58880000/117776896     std::bitset<64ul>::operator[](unsigned long) [21]
+                0.35    0.24 29440000/58888448     std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&) [23]
+                0.08    0.00 58880000/117776896     std::bitset<64ul>::reference::~reference() [55]
+                0.00    0.01  230000/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.00    0.01  460000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.00    0.00  460000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                0.08    1.80  230000/230000      Serpent::encrypt(unsigned char*) [2]
+[19]     2.3    0.08    1.80  230000         Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.60    0.00  460000/460000      Serpent::bitMirrorString(std::string, std::string) [36]
+                0.00    0.59  460000/14720132     std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+                0.00    0.58  460000/14720000     std::bitset<64ul>::to_string() const [6]
+                0.00    0.01  230000/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.00    0.01  460000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.00    0.00  460000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                0.03    0.02 7360000/242880000     Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [49]
+                0.82    0.79 235520000/242880000     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+[20]     2.1    0.85    0.81 242880000         Serpent::fourBits64(std::bitset<64ul>, int) [20]
+                0.39    0.42 242880000/242880000     std::bitset<64ul>::to_ullong() const [30]
+-----------------------------------------------
+                0.22    0.55 58880000/117776896     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.22    0.55 58896896/117776896     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+[21]     1.9    0.44    1.11 117776896         std::bitset<64ul>::operator[](unsigned long) [21]
+                0.70    0.41 117776896/117776896     std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long) [24]
+-----------------------------------------------
+                1.41    0.00 942080000/942080000     std::bitset<64ul>::_Unchecked_test(unsigned long) const [10]
+[22]     1.8    1.41    0.00 942080000         std::_Base_bitset<1ul>::_M_getword(unsigned long) const [22]
+-----------------------------------------------
+                0.35    0.24 29440000/58888448     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.35    0.24 29448448/58888448     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+[23]     1.5    0.71    0.48 58888448         std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&) [23]
+                0.28    0.20 117776896/1526548032     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+-----------------------------------------------
+                0.70    0.41 117776896/117776896     std::bitset<64ul>::operator[](unsigned long) [21]
+[24]     1.4    0.70    0.41 117776896         std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long) [24]
+                0.22    0.00 117776896/584468032     std::_Base_bitset<1ul>::_M_getword(unsigned long) [25]
+                0.20    0.00 117776896/1644341824     std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [15]
+-----------------------------------------------
+                0.00    0.00    8448/584468032     std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long) [104]
+                0.00    0.00    8448/584468032     std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long) [78]
+                0.22    0.00 117776896/584468032     std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long) [24]
+                0.86    0.00 466674240/584468032     std::bitset<64ul>::_Unchecked_set(unsigned long) [13]
+[25]     1.3    1.08    0.00 584468032         std::_Base_bitset<1ul>::_M_getword(unsigned long) [25]
+-----------------------------------------------
+                0.05    0.09 15180066/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+                0.09    0.18 29900132/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+                0.17    0.33 53590198/98670396     std::__add_ref<std::bitset<64ul> >::type std::__get_helper<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&) [38]
+[26]     1.1    0.31    0.60 98670396         std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [26]
+                0.60    0.00 98670396/98670396     std::_Head_base<0ul, std::bitset<64ul>, false>::_M_head() [37]
+-----------------------------------------------
+                0.00    0.00      66/14950066     Serpent::generateSubKeys() [46]
+                0.04    0.87 14950000/14950066     Serpent::encrypt(unsigned char*) [2]
+[27]     1.1    0.04    0.87 14950066         std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [27]
+                0.11    0.73 14950066/14950066     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+                0.03    0.00 14950066/14950066     std::remove_reference<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>::type&& std::move<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&) [81]
+-----------------------------------------------
+                0.00    0.00      66/53590198     Serpent::generateSubKeys() [46]
+                0.00    0.00  230000/53590198     Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [49]
+                0.00    0.01  460000/53590198     Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.00    0.01  460000/53590198     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.00    0.01  460132/53590198     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.07    0.16 14260000/53590198     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+                0.07    0.16 14720000/53590198     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+                0.11    0.25 23000000/53590198     Serpent::encrypt(unsigned char*) [2]
+[28]     1.1    0.27    0.59 53590198         std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.10    0.49 53590198/53590198     std::__add_ref<std::bitset<64ul> >::type std::__get_helper<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&) [38]
+-----------------------------------------------
+                0.11    0.73 14950066/14950066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [27]
+[29]     1.0    0.11    0.73 14950066         std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+                0.12    0.19 14950066/14950066     std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+                0.09    0.18 29900132/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [26]
+                0.07    0.00 29900132/45080198     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_tail() [62]
+                0.04    0.00 14950066/30130132     std::remove_reference<std::_Tuple_impl<1ul, std::bitset<64ul> >&>::type&& std::move<std::_Tuple_impl<1ul, std::bitset<64ul> >&>(std::_Tuple_impl<1ul, std::bitset<64ul> >&) [65]
+                0.03    0.00 14950066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+-----------------------------------------------
+                0.39    0.42 242880000/242880000     Serpent::fourBits64(std::bitset<64ul>, int) [20]
+[30]     1.0    0.39    0.42 242880000         std::bitset<64ul>::to_ullong() const [30]
+                0.42    0.00 242880000/242880000     std::_Base_bitset<1ul>::_M_do_to_ullong() const [40]
+-----------------------------------------------
+                0.00    0.01  230000/15180066     Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.00    0.01  230000/15180066     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.00    0.01  230066/15180066     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.03    0.34 7130000/15180066     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+                0.03    0.35 7360000/15180066     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+[31]     1.0    0.06    0.73 15180066         std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+                0.12    0.61 15180066/15180066     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+-----------------------------------------------
+                0.00    0.02  460000/15180000     Serpent::encrypt(unsigned char*) [2]
+                0.06    0.68 14720000/15180000     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+[32]     0.9    0.06    0.70 15180000         std::bitset<64ul>::bitset(unsigned long long) [32]
+                0.64    0.00 15180000/15180536     std::_Base_bitset<1ul>::_Base_bitset(unsigned long long) [35]
+                0.06    0.00 15180000/15180000     std::_Sanitize_val<64ul, false>::_S_do_sanitize_val(unsigned long long) [72]
+-----------------------------------------------
+                0.12    0.61 15180066/15180066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [31]
+[33]     0.9    0.12    0.61 15180066         std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+                0.08    0.21 15180066/15180066     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+                0.05    0.09 15180066/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [26]
+                0.04    0.03 15180066/15180066     std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [70]
+                0.05    0.00 15180066/30130132     std::remove_reference<std::_Tuple_impl<1ul, std::bitset<64ul> >&>::type&& std::move<std::_Tuple_impl<1ul, std::bitset<64ul> >&>(std::_Tuple_impl<1ul, std::bitset<64ul> >&) [65]
+                0.04    0.00 15180066/45080198     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_tail() [62]
+                0.03    0.00 15180066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+-----------------------------------------------
+                0.53    0.12 15180000/15180000     Serpent::encrypt(unsigned char*) [2]
+[34]     0.8    0.53    0.12 15180000         std::bitset<64ul> std::operator^<64ul>(std::bitset<64ul> const&, std::bitset<64ul> const&) [34]
+                0.03    0.09 15180000/15180000     std::bitset<64ul>::operator^=(std::bitset<64ul> const&) [61]
+-----------------------------------------------
+                0.00    0.00     536/15180536     std::bitset<32ul>::bitset(unsigned long long) [85]
+                0.64    0.00 15180000/15180536     std::bitset<64ul>::bitset(unsigned long long) [32]
+[35]     0.8    0.64    0.00 15180536         std::_Base_bitset<1ul>::_Base_bitset(unsigned long long) [35]
+-----------------------------------------------
+                             28980000             Serpent::bitMirrorString(std::string, std::string) [36]
+                0.60    0.00  460000/460000      Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+[36]     0.7    0.60    0.00  460000+28980000 Serpent::bitMirrorString(std::string, std::string) [36]
+                             28980000             Serpent::bitMirrorString(std::string, std::string) [36]
+-----------------------------------------------
+                0.60    0.00 98670396/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [26]
+[37]     0.7    0.60    0.00 98670396         std::_Head_base<0ul, std::bitset<64ul>, false>::_M_head() [37]
+-----------------------------------------------
+                0.10    0.49 53590198/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+[38]     0.7    0.10    0.49 53590198         std::__add_ref<std::bitset<64ul> >::type std::__get_helper<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&) [38]
+                0.17    0.33 53590198/98670396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [26]
+-----------------------------------------------
+                0.00    0.00      66/53590198     Serpent::generateSubKeys() [46]
+                0.00    0.00  230000/53590198     Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [49]
+                0.00    0.00  460000/53590198     Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [19]
+                0.00    0.00  460000/53590198     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.00    0.00  460132/53590198     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.05    0.11 14260000/53590198     Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [3]
+                0.05    0.11 14720000/53590198     Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [12]
+                0.08    0.17 23000000/53590198     Serpent::encrypt(unsigned char*) [2]
+[39]     0.7    0.18    0.40 53590198         std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+                0.19    0.21 53590198/53590198     std::__add_ref<std::bitset<64ul> >::type std::__get_helper<1ul, std::bitset<64ul>>(std::_Tuple_impl<1ul, std::bitset<64ul>>&) [41]
+-----------------------------------------------
+                0.42    0.00 242880000/242880000     std::bitset<64ul>::to_ullong() const [30]
+[40]     0.5    0.42    0.00 242880000         std::_Base_bitset<1ul>::_M_do_to_ullong() const [40]
+-----------------------------------------------
+                0.19    0.21 53590198/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+[41]     0.5    0.19    0.21 53590198         std::__add_ref<std::bitset<64ul> >::type std::__get_helper<1ul, std::bitset<64ul>>(std::_Tuple_impl<1ul, std::bitset<64ul>>&) [41]
+                0.12    0.09 53590198/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [42]
+-----------------------------------------------
+                0.03    0.02 15180066/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+                0.07    0.05 29900132/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+                0.12    0.09 53590198/98670396     std::__add_ref<std::bitset<64ul> >::type std::__get_helper<1ul, std::bitset<64ul>>(std::_Tuple_impl<1ul, std::bitset<64ul>>&) [41]
+[42]     0.5    0.22    0.16 98670396         std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [42]
+                0.16    0.00 98670396/98670396     std::_Head_base<1ul, std::bitset<64ul>, false>::_M_head() [56]
+-----------------------------------------------
+                0.34    0.00 29440264/29440264     void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+[43]     0.4    0.34    0.00 29440264         unsigned long const& std::min<unsigned long>(unsigned long const&, unsigned long const&) [43]
+-----------------------------------------------
+                0.12    0.19 14950066/14950066     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+[44]     0.4    0.12    0.19 14950066         std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+                0.07    0.05 29900132/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [42]
+                0.03    0.00 14950066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+                0.03    0.00 29900132/45080198     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_tail() [76]
+                0.02    0.00 14950066/30130132     std::remove_reference<std::_Tuple_impl<2ul>&>::type&& std::move<std::_Tuple_impl<2ul>&>(std::_Tuple_impl<2ul>&) [77]
+-----------------------------------------------
+                0.08    0.21 15180066/15180066     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+[45]     0.4    0.08    0.21 15180066         std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+                0.06    0.03 15180066/15180066     std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [64]
+                0.03    0.02 15180066/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [42]
+                0.03    0.00 15180066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+                0.02    0.00 15180066/30130132     std::remove_reference<std::_Tuple_impl<2ul>&>::type&& std::move<std::_Tuple_impl<2ul>&>(std::_Tuple_impl<2ul>&) [77]
+                0.01    0.00 15180066/45080198     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_tail() [76]
+-----------------------------------------------
+                0.00    0.13       1/2           Serpent::setKey(unsigned char*) [58]
+                0.00    0.13       1/2           main [1]
+[46]     0.3    0.00    0.26       2         Serpent::generateSubKeys() [46]
+                0.00    0.17    2112/2112        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+                0.00    0.04    1320/1320        std::bitset<32ul> std::operator^<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [75]
+                0.00    0.02     264/264         std::bitset<32ul>::operator>>(unsigned long) const [89]
+                0.02    0.00     528/536         std::bitset<32ul>::bitset(unsigned long long) [85]
+                0.01    0.00    8448/8448        std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char) [100]
+                0.00    0.00     528/536         Serpent::bitMirrorInt(unsigned int) [101]
+                0.00    0.00      66/230066      Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+                0.00    0.00     132/14720132     std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+                0.00    0.00      66/14950066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [27]
+                0.00    0.00      66/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.00    0.00      66/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+                0.00    0.00     264/264         std::bitset<32ul>::operator<<(unsigned long) const [124]
+                0.00    0.00     264/264         std::bitset<32ul> std::operator|<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [129]
+-----------------------------------------------
+                0.01    0.22       1/1           main [1]
+[47]     0.3    0.01    0.22       1         Serpent::Serpent() [47]
+                0.04    0.18       1/1           std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*) [48]
+                0.00    0.00     140/140         std::bitset<32ul>::bitset() [106]
+                0.00    0.00      33/33          std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple() [109]
+                0.00    0.00       6/6           int* std::copy<int*, int*>(int*, int*, int*) [136]
+-----------------------------------------------
+                0.04    0.18       1/1           Serpent::Serpent() [47]
+[48]     0.3    0.04    0.18       1         std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*) [48]
+                0.05    0.13       1/1           std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [53]
+                0.00    0.00       2/2           std::_Miter_base<std::string*>::iterator_type std::__miter_base<std::string*>(std::string*) [139]
+-----------------------------------------------
+                0.14    0.06  230000/230000      Serpent::encrypt(unsigned char*) [2]
+[49]     0.2    0.14    0.06  230000         Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [49]
+                0.03    0.02 7360000/242880000     Serpent::fourBits64(std::bitset<64ul>, int) [20]
+                0.00    0.00  230000/53590198     std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [28]
+                0.00    0.00  230000/53590198     std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&) [39]
+-----------------------------------------------
+                0.19    0.00       1/1           __libc_csu_init [51]
+[50]     0.2    0.19    0.00       1         _GLOBAL__sub_I__ZN7SerpentC2Ev [50]
+                0.00    0.00       1/1           __static_initialization_and_destruction_0(int, int) [140]
+-----------------------------------------------
+                                                 <spontaneous>
+[51]     0.2    0.00    0.19                 __libc_csu_init [51]
+                0.19    0.00       1/1           _GLOBAL__sub_I__ZN7SerpentC2Ev [50]
+-----------------------------------------------
+                0.03    0.00 14950066/90620396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+                0.03    0.00 14950066/90620396     std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+                0.03    0.00 15180066/90620396     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+                0.03    0.00 15180066/90620396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+                0.03    0.00 15180066/90620396     std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [70]
+                0.03    0.00 15180066/90620396     std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [64]
+[52]     0.2    0.18    0.00 90620396         std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+-----------------------------------------------
+                0.05    0.13       1/1           std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*) [48]
+[53]     0.2    0.05    0.13       1         std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [53]
+                0.05    0.08       1/1           std::string* std::__copy_move_a<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [59]
+                0.00    0.00       3/3           std::_Niter_base<std::string*>::iterator_type std::__niter_base<std::string*>(std::string*) [138]
+-----------------------------------------------
+                0.00    0.17    2112/2112        Serpent::generateSubKeys() [46]
+[54]     0.2    0.00    0.17    2112         Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+                0.02    0.12    2112/2112        std::bitset<4ul>::to_ulong() const [57]
+                0.00    0.04    8448/8448        std::bitset<32ul>::operator[](unsigned long) [79]
+                0.00    0.00    8448/8448        std::bitset<32ul>::reference::operator bool() const [102]
+                0.00    0.00    8448/8448        std::bitset<4ul>::reference::operator=(bool) [103]
+                0.00    0.00    8448/8448        std::bitset<4ul>::operator[](unsigned long) [105]
+                0.00    0.00    8448/8448        std::bitset<4ul>::reference::~reference() [119]
+                0.00    0.00    8448/8448        std::bitset<32ul>::reference::~reference() [118]
+-----------------------------------------------
+                0.08    0.00 58880000/117776896     Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [18]
+                0.08    0.00 58896896/117776896     Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [16]
+[55]     0.2    0.16    0.00 117776896         std::bitset<64ul>::reference::~reference() [55]
+-----------------------------------------------
+                0.16    0.00 98670396/98670396     std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [42]
+[56]     0.2    0.16    0.00 98670396         std::_Head_base<1ul, std::bitset<64ul>, false>::_M_head() [56]
+-----------------------------------------------
+                0.02    0.12    2112/2112        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[57]     0.2    0.02    0.12    2112         std::bitset<4ul>::to_ulong() const [57]
+                0.12    0.00    2112/2112        std::_Base_bitset<1ul>::_M_do_to_ulong() const [60]
+-----------------------------------------------
+                0.00    0.13       1/1           main [1]
+[58]     0.2    0.00    0.13       1         Serpent::setKey(unsigned char*) [58]
+                0.00    0.13       1/2           Serpent::generateSubKeys() [46]
+                0.00    0.00       8/536         std::bitset<32ul>::bitset(unsigned long long) [85]
+                0.00    0.00       8/536         Serpent::bitMirrorInt(unsigned int) [101]
+                0.00    0.00       2/460002      Serpent::readIn(unsigned char*) [73]
+-----------------------------------------------
+                0.05    0.08       1/1           std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [53]
+[59]     0.2    0.05    0.08       1         std::string* std::__copy_move_a<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [59]
+                0.08    0.00       1/1           std::string* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::string*, std::string*>(std::string*, std::string*, std::string*) [69]
+-----------------------------------------------
+                0.12    0.00    2112/2112        std::bitset<4ul>::to_ulong() const [57]
+[60]     0.1    0.12    0.00    2112         std::_Base_bitset<1ul>::_M_do_to_ulong() const [60]
+-----------------------------------------------
+                0.03    0.09 15180000/15180000     std::bitset<64ul> std::operator^<64ul>(std::bitset<64ul> const&, std::bitset<64ul> const&) [34]
+[61]     0.1    0.03    0.09 15180000         std::bitset<64ul>::operator^=(std::bitset<64ul> const&) [61]
+                0.09    0.00 15180000/15181320     std::_Base_bitset<1ul>::_M_do_xor(std::_Base_bitset<1ul> const&) [66]
+-----------------------------------------------
+                0.04    0.00 15180066/45080198     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+                0.07    0.00 29900132/45080198     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+[62]     0.1    0.11    0.00 45080198         std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_tail() [62]
+-----------------------------------------------
+                                                 <spontaneous>
+[63]     0.1    0.02    0.09                 std::dec(std::ios_base&) [63]
+                0.04    0.05  460000/460000      std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+-----------------------------------------------
+                0.06    0.03 15180066/15180066     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+[64]     0.1    0.06    0.03 15180066         std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [64]
+                0.03    0.00 15180066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+-----------------------------------------------
+                0.04    0.00 14950066/30130132     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [29]
+                0.05    0.00 15180066/30130132     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+[65]     0.1    0.09    0.00 30130132         std::remove_reference<std::_Tuple_impl<1ul, std::bitset<64ul> >&>::type&& std::move<std::_Tuple_impl<1ul, std::bitset<64ul> >&>(std::_Tuple_impl<1ul, std::bitset<64ul> >&) [65]
+-----------------------------------------------
+                0.00    0.00    1320/15181320     std::bitset<32ul>::operator^=(std::bitset<32ul> const&) [74]
+                0.09    0.00 15180000/15181320     std::bitset<64ul>::operator^=(std::bitset<64ul> const&) [61]
+[66]     0.1    0.09    0.00 15181320         std::_Base_bitset<1ul>::_M_do_xor(std::_Base_bitset<1ul> const&) [66]
+-----------------------------------------------
+                0.04    0.05  460000/460000      std::dec(std::ios_base&) [63]
+[67]     0.1    0.04    0.05  460000         std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+                0.02    0.01  460000/460000      std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [84]
+                0.00    0.02  460000/460000      std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [87]
+                0.01    0.00  460000/920000      std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [97]
+                0.00    0.00  460000/460000      std::operator~(std::_Ios_Fmtflags) [117]
+-----------------------------------------------
+                0.08    0.00  230000/230000      Serpent::encrypt(unsigned char*) [2]
+[68]     0.1    0.08    0.00  230000         Serpent::nessify(std::string) [68]
+-----------------------------------------------
+                0.08    0.00       1/1           std::string* std::__copy_move_a<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [59]
+[69]     0.1    0.08    0.00       1         std::string* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::string*, std::string*>(std::string*, std::string*, std::string*) [69]
+-----------------------------------------------
+                0.04    0.03 15180066/15180066     std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [33]
+[70]     0.1    0.04    0.03 15180066         std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [70]
+                0.03    0.00 15180066/90620396     std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&) [52]
+-----------------------------------------------
+                0.05    0.02 14720132/14720132     void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char) [8]
+[71]     0.1    0.05    0.02 14720132         std::bitset<64ul>::reset() [71]
+                0.02    0.00 14720132/14720132     std::_Base_bitset<1ul>::_M_do_reset() [86]
+-----------------------------------------------
+                0.06    0.00 15180000/15180000     std::bitset<64ul>::bitset(unsigned long long) [32]
+[72]     0.1    0.06    0.00 15180000         std::_Sanitize_val<64ul, false>::_S_do_sanitize_val(unsigned long long) [72]
+-----------------------------------------------
+                0.00    0.00       2/460002      Serpent::setKey(unsigned char*) [58]
+                0.05    0.00  460000/460002      Serpent::encrypt(unsigned char*) [2]
+[73]     0.1    0.05    0.00  460002         Serpent::readIn(unsigned char*) [73]
+-----------------------------------------------
+                0.04    0.00    1320/1320        std::bitset<32ul> std::operator^<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [75]
+[74]     0.0    0.04    0.00    1320         std::bitset<32ul>::operator^=(std::bitset<32ul> const&) [74]
+                0.00    0.00    1320/15181320     std::_Base_bitset<1ul>::_M_do_xor(std::_Base_bitset<1ul> const&) [66]
+-----------------------------------------------
+                0.00    0.04    1320/1320        Serpent::generateSubKeys() [46]
+[75]     0.0    0.00    0.04    1320         std::bitset<32ul> std::operator^<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [75]
+                0.04    0.00    1320/1320        std::bitset<32ul>::operator^=(std::bitset<32ul> const&) [74]
+-----------------------------------------------
+                0.01    0.00 15180066/45080198     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+                0.03    0.00 29900132/45080198     std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+[76]     0.0    0.04    0.00 45080198         std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_tail() [76]
+-----------------------------------------------
+                0.02    0.00 14950066/30130132     std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [44]
+                0.02    0.00 15180066/30130132     std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [45]
+[77]     0.0    0.04    0.00 30130132         std::remove_reference<std::_Tuple_impl<2ul>&>::type&& std::move<std::_Tuple_impl<2ul>&>(std::_Tuple_impl<2ul>&) [77]
+-----------------------------------------------
+                0.04    0.00    8448/8448        std::bitset<32ul>::operator[](unsigned long) [79]
+[78]     0.0    0.04    0.00    8448         std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long) [78]
+                0.00    0.00    8448/584468032     std::_Base_bitset<1ul>::_M_getword(unsigned long) [25]
+                0.00    0.00    8448/1644341824     std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [15]
+-----------------------------------------------
+                0.00    0.04    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[79]     0.0    0.00    0.04    8448         std::bitset<32ul>::operator[](unsigned long) [79]
+                0.04    0.00    8448/8448        std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long) [78]
+-----------------------------------------------
+                0.04    0.00 3680000/3680000     Serpent::encrypt(unsigned char*) [2]
+[80]     0.0    0.04    0.00 3680000         Serpent::bitMirrorByte(unsigned char) [80]
+-----------------------------------------------
+                0.03    0.00 14950066/14950066     std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [27]
+[81]     0.0    0.03    0.00 14950066         std::remove_reference<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>::type&& std::move<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&) [81]
+-----------------------------------------------
+                0.00    0.00      66/14720338     std::bitset<64ul>::bitset() [107]
+                0.00    0.00     140/14720338     std::bitset<32ul>::bitset() [106]
+                0.03    0.00 14720132/14720338     std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [4]
+[82]     0.0    0.03    0.00 14720338         std::_Base_bitset<1ul>::_Base_bitset() [82]
+-----------------------------------------------
+                                                 <spontaneous>
+[83]     0.0    0.03    0.00                 std::bitset<32ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [83]
+-----------------------------------------------
+                0.02    0.01  460000/460000      std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+[84]     0.0    0.02    0.01  460000         std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [84]
+                0.01    0.00  460000/920000      std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [97]
+-----------------------------------------------
+                0.00    0.00       8/536         Serpent::setKey(unsigned char*) [58]
+                0.02    0.00     528/536         Serpent::generateSubKeys() [46]
+[85]     0.0    0.02    0.00     536         std::bitset<32ul>::bitset(unsigned long long) [85]
+                0.00    0.00     536/15180536     std::_Base_bitset<1ul>::_Base_bitset(unsigned long long) [35]
+                0.00    0.00     536/536         std::_Sanitize_val<32ul, true>::_S_do_sanitize_val(unsigned long long) [120]
+-----------------------------------------------
+                0.02    0.00 14720132/14720132     std::bitset<64ul>::reset() [71]
+[86]     0.0    0.02    0.00 14720132         std::_Base_bitset<1ul>::_M_do_reset() [86]
+-----------------------------------------------
+                0.00    0.02  460000/460000      std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+[87]     0.0    0.00    0.02  460000         std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [87]
+                0.02    0.00  460000/460000      std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [88]
+-----------------------------------------------
+                0.02    0.00  460000/460000      std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [87]
+[88]     0.0    0.02    0.00  460000         std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [88]
+-----------------------------------------------
+                0.00    0.02     264/264         Serpent::generateSubKeys() [46]
+[89]     0.0    0.00    0.02     264         std::bitset<32ul>::operator>>(unsigned long) const [89]
+                0.00    0.02     264/264         std::bitset<32ul>::operator>>=(unsigned long) [91]
+-----------------------------------------------
+                0.02    0.00     264/264         std::bitset<32ul>::operator>>=(unsigned long) [91]
+[90]     0.0    0.02    0.00     264         std::_Base_bitset<1ul>::_M_do_right_shift(unsigned long) [90]
+-----------------------------------------------
+                0.00    0.02     264/264         std::bitset<32ul>::operator>>(unsigned long) const [89]
+[91]     0.0    0.00    0.02     264         std::bitset<32ul>::operator>>=(unsigned long) [91]
+                0.02    0.00     264/264         std::_Base_bitset<1ul>::_M_do_right_shift(unsigned long) [90]
+                0.00    0.00     264/528         std::bitset<32ul>::_M_do_sanitize() [122]
+-----------------------------------------------
+                                                 <spontaneous>
+[92]     0.0    0.02    0.00                 Serpent::printState(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [92]
+-----------------------------------------------
+                                                 <spontaneous>
+[93]     0.0    0.02    0.00                 Serpent::inverseSBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [93]
+-----------------------------------------------
+                                                 <spontaneous>
+[94]     0.0    0.02    0.00                 Serpent::bitMirrorBitset(std::bitset<32ul>) [94]
+-----------------------------------------------
+                                                 <spontaneous>
+[95]     0.0    0.02    0.00                 Serpent::blockSize() [95]
+-----------------------------------------------
+                                                 <spontaneous>
+[96]     0.0    0.02    0.00                 std::noskipws(std::ios_base&) [96]
+-----------------------------------------------
+                0.01    0.00  460000/920000      std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags) [84]
+                0.01    0.00  460000/920000      std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+[97]     0.0    0.01    0.00  920000         std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [97]
+-----------------------------------------------
+                0.01    0.00       1/1           main [1]
+[98]     0.0    0.01    0.00       1         std::operator|(std::_Ios_Openmode, std::_Ios_Openmode) [98]
+-----------------------------------------------
+                                                 <spontaneous>
+[99]     0.0    0.01    0.00                 std::hex(std::ios_base&) [99]
+-----------------------------------------------
+                0.01    0.00    8448/8448        Serpent::generateSubKeys() [46]
+[100]    0.0    0.01    0.00    8448         std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char) [100]
+-----------------------------------------------
+                0.00    0.00       8/536         Serpent::setKey(unsigned char*) [58]
+                0.00    0.00     528/536         Serpent::generateSubKeys() [46]
+[101]    0.0    0.01    0.00     536         Serpent::bitMirrorInt(unsigned int) [101]
+-----------------------------------------------
+                0.00    0.00    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[102]    0.0    0.00    0.00    8448         std::bitset<32ul>::reference::operator bool() const [102]
+                0.00    0.00    8448/1526548032     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+-----------------------------------------------
+                0.00    0.00    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[103]    0.0    0.00    0.00    8448         std::bitset<4ul>::reference::operator=(bool) [103]
+                0.00    0.00    8448/1526548032     std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [11]
+-----------------------------------------------
+                0.00    0.00    8448/8448        std::bitset<4ul>::operator[](unsigned long) [105]
+[104]    0.0    0.00    0.00    8448         std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long) [104]
+                0.00    0.00    8448/584468032     std::_Base_bitset<1ul>::_M_getword(unsigned long) [25]
+                0.00    0.00    8448/1644341824     std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [15]
+-----------------------------------------------
+                0.00    0.00    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[105]    0.0    0.00    0.00    8448         std::bitset<4ul>::operator[](unsigned long) [105]
+                0.00    0.00    8448/8448        std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long) [104]
+-----------------------------------------------
+                0.00    0.00     140/140         Serpent::Serpent() [47]
+[106]    0.0    0.00    0.00     140         std::bitset<32ul>::bitset() [106]
+                0.00    0.00     140/14720338     std::_Base_bitset<1ul>::_Base_bitset() [82]
+-----------------------------------------------
+                0.00    0.00      33/66          std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base() [111]
+                0.00    0.00      33/66          std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base() [110]
+[107]    0.0    0.00    0.00      66         std::bitset<64ul>::bitset() [107]
+                0.00    0.00      66/14720338     std::_Base_bitset<1ul>::_Base_bitset() [82]
+-----------------------------------------------
+                0.00    0.00      33/33          std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple() [109]
+[108]    0.0    0.00    0.00      33         std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl() [108]
+                0.00    0.00      33/33          std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl() [112]
+                0.00    0.00      33/33          std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base() [110]
+-----------------------------------------------
+                0.00    0.00      33/33          Serpent::Serpent() [47]
+[109]    0.0    0.00    0.00      33         std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple() [109]
+                0.00    0.00      33/33          std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl() [108]
+-----------------------------------------------
+                0.00    0.00      33/33          std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl() [108]
+[110]    0.0    0.00    0.00      33         std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base() [110]
+                0.00    0.00      33/66          std::bitset<64ul>::bitset() [107]
+-----------------------------------------------
+                0.00    0.00      33/33          std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl() [112]
+[111]    0.0    0.00    0.00      33         std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base() [111]
+                0.00    0.00      33/66          std::bitset<64ul>::bitset() [107]
+-----------------------------------------------
+                0.00    0.00      33/33          std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl() [108]
+[112]    0.0    0.00    0.00      33         std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl() [112]
+                0.00    0.00      33/33          std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base() [111]
+-----------------------------------------------
+                0.00    0.00  460000/460000      std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags) [67]
+[117]    0.0    0.00    0.00  460000         std::operator~(std::_Ios_Fmtflags) [117]
+-----------------------------------------------
+                0.00    0.00    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[118]    0.0    0.00    0.00    8448         std::bitset<32ul>::reference::~reference() [118]
+-----------------------------------------------
+                0.00    0.00    8448/8448        Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [54]
+[119]    0.0    0.00    0.00    8448         std::bitset<4ul>::reference::~reference() [119]
+-----------------------------------------------
+                0.00    0.00     536/536         std::bitset<32ul>::bitset(unsigned long long) [85]
+[120]    0.0    0.00    0.00     536         std::_Sanitize_val<32ul, true>::_S_do_sanitize_val(unsigned long long) [120]
+-----------------------------------------------
+                0.00    0.00     528/528         std::bitset<32ul>::_M_do_sanitize() [122]
+[121]    0.0    0.00    0.00     528         std::_Base_bitset<1ul>::_M_hiword() [121]
+-----------------------------------------------
+                0.00    0.00     264/528         std::bitset<32ul>::operator>>=(unsigned long) [91]
+                0.00    0.00     264/528         std::bitset<32ul>::operator<<=(unsigned long) [127]
+[122]    0.0    0.00    0.00     528         std::bitset<32ul>::_M_do_sanitize() [122]
+                0.00    0.00     528/528         std::_Sanitize<32ul>::_S_do_sanitize(unsigned long&) [123]
+                0.00    0.00     528/528         std::_Base_bitset<1ul>::_M_hiword() [121]
+-----------------------------------------------
+                0.00    0.00     528/528         std::bitset<32ul>::_M_do_sanitize() [122]
+[123]    0.0    0.00    0.00     528         std::_Sanitize<32ul>::_S_do_sanitize(unsigned long&) [123]
+-----------------------------------------------
+                0.00    0.00     264/264         Serpent::generateSubKeys() [46]
+[124]    0.0    0.00    0.00     264         std::bitset<32ul>::operator<<(unsigned long) const [124]
+                0.00    0.00     264/264         std::bitset<32ul>::operator<<=(unsigned long) [127]
+-----------------------------------------------
+                0.00    0.00     264/264         std::bitset<32ul>::operator<<=(unsigned long) [127]
+[125]    0.0    0.00    0.00     264         std::_Base_bitset<1ul>::_M_do_left_shift(unsigned long) [125]
+-----------------------------------------------
+                0.00    0.00     264/264         std::bitset<32ul>::operator|=(std::bitset<32ul> const&) [128]
+[126]    0.0    0.00    0.00     264         std::_Base_bitset<1ul>::_M_do_or(std::_Base_bitset<1ul> const&) [126]
+-----------------------------------------------
+                0.00    0.00     264/264         std::bitset<32ul>::operator<<(unsigned long) const [124]
+[127]    0.0    0.00    0.00     264         std::bitset<32ul>::operator<<=(unsigned long) [127]
+                0.00    0.00     264/264         std::_Base_bitset<1ul>::_M_do_left_shift(unsigned long) [125]
+                0.00    0.00     264/528         std::bitset<32ul>::_M_do_sanitize() [122]
+-----------------------------------------------
+                0.00    0.00     264/264         std::bitset<32ul> std::operator|<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [129]
+[128]    0.0    0.00    0.00     264         std::bitset<32ul>::operator|=(std::bitset<32ul> const&) [128]
+                0.00    0.00     264/264         std::_Base_bitset<1ul>::_M_do_or(std::_Base_bitset<1ul> const&) [126]
+-----------------------------------------------
+                0.00    0.00     264/264         Serpent::generateSubKeys() [46]
+[129]    0.0    0.00    0.00     264         std::bitset<32ul> std::operator|<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&) [129]
+                0.00    0.00     264/264         std::bitset<32ul>::operator|=(std::bitset<32ul> const&) [128]
+-----------------------------------------------
+                0.00    0.00      12/30          std::_Miter_base<int*>::iterator_type std::__miter_base<int*>(int*) [132]
+                0.00    0.00      18/30          std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [131]
+[130]    0.0    0.00    0.00      30         std::_Iter_base<int*, false>::_S_base(int*) [130]
+-----------------------------------------------
+                0.00    0.00      18/18          int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*) [135]
+[131]    0.0    0.00    0.00      18         std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [131]
+                0.00    0.00      18/30          std::_Iter_base<int*, false>::_S_base(int*) [130]
+-----------------------------------------------
+                0.00    0.00      12/12          int* std::copy<int*, int*>(int*, int*, int*) [136]
+[132]    0.0    0.00    0.00      12         std::_Miter_base<int*>::iterator_type std::__miter_base<int*>(int*) [132]
+                0.00    0.00      12/30          std::_Iter_base<int*, false>::_S_base(int*) [130]
+-----------------------------------------------
+                0.00    0.00       6/6           int* std::__copy_move_a<false, int*, int*>(int*, int*, int*) [134]
+[133]    0.0    0.00    0.00       6         int* std::__copy_move<false, true, std::random_access_iterator_tag>::__copy_m<int>(int const*, int const*, int*) [133]
+-----------------------------------------------
+                0.00    0.00       6/6           int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*) [135]
+[134]    0.0    0.00    0.00       6         int* std::__copy_move_a<false, int*, int*>(int*, int*, int*) [134]
+                0.00    0.00       6/6           int* std::__copy_move<false, true, std::random_access_iterator_tag>::__copy_m<int>(int const*, int const*, int*) [133]
+-----------------------------------------------
+                0.00    0.00       6/6           int* std::copy<int*, int*>(int*, int*, int*) [136]
+[135]    0.0    0.00    0.00       6         int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*) [135]
+                0.00    0.00      18/18          std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*) [131]
+                0.00    0.00       6/6           int* std::__copy_move_a<false, int*, int*>(int*, int*, int*) [134]
+-----------------------------------------------
+                0.00    0.00       6/6           Serpent::Serpent() [47]
+[136]    0.0    0.00    0.00       6         int* std::copy<int*, int*>(int*, int*, int*) [136]
+                0.00    0.00      12/12          std::_Miter_base<int*>::iterator_type std::__miter_base<int*>(int*) [132]
+                0.00    0.00       6/6           int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*) [135]
+-----------------------------------------------
+                0.00    0.00       2/5           std::_Miter_base<std::string*>::iterator_type std::__miter_base<std::string*>(std::string*) [139]
+                0.00    0.00       3/5           std::_Niter_base<std::string*>::iterator_type std::__niter_base<std::string*>(std::string*) [138]
+[137]    0.0    0.00    0.00       5         std::_Iter_base<std::string*, false>::_S_base(std::string*) [137]
+-----------------------------------------------
+                0.00    0.00       3/3           std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*) [53]
+[138]    0.0    0.00    0.00       3         std::_Niter_base<std::string*>::iterator_type std::__niter_base<std::string*>(std::string*) [138]
+                0.00    0.00       3/5           std::_Iter_base<std::string*, false>::_S_base(std::string*) [137]
+-----------------------------------------------
+                0.00    0.00       2/2           std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*) [48]
+[139]    0.0    0.00    0.00       2         std::_Miter_base<std::string*>::iterator_type std::__miter_base<std::string*>(std::string*) [139]
+                0.00    0.00       2/5           std::_Iter_base<std::string*, false>::_S_base(std::string*) [137]
+-----------------------------------------------
+                0.00    0.00       1/1           _GLOBAL__sub_I__ZN7SerpentC2Ev [50]
+[140]    0.0    0.00    0.00       1         __static_initialization_and_destruction_0(int, int) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[141]    0.0    0.00    0.00       1         Serpent::setKeySize(int) [141]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[142]    0.0    0.00    0.00       1         Serpent::~Serpent() [142]
+-----------------------------------------------
+                0.00    0.00       1/1           std::stof(std::string const&, unsigned long*) [144]
+[143]    0.0    0.00    0.00       1         float __gnu_cxx::__stoa<float, float, char>(float (*)(char const*, char**), char const*, char const*, unsigned long*, float (char const*, char**)) [143]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[144]    0.0    0.00    0.00       1         std::stof(std::string const&, unsigned long*) [144]
+                0.00    0.00       1/1           float __gnu_cxx::__stoa<float, float, char>(float (*)(char const*, char**), char const*, char const*, unsigned long*, float (char const*, char**)) [143]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+  [50] _GLOBAL__sub_I__ZN7SerpentC2Ev [62] std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_tail() [71] std::bitset<64ul>::reset()
+ [140] __static_initialization_and_destruction_0(int, int) [33] std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [24] std::bitset<64ul>::reference::reference(std::bitset<64ul>&, unsigned long)
+  [20] Serpent::fourBits64(std::bitset<64ul>, int) [108] std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_Tuple_impl() [55] std::bitset<64ul>::reference::~reference()
+  [92] Serpent::printState(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [29] std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::operator=(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&&) [23] std::bitset<64ul>::reference::operator=(std::bitset<64ul>::reference const&)
+ [141] Serpent::setKeySize(int) [42] std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_head() [107] std::bitset<64ul>::bitset()
+ [101] Serpent::bitMirrorInt(unsigned int) [76] std::_Tuple_impl<1ul, std::bitset<64ul> >::_M_tail() [32] std::bitset<64ul>::bitset(unsigned long long)
+  [80] Serpent::bitMirrorByte(unsigned char) [45] std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [4] std::bitset<64ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long)
+  [19] Serpent::bitMirrorTuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [112] std::_Tuple_impl<1ul, std::bitset<64ul> >::_Tuple_impl() [61] std::bitset<64ul>::operator^=(std::bitset<64ul> const&)
+  [93] Serpent::inverseSBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [44] std::_Tuple_impl<1ul, std::bitset<64ul> >::operator=(std::_Tuple_impl<1ul, std::bitset<64ul> >&&) [21] std::bitset<64ul>::operator[](unsigned long)
+  [94] Serpent::bitMirrorBitset(std::bitset<32ul>) [69] std::string* std::__copy_move<false, false, std::random_access_iterator_tag>::__copy_m<std::string*, std::string*>(std::string*, std::string*, std::string*) [67] std::ios_base::setf(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+  [36] Serpent::bitMirrorString(std::string, std::string) [133] int* std::__copy_move<false, true, std::random_access_iterator_tag>::__copy_m<int>(int const*, int const*, int*) [123] std::_Sanitize<32ul>::_S_do_sanitize(unsigned long&)
+  [46] Serpent::generateSubKeys() [14] std::char_traits<char>::eq(char const&, char const&) [38] std::__add_ref<std::bitset<64ul> >::type std::__get_helper<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >&)
+   [3] Serpent::linearTransform(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [17] std::char_traits<char>::assign(char&, char const&) [41] std::__add_ref<std::bitset<64ul> >::type std::__get_helper<1ul, std::bitset<64ul>>(std::_Tuple_impl<1ul, std::bitset<64ul>>&)
+  [54] Serpent::fourBitsFromWords(std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, std::bitset<32ul>, int) [25] std::_Base_bitset<1ul>::_M_getword(unsigned long) [139] std::_Miter_base<std::string*>::iterator_type std::__miter_base<std::string*>(std::string*)
+  [18] Serpent::finalP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [11] std::_Base_bitset<1ul>::_S_maskbit(unsigned long) [132] std::_Miter_base<int*>::iterator_type std::__miter_base<int*>(int*)
+  [73] Serpent::readIn(unsigned char*) [86] std::_Base_bitset<1ul>::_M_do_reset() [138] std::_Niter_base<std::string*>::iterator_type std::__niter_base<std::string*>(std::string*)
+  [58] Serpent::setKey(unsigned char*) [15] std::_Base_bitset<1ul>::_S_whichbit(unsigned long) [131] std::_Niter_base<int*>::iterator_type std::__niter_base<int*>(int*)
+  [12] Serpent::SBitset(int, std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [125] std::_Base_bitset<1ul>::_M_do_left_shift(unsigned long) [59] std::string* std::__copy_move_a<false, std::string*, std::string*>(std::string*, std::string*, std::string*)
+   [2] Serpent::encrypt(unsigned char*) [90] std::_Base_bitset<1ul>::_M_do_right_shift(unsigned long) [134] int* std::__copy_move_a<false, int*, int*>(int*, int*, int*)
+  [68] Serpent::nessify(std::string) [126] std::_Base_bitset<1ul>::_M_do_or(std::_Base_bitset<1ul> const&) [53] std::string* std::__copy_move_a2<false, std::string*, std::string*>(std::string*, std::string*, std::string*)
+  [16] Serpent::initialP(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [66] std::_Base_bitset<1ul>::_M_do_xor(std::_Base_bitset<1ul> const&) [135] int* std::__copy_move_a2<false, int*, int*>(int*, int*, int*)
+  [95] Serpent::blockSize()  [121] std::_Base_bitset<1ul>::_M_hiword() [63] std::dec(std::ios_base&)
+  [49] Serpent::hexString(std::tuple<std::bitset<64ul>, std::bitset<64ul> >) [82] std::_Base_bitset<1ul>::_Base_bitset() [28] std::__add_ref<std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<0ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<0ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&)
+  [47] Serpent::Serpent()     [35] std::_Base_bitset<1ul>::_Base_bitset(unsigned long long) [39] std::__add_ref<std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >::type>::type std::get<1ul, std::bitset<64ul>, std::bitset<64ul> >(std::tuple_element<1ul, std::tuple<std::bitset<64ul>, std::bitset<64ul> > >&)
+ [142] Serpent::~Serpent()   [120] std::_Sanitize_val<32ul, true>::_S_do_sanitize_val(unsigned long long) [99] std::hex(std::ios_base&)
+ [143] float __gnu_cxx::__stoa<float, float, char>(float (*)(char const*, char**), char const*, char const*, unsigned long*, float (char const*, char**)) [72] std::_Sanitize_val<64ul, false>::_S_do_sanitize_val(unsigned long long) [43] unsigned long const& std::min<unsigned long>(unsigned long const&, unsigned long const&)
+  [22] std::_Base_bitset<1ul>::_M_getword(unsigned long) const [109] std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple() [48] std::string* std::copy<std::string*, std::string*>(std::string*, std::string*, std::string*)
+  [60] std::_Base_bitset<1ul>::_M_do_to_ulong() const [31] std::tuple<std::bitset<64ul>, std::bitset<64ul> >::tuple(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [136] int* std::copy<int*, int*>(int*, int*, int*)
+  [40] std::_Base_bitset<1ul>::_M_do_to_ullong() const [27] std::tuple<std::bitset<64ul>, std::bitset<64ul> >::operator=(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&&) [65] std::remove_reference<std::_Tuple_impl<1ul, std::bitset<64ul> >&>::type&& std::move<std::_Tuple_impl<1ul, std::bitset<64ul> >&>(std::_Tuple_impl<1ul, std::bitset<64ul> >&)
+ [102] std::bitset<32ul>::reference::operator bool() const [122] std::bitset<32ul>::_M_do_sanitize() [77] std::remove_reference<std::_Tuple_impl<2ul>&>::type&& std::move<std::_Tuple_impl<2ul>&>(std::_Tuple_impl<2ul>&)
+ [124] std::bitset<32ul>::operator<<(unsigned long) const [78] std::bitset<32ul>::reference::reference(std::bitset<32ul>&, unsigned long) [81] std::remove_reference<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>::type&& std::move<std::tuple<std::bitset<64ul>, std::bitset<64ul> >&>(std::tuple<std::bitset<64ul>, std::bitset<64ul> >&)
+  [89] std::bitset<32ul>::operator>>(unsigned long) const [118] std::bitset<32ul>::reference::~reference() [144] std::stof(std::string const&, unsigned long*)
+  [57] std::bitset<4ul>::to_ulong() const [106] std::bitset<32ul>::bitset() [52] std::bitset<64ul>&& std::forward<std::bitset<64ul> >(std::remove_reference<std::bitset<64ul> >::type&)
+  [10] std::bitset<64ul>::_Unchecked_test(unsigned long) const [85] std::bitset<32ul>::bitset(unsigned long long) [96] std::noskipws(std::ios_base&)
+   [9] void std::bitset<64ul>::_M_copy_to_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char, char) const [83] std::bitset<32ul>::bitset<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) [84] std::operator&=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)
+   [6] std::bitset<64ul>::to_string() const [74] std::bitset<32ul>::operator^=(std::bitset<32ul> const&) [97] std::operator&(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+   [7] std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::bitset<64ul>::to_string<char, std::char_traits<char>, std::allocator<char> >() const [79] std::bitset<32ul>::operator[](unsigned long) [117] std::operator~(std::_Ios_Fmtflags)
+  [30] std::bitset<64ul>::to_ullong() const [127] std::bitset<32ul>::operator<<=(unsigned long) [75] std::bitset<32ul> std::operator^<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&)
+  [37] std::_Head_base<0ul, std::bitset<64ul>, false>::_M_head() [128] std::bitset<32ul>::operator|=(std::bitset<32ul> const&) [34] std::bitset<64ul> std::operator^<64ul>(std::bitset<64ul> const&, std::bitset<64ul> const&)
+ [110] std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base() [91] std::bitset<32ul>::operator>>=(unsigned long) [87] std::operator|=(std::_Ios_Fmtflags&, std::_Ios_Fmtflags)
+  [70] std::_Head_base<0ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [104] std::bitset<4ul>::reference::reference(std::bitset<4ul>&, unsigned long) [129] std::bitset<32ul> std::operator|<32ul>(std::bitset<32ul> const&, std::bitset<32ul> const&)
+  [56] std::_Head_base<1ul, std::bitset<64ul>, false>::_M_head() [119] std::bitset<4ul>::reference::~reference() [88] std::operator|(std::_Ios_Fmtflags, std::_Ios_Fmtflags)
+  [64] std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base<std::bitset<64ul> >(std::bitset<64ul>&&) [103] std::bitset<4ul>::reference::operator=(bool) [98] std::operator|(std::_Ios_Openmode, std::_Ios_Openmode)
+ [111] std::_Head_base<1ul, std::bitset<64ul>, false>::_Head_base() [105] std::bitset<4ul>::operator[](unsigned long) [100] std::basic_string<char, std::char_traits<char>, std::allocator<char> > std::operator+<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, char)
+ [137] std::_Iter_base<std::string*, false>::_S_base(std::string*) [13] std::bitset<64ul>::_Unchecked_set(unsigned long) [1] main
+ [130] std::_Iter_base<int*, false>::_S_base(int*) [8] void std::bitset<64ul>::_M_copy_from_ptr<char, std::char_traits<char> >(char const*, unsigned long, unsigned long, unsigned long, char, char)
+  [26] std::_Tuple_impl<0ul, std::bitset<64ul>, std::bitset<64ul> >::_M_head() [5] void std::bitset<64ul>::_M_copy_from_string<char, std::char_traits<char>, std::allocator<char> >(std::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long, unsigned long, char, char)
