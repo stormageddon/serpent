@@ -7,7 +7,8 @@
 #include <map>
 #include <sstream>
 #include <fstream>
-#include "SerpentOptimizedFinal.h"
+//#include "SerpentOptimizedFinal.h"
+//#include "Serpent.h"
 #include "SerpentStream.h"
 
 
@@ -92,7 +93,6 @@ int SerpentStream::encrypt(int byte ){
 
 int main(int argc, char** argv)
 {
-  
   std::string usageWarning =  "usage: [-i/--input fileName] [-o/--output fileName] [-k/--key 32bitKey] [-n/--nonce initializationVector]";
 
   unsigned long long int nonce = 0;

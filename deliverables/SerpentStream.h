@@ -1,10 +1,19 @@
+#define USE_NONOPTIMIZED_SERPENT
+
+#ifdef USE_OPTIMIZED_SERPENT
+#include "SerpentOptimizedFinal.h"
+#endif
+
+#ifdef USE_NONOPTIMIZED_SERPENT
+#include "Serpent.h"
+#endif
+
 #ifndef SERPENTSTREAM_H
 #define SERPENTSTREAM_H
 
 
 
 class SerpentStream{
-
 
   Serpent serpent;
   unsigned char keyStream[16];
